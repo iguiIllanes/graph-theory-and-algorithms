@@ -1,0 +1,6 @@
+{
+	"appId": "com.ignacioillanes.graphs",
+	"appName": "Graph Theory and Algorithm Visualizer",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
