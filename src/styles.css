@@ -1,0 +1,108 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.react-flow__node-graph-node-start {
+  --primary-color: #0041d0;
+  background-color: white;
+}
+.react-flow__node-graph-node-start .label-wrapper {
+  left: -75%;
+  bottom: 125%;
+}
+
+.react-flow__node-graph-node-end {
+  --primary-color: #ff0072;
+}
+
+.react-flow__node-graph-node-start .label-wrapper,
+.react-flow__node-graph-node-end .label-wrapper {
+  position: absolute;
+  width: 10rem;
+}
+
+[class^="react-flow__node-graph-node"],
+[class*="react-flow__node-graph-node"] {
+  --outer-radius: 2.5rem;
+  --inner-radius: 0.75rem;
+  position: relative;
+  font-size: 12px;
+  width: var(--outer-radius);
+  height: var(--outer-radius);
+  border-radius: 100%;
+  border: 1px solid var(--primary-color);
+}
+[class^="react-flow__node-graph-node"].selected,
+[class^="react-flow__node-graph-node"].selected:hover,
+[class*="react-flow__node-graph-node"].selected,
+[class*="react-flow__node-graph-node"].selected:hover {
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+[class^="react-flow__node-graph-node"]::before,
+[class*="react-flow__node-graph-node"]::before {
+  content: "";
+  position: absolute;
+  width: var(--inner-radius);
+  height: var(--inner-radius);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
+  border-radius: 100%;
+}
+[class^="react-flow__node-graph-node"] .react-flow__handle,
+[class*="react-flow__node-graph-node"] .react-flow__handle {
+  border-radius: 0.5rem;
+  background: var(--primary-color);
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-top,
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-bottom,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-top,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-bottom {
+  width: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-top,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-top {
+  top: -0.25rem;
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-bottom,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-bottom {
+  bottom: -0.25rem;
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-left,
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-right,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-left,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-right {
+  height: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-left,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-left {
+  left: -0.25rem;
+}
+[class^="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-right,
+[class*="react-flow__node-graph-node"]
+  .react-flow__handle.react-flow__handle-right {
+  right: -0.25rem;
+}
