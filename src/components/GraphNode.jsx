@@ -1,18 +1,25 @@
 import React, { memo } from "react";
 import { Handle } from "reactflow";
-import "./MyNode.css"; // Archivo CSS personalizado para el estilo del handle
+import "./RingHandle.css"; 
 
 export default memo(({ data, isConnectable, sourcePosition }) => {
   return (
     <>
-      <div className="node-handle-container"> {/* Contenedor personalizado para el handle */}
+      <div className="node-handle-container"> 
         <Handle
           type="source"
           position={sourcePosition}
           isConnectable={isConnectable}
-          style={{ width: 20, height: 20 }}
-          className="node-handle" // Clase personalizada para el estilo del handle
-        />
+          className="ring-handle" 
+          style={{ 
+            width: 38, 
+            height: 38, 
+            borderRadius: "50%", 
+            border: "4px solid #4F4F4F",
+            backgroundColor: "transparent"
+          }}
+        >
+        </Handle>
       </div>
       <div className="node-label">{data.label}</div>
     </>
