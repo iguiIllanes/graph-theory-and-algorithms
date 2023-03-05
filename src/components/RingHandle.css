@@ -1,11 +1,11 @@
-.ring-handle {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /* border: 3px solid blue; */
-  border-radius: 50%;
-  background-color: transparent;
-  width: 38;
-  height: 38;
-  border: "4px solid #4F4F4F";
+
+
+.customNode{
+   background-color: #b36c6c;
+   border: 1px solid #b36c6c;
+   border-radius: 50%;
+   width:2rem;
+   height:2rem;
+   padding: 0.5rem;
+   font-size: 10px;
 }
