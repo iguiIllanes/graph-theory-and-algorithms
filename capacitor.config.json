@@ -1,0 +1,6 @@
+{
+  "appId": "com.ignacioillanes.graphs",
+  "appName": "Graph Theory & Algoritms",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

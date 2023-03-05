@@ -12,7 +12,9 @@ import ReactFlow, {
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 
-const initBgColor = "#2A60F7";
+import fileService from "./../service/file";
+
+const initBgColor = "#918ecc";
 
 const nodeTypes = {
   "graph-node-start": GraphNode,
@@ -107,12 +109,16 @@ const Flow = () => {
     setNodes(nodes.filter((node) => node.id !== "1"));
   };
 
+  const handleFileUpload = (event) => {
+    let data = fileService.upload(event);
+    console.log("data", data);
+  };
+
   return (
     <>
       <button type="button" onClick={handler}>
         Print nodes and edges
       </button>
-
       <button type="button" onClick={handleMatrix}>
         Print matrix
       </button>
@@ -122,6 +128,20 @@ const Flow = () => {
       <button onClick={handleRemoveElements}>
         {removeElements ? "Disable remove elements" : "Remove elements"}
       </button>
+      <button
+        onClick={() => fileService.download(nodes, edges, "archivo.json")}
+      >
+        Download
+      </button>
+      <button onClick={() => document.getElementById("file-input").click()}>
+        Upload
+      </button>
+      <input
+        id="file-input"
+        type="file"
+        onChange={handleFileUpload}
+        style={{ display: "none" }}
+      />
       <ReactFlow
         nodes={nodes}
         edges={edges}
