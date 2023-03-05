@@ -7,13 +7,6 @@ export default memo(({ data, isConnectable, sourcePosition }) => {
       <Handle
         type="source"
         position={sourcePosition}
-        id="b"
-        isConnectable={isConnectable}
-      />
-      <Handle
-        type="source"
-        position="left"
-        id="a"
         isConnectable={isConnectable}
       />
     </>
