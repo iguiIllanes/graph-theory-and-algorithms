@@ -26,21 +26,21 @@ const initialNodes = [
   {
     id: "0",
     type: "graph-node-start",
-    data: { label: "An input node" },
+    data: { label: "A" },
     position: { x: 80, y: 200 },
     sourcePosition: "right",
   },
   {
     id: "1",
     type: "graph-node-start",
-    data: { label: "An input node" },
+    data: { label: "B" },
     position: { x: 160, y: 200 },
     sourcePosition: "left",
   },
   {
     id: "2",
     type: "graph-node-start",
-    data: { label: "An input node" },
+    data: { label: "C" },
     position: { x: 210, y: 300 },
     sourcePosition: "right",
   },
@@ -143,7 +143,7 @@ const Flow = () => {
       >
         <MiniMap
           nodeStrokeColor={(n) => {
-            if (n.type === "input") return "#0041d0";
+            if (n.type === "input") return "#0f41d0";
             if (n.type === "selectorNode") return bgColor;
             if (n.type === "output") return "#ff0072";
           }}
