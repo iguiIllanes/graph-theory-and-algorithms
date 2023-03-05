@@ -22,34 +22,14 @@ const edgeTypes = {
   "graph-edge": GraphEdge,
 };
 
-const initialNodes = [
-  {
-    id: "0",
-    type: "graph-node-start",
-    data: { label: "A" },
-    position: { x: 80, y: 200 },
-    sourcePosition: "right",
-  },
-  {
-    id: "1",
-    type: "graph-node-start",
-    data: { label: "B" },
-    position: { x: 160, y: 200 },
-    sourcePosition: "left",
-  },
-  {
-    id: "2",
-    type: "graph-node-start",
-    data: { label: "C" },
-    position: { x: 210, y: 300 },
-    sourcePosition: "right",
-  },
-];
+const initialNodes = [];
 
 const initialEdges = [];
 
 const Flow = () => {
   const [bgColor, setBgColor] = useState(initBgColor);
+  const [removeElements, setRemoveElements] = useState(false);
+  const [adjmatrix, setAdjmatrix] = useState([]);
 
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -71,9 +51,11 @@ const Flow = () => {
       setEdges((eds) =>
         addEdge(
           {
-            id: `${connection.source}-${connection.target}`,
+            id: `${connection.source}->${connection.target}`,
             source: connection.source,
             target: connection.target,
+            sourceHandle: connection.sourceHandle,
+            targetHandle: connection.targetHandle,
             type: "graph-edge",
             data: { label: "h=0", weight: 23 },
             markerEnd: {
@@ -104,18 +86,25 @@ const Flow = () => {
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
     console.log("matrix", matrix);
+    setAdjmatrix(matrix);
   };
 
   const addNode = () => {
+    console.log("add node", nodes.length);
     const newNode = {
       id: `${nodes.length}`,
+      handleId: `${nodes.length}`,
       type: "graph-node-start",
       data: { label: "An input node" },
-      position: { x: 210, y: 300 },
-      sourcePosition: "right",
+      position: { x: 210, y: 400 },
     };
 
-    setNodes((nds) => [...nds, newNode]);
+    setNodes(nodes.concat(newNode));
+    console.log("nodes", nodes);
+  };
+
+  const handleRemoveElements = () => {
+    setNodes(nodes.filter((node) => node.id !== "1"));
   };
 
   return (
@@ -130,6 +119,9 @@ const Flow = () => {
       <button type="button" onClick={addNode}>
         Add node
       </button>
+      <button onClick={handleRemoveElements}>
+        {removeElements ? "Disable remove elements" : "Remove elements"}
+      </button>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -139,6 +131,7 @@ const Flow = () => {
         style={{ background: bgColor }}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        connectionLineType="straight"
         connectionMode="loose"
       >
         <MiniMap
