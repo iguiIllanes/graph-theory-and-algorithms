@@ -113,11 +113,16 @@ const Flow = () => {
   };
 
   const handleRemoveElements = () => {
-    setNodes(nodes.filter((node) => node.id !== "1"));
+    // console.log("remove elements");
+
+    //remove last element in nodes
+    const newNodes = nodes.slice(0, nodes.length - 1);
+    setNodes(newNodes);
+    console.log("edges", edges);
   };
 
   const handleFileUpload = (event) => {
-    let data = fileService.upload(event);
+    // console.log(fileService.upload(event).nodes);
     console.log("data on Flow", data);
   };
 
@@ -125,9 +130,6 @@ const Flow = () => {
     <>
       <br />
       <br />
-      <button className="butt" type="button" onClick={handler}>
-        Print nodes and edges
-      </button>
       <button className="butt" type="button" onClick={handleMatrix}>
         {showMatrix ? "Ocultar Matriz" : "Mostrar Matriz"}
       </button>
@@ -135,7 +137,9 @@ const Flow = () => {
         Add node
       </button>
       <button className="butt" onClick={handleRemoveElements}>
-        {removeElements ? "Disable remove elements" : "Remove elements"}
+        {removeElements
+          ? "Disable remove elements"
+          : "Quitar ultimo nodo añadido"}
       </button>
       <button
         className="butt"
