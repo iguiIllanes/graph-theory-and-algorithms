@@ -14,7 +14,9 @@ import GraphEdge from "./GraphEdge";
 
 import fileService from "./../service/file";
 
-const initBgColor = "#918ecc";
+const initBgColor = "#fff";
+
+const letters = 65;
 
 const nodeTypes = {
   "graph-node-start": GraphNode,
@@ -62,7 +64,7 @@ const Flow = () => {
             data: { label: "h=0", weight: 23 },
             markerEnd: {
               type: MarkerType.ArrowClosed,
-              color: "#fff",
+              color: "#342e37",
             },
           },
           eds
@@ -97,7 +99,7 @@ const Flow = () => {
       id: `${nodes.length}`,
       handleId: `${nodes.length}`,
       type: "graph-node-start",
-      data: { label: "An input node" },
+      data: { label: `${String.fromCharCode(letters + nodes.length)}` },
       position: { x: 210, y: 400 },
     };
 
@@ -152,6 +154,7 @@ const Flow = () => {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         connectionLineType="straight"
+        connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"
       >
         <MiniMap

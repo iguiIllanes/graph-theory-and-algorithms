@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Handle } from "reactflow";
-import "./RingHandle.css";
+import "./../styles/RingHandle.css";
 
 export default memo(({ handleId, data, isConnectable }) => {
   return (
@@ -11,7 +11,7 @@ export default memo(({ handleId, data, isConnectable }) => {
           type="source"
           position="left"
           style={{
-            background: "#fff",
+            opacity: 0,
             marginLeft: "5px",
             border: "1px solid #fff",
           }}
@@ -23,7 +23,7 @@ export default memo(({ handleId, data, isConnectable }) => {
           type="source"
           position="right"
           style={{
-            background: "#fff",
+            opacity: 0,
             marginRight: "5px",
             border: "1px solid #fff",
           }}
@@ -35,7 +35,7 @@ export default memo(({ handleId, data, isConnectable }) => {
           type="source"
           position="top"
           style={{
-            background: "#fff",
+            opacity: 0,
             border: "1px solid #fff",
             marginTop: "5px",
           }}
@@ -46,7 +46,7 @@ export default memo(({ handleId, data, isConnectable }) => {
           type="source"
           position="bottom"
           style={{
-            background: "#fff",
+            opacity: 0,
             border: "1px solid #fff",
             marginBottom: "5px",
           }}

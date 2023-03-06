@@ -11,8 +11,8 @@ const GraphEdge = ({
   targetPosition,
   style = {
     flex: "1 1",
-    stroke: "#000",
-    strokeWidth: 2,
+    stroke: "#342e37",
+    strokeWidth: 3,
   },
   data = { label: "" },
   markerEnd,
@@ -44,7 +44,7 @@ const GraphEdge = ({
             borderRadius: 5,
             fontSize: 12,
             fontWeight: 700,
-            color: "#fff",
+            color: "#342e37",
           }}
           className="nodrag nopan"
         >

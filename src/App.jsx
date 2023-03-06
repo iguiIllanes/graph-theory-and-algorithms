@@ -1,5 +1,5 @@
 import Flow from "./components/Flow";
-import "./styles.css";
+import "./styles/styles.css";
 
 import "reactflow/dist/style.css";
 
