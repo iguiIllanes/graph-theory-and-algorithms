@@ -33,7 +33,7 @@
   .react-flow__handle.react-flow__handle-top,
 [class*="react-flow__node-graph-node"]
   .react-flow__handle.react-flow__handle-bottom {
-  width: 1.35rem;
+  width: 1.8rem;
   left: 50%;
   
   transform: translateX(-50%);
@@ -58,7 +58,7 @@
   .react-flow__handle.react-flow__handle-left,
 [class*="react-flow__node-graph-node"]
   .react-flow__handle.react-flow__handle-right {
-  height: 1.35rem;
+  height: 1.8rem;
   top: 50%;
 } 
 /* [class^="react-flow__node-graph-node"]

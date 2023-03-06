@@ -27,7 +27,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-top`}
         type="source"
         position="top"
-        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginTop:"3px" }}
+        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginTop:"5px" }}
 
         isConnectable={isConnectable}
       />
@@ -35,7 +35,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-bottom`}
         type="source"
         position="bottom"
-        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginBottom:"3px" }}
+        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginBottom:"5px" }}
 
         isConnectable={isConnectable}
       />
