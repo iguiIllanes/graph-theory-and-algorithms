@@ -10,7 +10,8 @@ const GraphEdge = ({
   sourcePosition,
   targetPosition,
   style = {
-    stroke: "#fff",
+    flex: "1 1",
+    stroke: "#000",
     strokeWidth: 2,
   },
   data = { label: "" },

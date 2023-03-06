@@ -22,18 +22,11 @@ export default memo(({ handleId, data, isConnectable }) => {
           id={`${handleId}-right`}
           type="source"
           position="right"
-          isConnectable={isConnectable}
-        />
-        <Handle
-          id={`${handleId}-top`}
-          type="source"
-          position="top"
-          isConnectable={isConnectable}
-        />
-        <Handle
-          id={`${handleId}-bottom`}
-          type="source"
-          position="bottom"
+          style={{
+            background: "#fff",
+            marginRight: "5px",
+            border: "1px solid #fff",
+          }}
           isConnectable={isConnectable}
         />
         <div className="customNode">{data.label}</div>
@@ -60,6 +53,7 @@ export default memo(({ handleId, data, isConnectable }) => {
           isConnectable={isConnectable}
         />
       </div>
+      {/* <div className="node-label">{data.label}</div> */}
     </>
   );
 });
