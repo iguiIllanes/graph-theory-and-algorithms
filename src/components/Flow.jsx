@@ -11,6 +11,7 @@ import ReactFlow, {
 
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
+import AdjacencyMatrix from "./AdjacencyMatrix";
 
 import fileService from "./../service/file";
 
@@ -144,6 +145,8 @@ const Flow = () => {
         onChange={handleFileUpload}
         style={{ display: "none" }}
       />
+      <br />
+      <AdjacencyMatrix matrix={adjmatrix} nodes={nodes} />
       <ReactFlow
         nodes={nodes}
         edges={edges}
