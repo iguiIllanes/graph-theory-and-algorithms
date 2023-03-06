@@ -7,6 +7,7 @@ import ReactFlow, {
   applyEdgeChanges,
   addEdge,
   MarkerType,
+  ControlButton,
 } from "reactflow";
 
 import GraphNode from "./GraphNode";
@@ -75,11 +76,6 @@ const Flow = () => {
     [setEdges]
   );
 
-  const handler = () => {
-    console.log("edges", edges);
-    console.log("nodes", nodes);
-  };
-
   const handleMatrix = () => {
     const matrix = [];
     // fill matrix with zeros
@@ -121,75 +117,112 @@ const Flow = () => {
     console.log("edges", edges);
   };
 
-  const handleFileUpload = (event) => {
-    // console.log(fileService.upload(event).nodes);
-    console.log("data on Flow", data);
+  const handleFileUpload = async (event) => {
+    const data = await fileService.upload(event).then((response) => {
+      setNodes(response.nodes);
+      setEdges(response.edges);
+    });
+    // console.log(data.nodes);
   };
 
   return (
     <>
-      <br />
-      <br />
-      <button className="butt" type="button" onClick={handleMatrix}>
-        {showMatrix ? "Ocultar Matriz" : "Mostrar Matriz"}
-      </button>
-      <button className="butt" type="button" onClick={addNode}>
-        Add node
-      </button>
-      <button className="butt" onClick={handleRemoveElements}>
-        {removeElements
-          ? "Disable remove elements"
-          : "Quitar ultimo nodo añadido"}
-      </button>
-      <button
-        className="butt"
-        onClick={() => fileService.download(nodes, edges, "archivo.json")}
-      >
-        Download
-      </button>
-      <button
-        className="butt"
-        onClick={() => document.getElementById("file-input").click()}
-      >
-        Upload
-      </button>
-      <input
-        id="file-input"
-        type="file"
-        onChange={handleFileUpload}
-        style={{ display: "none" }}
-      />
-      <br />
-
       {showMatrix ? (
         <AdjacencyMatrix nodes={nodes} matrix={adjmatrix} />
       ) : (
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          style={{ background: bgColor }}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          connectionLineType="straight"
-          connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
-          connectionMode="loose"
-        >
-          <MiniMap
-            nodeStrokeColor={(n) => {
-              if (n.type === "input") return "#0f41d0";
-              if (n.type === "selectorNode") return bgColor;
-              if (n.type === "output") return "#ff0072";
-            }}
-            nodeColor={(n) => {
-              if (n.type === "selectorNode") return bgColor;
-              return "#fff";
-            }}
+        <>
+          <input
+            id="file-input"
+            type="file"
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
           />
-          <Controls />
-        </ReactFlow>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            style={{ background: bgColor }}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            connectionLineType="straight"
+            connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
+            connectionMode="loose"
+            proOptions={{ hideAttribution: true }}
+          >
+            <MiniMap
+              nodeStrokeColor={(n) => {
+                if (n.type === "input") return "#0f41d0";
+                if (n.type === "selectorNode") return bgColor;
+                if (n.type === "output") return "#ff0072";
+              }}
+              nodeColor={(n) => {
+                if (n.type === "selectorNode") return bgColor;
+                return "#fff";
+              }}
+            />
+            <Controls>
+              <ControlButton onClick={addNode}>
+                <img
+                  src="./../../assets/createNode.png"
+                  alt="A"
+                  style={{
+                    width: "20px",
+                    hover: "pointer",
+                  }}
+                />
+              </ControlButton>
+              <ControlButton onClick={handleRemoveElements}>
+                <img
+                  src="./../../assets/removeNode.png"
+                  alt="A"
+                  style={{
+                    width: "20px",
+                  }}
+                />
+              </ControlButton>
+              <ControlButton onClick={handleMatrix}>
+                <img
+                  src={
+                    showMatrix
+                      ? "./../../assets/hideMatrix.png"
+                      : "./../../assets/showMatrix.png"
+                  }
+                  alt="A"
+                  style={{
+                    width: "20px",
+                  }}
+                />
+              </ControlButton>
+              <ControlButton
+                onClick={() =>
+                  fileService.download(nodes, edges, "archivo.json")
+                }
+              >
+                <img
+                  src="./../../assets/download.png"
+                  alt="A"
+                  style={{
+                    width: "20px",
+                  }}
+                />
+              </ControlButton>
+              <ControlButton
+                onClick={() => document.getElementById("file-input").click()}
+              >
+                <img
+                  src="./../../assets/upload.png"
+                  alt="A"
+                  style={{
+                    width: "20px",
+                  }}
+                />
+              </ControlButton>
+              <ControlButton style={{ color: "#000" }}>?</ControlButton>
+            </Controls>
+          </ReactFlow>
+        </>
       )}
     </>
   );
