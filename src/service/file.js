@@ -16,12 +16,9 @@ const download = (nodes, edges, filename) => {
   document.body.removeChild(link);
 };
 
-// TODO: fix upload
 const upload = (event) => {
   return new Promise((resolve, reject) => {
-    console.log("sexo");
     const file = event.target.files[0];
-    console.log("sexo2");
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = () => {
