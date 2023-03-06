@@ -12,7 +12,7 @@ import ReactFlow, {
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 
-const initBgColor = "#918ecc";
+const initBgColor = "#2A60F7";
 
 const nodeTypes = {
   "graph-node-start": GraphNode,

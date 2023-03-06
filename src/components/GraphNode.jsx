@@ -10,7 +10,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-left`}
         type="source"
         position="left"
-        style={{ background: "#b36c6c", marginLeft:"5px", border:"1px solid #b36c6c" }}
+        style={{ background: "#fff", marginLeft:"5px", border:"1px solid #fff" }}
         isConnectable={isConnectable}
         className="ring-handle"
       />
@@ -18,7 +18,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-right`}
         type="source"
         position="right"
-        style={{ background: "#b36c6c", marginRight:"5px", border:"1px solid #b36c6c" }}
+        style={{ background: "#fff", marginRight:"5px", border:"1px solid #fff" }}
 
         isConnectable={isConnectable}
       />
@@ -27,7 +27,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-top`}
         type="source"
         position="top"
-        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginTop:"5px" }}
+        style={{ background: "#fff", border:"1px solid #fff", marginTop:"5px" }}
 
         isConnectable={isConnectable}
       />
@@ -35,7 +35,7 @@ export default memo(({ handleId, data, isConnectable, sourcePosition }) => {
         id={`${handleId}-bottom`}
         type="source"
         position="bottom"
-        style={{ background: "#b36c6c", border:"1px solid #b36c6c", marginBottom:"5px" }}
+        style={{ background: "#fff", border:"1px solid #fff", marginBottom:"5px" }}
 
         isConnectable={isConnectable}
       />
