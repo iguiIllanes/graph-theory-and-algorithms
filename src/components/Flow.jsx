@@ -15,7 +15,7 @@ import AdjacencyMatrix from "./AdjacencyMatrix";
 
 import fileService from "./../service/file";
 
-const initBgColor = "#fff";
+const bgColor = "#fff";
 
 const letters = 65;
 
@@ -32,9 +32,10 @@ const initialNodes = [];
 const initialEdges = [];
 
 const Flow = () => {
-  const [bgColor, setBgColor] = useState(initBgColor);
   const [removeElements, setRemoveElements] = useState(false);
+
   const [adjmatrix, setAdjmatrix] = useState([]);
+  const [showMatrix, setShowMatrix] = useState(false);
 
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -92,6 +93,9 @@ const Flow = () => {
     });
     console.log("matrix", matrix);
     setAdjmatrix(matrix);
+
+    // hide/show matrix
+    setShowMatrix(!showMatrix);
   };
 
   const addNode = () => {
@@ -114,29 +118,35 @@ const Flow = () => {
 
   const handleFileUpload = (event) => {
     let data = fileService.upload(event);
-    console.log("data", data);
+    console.log("data on Flow", data);
   };
 
   return (
     <>
-      <button type="button" onClick={handler}>
+      <br />
+      <br />
+      <button className="butt" type="button" onClick={handler}>
         Print nodes and edges
       </button>
-      <button type="button" onClick={handleMatrix}>
-        Print matrix
+      <button className="butt" type="button" onClick={handleMatrix}>
+        {showMatrix ? "Ocultar Matriz" : "Mostrar Matriz"}
       </button>
-      <button type="button" onClick={addNode}>
+      <button className="butt" type="button" onClick={addNode}>
         Add node
       </button>
-      <button onClick={handleRemoveElements}>
+      <button className="butt" onClick={handleRemoveElements}>
         {removeElements ? "Disable remove elements" : "Remove elements"}
       </button>
       <button
+        className="butt"
         onClick={() => fileService.download(nodes, edges, "archivo.json")}
       >
         Download
       </button>
-      <button onClick={() => document.getElementById("file-input").click()}>
+      <button
+        className="butt"
+        onClick={() => document.getElementById("file-input").click()}
+      >
         Upload
       </button>
       <input
@@ -146,33 +156,37 @@ const Flow = () => {
         style={{ display: "none" }}
       />
       <br />
-      <AdjacencyMatrix matrix={adjmatrix} nodes={nodes} />
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        style={{ background: bgColor }}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        connectionLineType="straight"
-        connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
-        connectionMode="loose"
-      >
-        <MiniMap
-          nodeStrokeColor={(n) => {
-            if (n.type === "input") return "#0f41d0";
-            if (n.type === "selectorNode") return bgColor;
-            if (n.type === "output") return "#ff0072";
-          }}
-          nodeColor={(n) => {
-            if (n.type === "selectorNode") return bgColor;
-            return "#fff";
-          }}
-        />
-        <Controls />
-      </ReactFlow>
+
+      {showMatrix ? (
+        <AdjacencyMatrix nodes={nodes} matrix={adjmatrix} />
+      ) : (
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          style={{ background: bgColor }}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          connectionLineType="straight"
+          connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
+          connectionMode="loose"
+        >
+          <MiniMap
+            nodeStrokeColor={(n) => {
+              if (n.type === "input") return "#0f41d0";
+              if (n.type === "selectorNode") return bgColor;
+              if (n.type === "output") return "#ff0072";
+            }}
+            nodeColor={(n) => {
+              if (n.type === "selectorNode") return bgColor;
+              return "#fff";
+            }}
+          />
+          <Controls />
+        </ReactFlow>
+      )}
     </>
   );
 };

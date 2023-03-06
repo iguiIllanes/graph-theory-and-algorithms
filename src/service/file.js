@@ -23,6 +23,7 @@ const upload = (event) => {
   reader.readAsText(file, "UTF-8");
   reader.onload = () => {
     const data = JSON.parse(reader.result);
+    console.log("ulpload", data);
     return {
       nodes: data.nodes,
       edges: data.edges,

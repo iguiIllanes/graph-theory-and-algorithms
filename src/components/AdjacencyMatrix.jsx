@@ -6,7 +6,7 @@ const AdjacencyMatrix = ({ nodes, matrix }) => {
       <table>
         <thead>
           <tr>
-            ‎
+            <th></th>
             {nodes.map((node) => (
               <th key={node.id}>{node.data.label}</th>
             ))}
@@ -15,9 +15,13 @@ const AdjacencyMatrix = ({ nodes, matrix }) => {
         <tbody>
           {matrix.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              <td>{nodes[rowIndex].data.label}</td>
+              <td className="labels" style={{ fontWeight: "bold" }}>
+                {nodes[rowIndex].data.label}
+              </td>
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
+                <td className="weights" key={cellIndex}>
+                  {cell}
+                </td>
               ))}
             </tr>
           ))}
