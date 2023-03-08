@@ -160,7 +160,7 @@ const Flow = () => {
           }}
           nodeColor={(n) => {
             if (n.type === "selectorNode") return bgColor;
-            return "#fff";
+            return "#5191df";
           }}
         />
         <Controls>

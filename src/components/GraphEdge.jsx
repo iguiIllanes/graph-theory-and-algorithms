@@ -1,8 +1,19 @@
 import React from "react";
-import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
+import {
+  getBezierPath,
+  EdgeLabelRenderer,
+  getStraightPath,
+  ControlButton,
+} from "reactflow";
+import editIcon from "/icons/editar.png";
 
+import useStore from "./../store/FlowStore";
+
+const foreignObjectSize = 40;
 const GraphEdge = ({
   id,
+  source,
+  target,
   sourceX,
   sourceY,
   targetX,
@@ -14,17 +25,38 @@ const GraphEdge = ({
     stroke: "#342e37",
     strokeWidth: 3,
   },
-  data = { label: "" },
+  data = { label: "", weight: 1 },
   markerEnd,
 }) => {
-  const [edgePath, labelX, labelY] = getStraightPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
+  const setWeight = useStore((state) => state.setWeight);
+
+  let edgePath, controlX, controlY, labelX, labelY;
+  if (source == target) {
+    // Use getBezierPath to get a curved path
+    const curveFactor = 0.5; // adjust this to control the curve
+    [edgePath, controlX, controlY] = getBezierPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+      curvature: curveFactor,
+    });
+    // Set labelX and labelY to the control point
+    labelX = controlX;
+    labelY = controlY;
+  } else {
+    // Use getStraightPath to get a straight path
+    [edgePath, labelX, labelY] = getStraightPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+  }
 
   return (
     <>
@@ -35,7 +67,7 @@ const GraphEdge = ({
         d={edgePath}
         markerEnd={markerEnd}
       />
-      <EdgeLabelRenderer>
+      <EdgeLabelRenderer id="capa2">
         <div
           style={{
             position: "absolute",
@@ -48,12 +80,26 @@ const GraphEdge = ({
           }}
           className="nodrag nopan"
         >
-          {data.weight}
           <br />
           <br />
           {data.label}
         </div>
       </EdgeLabelRenderer>
+      <foreignObject
+        id="capa1"
+        width={foreignObjectSize}
+        height={foreignObjectSize}
+        x={labelX - foreignObjectSize / 2}
+        y={labelY - foreignObjectSize / 2}
+        className="edgebutton-foreignobject"
+        requiredExtensions="http://www.w3.org/1999/xhtml"
+      >
+        <div>
+          <button className="edgebutton" onClick={() => setWeight(id)}>
+            {data.weight}
+          </button>
+        </div>
+      </foreignObject>
     </>
   );
 };
