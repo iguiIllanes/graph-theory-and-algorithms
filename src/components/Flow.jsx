@@ -24,7 +24,6 @@ import AdjacencyMatrix from "./AdjacencyMatrix";
 import fileService from "./../service/file";
 
 import useFlowStore from "./../store/FlowStore";
-import useStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 
 const bgColor = "#fff";
@@ -38,6 +37,10 @@ const edgeTypes = {
 };
 
 const selector = (state) => ({
+  // Persona
+  deletePersona: state.deletePersona,
+  toggleDeletePersona: state.toggleDeletePersona,
+
   // adjacency matrix
   adjacencyMatrix: state.adjacencyMatrix,
   setAdjacencyMatrix: state.setAdjacencyMatrix,
@@ -57,6 +60,8 @@ const selector = (state) => ({
 
 const Flow = () => {
   const {
+    deletePersona,
+    toggleDeletePersona,
     adjacencyMatrix,
     setAdjacencyMatrix,
     nodes,
@@ -178,7 +183,10 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleRemoveElements}>
+          <ControlButton
+            onClick={toggleDeletePersona}
+            style={{ backgroundColor: deletePersona ? "#ff0000" : "#fff" }}
+          >
             <img
               src={RemoveNodeIcon}
               alt="A"

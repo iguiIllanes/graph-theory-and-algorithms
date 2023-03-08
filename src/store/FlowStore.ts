@@ -18,6 +18,7 @@ import {
 // import initialEdges from './edges';
 
 type RFState = {
+  deletePersona: Boolean;
   adjacencyMatrix: number[][];
   nodes: Node[];
   edges: Edge[];
@@ -28,6 +29,11 @@ type RFState = {
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get) => ({
+  // Personas
+  deletePersona: false,
+  toggleDeletePersona: () =>
+    set((state) => ({ deletePersona: !state.deletePersona })),
+
   // adjacency matrix
   adjacencyMatrix: [],
   setAdjacencyMatrix: (adjacencyMatrix: number[][]) =>
@@ -63,6 +69,24 @@ const useStore = create<RFState>((set, get) => ({
         alert("Ya existe un nodo con ese nombre, intenta con otro.");
         return state.nodes;
       }
+    }),
+  deleteNode: (nodeId: string) =>
+    set((state) => {
+      const newNodes = state.nodes.filter((n) => n.id !== nodeId);
+
+      const newEdges: Edge[] = [];
+      state.edges.forEach((edge: Edge) => {
+        // TODO: wtf? there must be a better way to do this
+        if (edge.source === nodeId || edge.target === nodeId) {
+          // do nothing
+        } else {
+          newEdges.push(edge);
+        }
+      });
+      return {
+        nodes: newNodes,
+        edges: newEdges,
+      };
     }),
   setNodes: (nodes: Node[]) => set({ nodes: nodes }),
   onNodesChange: (changes: NodeChange[]) => {
