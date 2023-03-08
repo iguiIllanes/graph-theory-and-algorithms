@@ -12,6 +12,8 @@ import useStore from "./../store/FlowStore";
 const foreignObjectSize = 40;
 const GraphEdge = ({
   id,
+  source,
+  target,
   sourceX,
   sourceY,
   targetX,
@@ -28,14 +30,33 @@ const GraphEdge = ({
 }) => {
   const setWeight = useStore((state) => state.setWeight);
 
-  const [edgePath, labelX, labelY] = getStraightPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
+  let edgePath, controlX, controlY, labelX, labelY;
+  if (source == target) {
+    // Use getBezierPath to get a curved path
+    const curveFactor = 0.5; // adjust this to control the curve
+    [edgePath, controlX, controlY] = getBezierPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+      curvature: curveFactor,
+    });
+    // Set labelX and labelY to the control point
+    labelX = controlX;
+    labelY = controlY;
+  } else {
+    // Use getStraightPath to get a straight path
+    [edgePath, labelX, labelY] = getStraightPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+  }
 
   return (
     <>
