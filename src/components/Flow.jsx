@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 import ReactFlow, {
   MiniMap,
@@ -10,12 +10,6 @@ import ReactFlow, {
   ControlButton,
 } from "reactflow";
 
-import GraphNode from "./GraphNode";
-import GraphEdge from "./GraphEdge";
-import AdjacencyMatrix from "./AdjacencyMatrix";
-
-import fileService from "./../service/file";
-
 import RemoveAllIcon from "/icons/removeAll.png";
 import CreateNodeIcon from "/icons/createNode.png";
 import RemoveNodeIcon from "/icons/removeNode.png";
@@ -23,10 +17,17 @@ import ShowAdjacencyMatrixIcon from "/icons/showMatrix.png";
 import HideAdjacencyMatrixIcon from "/icons/hideMatrix.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import GraphNode from "./GraphNode";
+import GraphEdge from "./GraphEdge";
+import AdjacencyMatrix from "./AdjacencyMatrix";
+
+import fileService from "./../service/file";
+
+import useFlowStore from "./../store/FlowStore";
+import useStore from "./../store/FlowStore";
+import { shallow } from "zustand/shallow";
 
 const bgColor = "#fff";
-
-const letters = 65;
 
 const nodeTypes = {
   "graph-node-start": GraphNode,
@@ -36,51 +37,42 @@ const edgeTypes = {
   "graph-edge": GraphEdge,
 };
 
-const initialNodes = [];
+const selector = (state) => ({
+  // adjacency matrix
+  adjacencyMatrix: state.adjacencyMatrix,
+  setAdjacencyMatrix: state.setAdjacencyMatrix,
 
-const initialEdges = [];
+  // nodes
+  nodes: state.nodes,
+  addNode: state.addNode,
+  setNodes: state.setNodes,
+  onNodesChange: state.onNodesChange,
+
+  // edges
+  edges: state.edges,
+  setEdges: state.setEdges,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
 
 const Flow = () => {
-  const [removeElements, setRemoveElements] = useState(false);
-
-  const [adjmatrix, setAdjmatrix] = useState([]);
+  const {
+    adjacencyMatrix,
+    setAdjacencyMatrix,
+    nodes,
+    addNode,
+    setNodes,
+    edges,
+    setEdges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+  } = useFlowStore(selector, shallow);
+  // // adjacency matrix
+  // const adjMatrix = useFlowStore((state) => state.adjMatrix);
+  // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
+  //
   const [showMatrix, setShowMatrix] = useState(false);
-
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
-  );
-
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [setEdges]
-  );
-
-  const onConnect = useCallback(
-    (connection) =>
-      setEdges((eds) =>
-        addEdge(
-          {
-            id: `${connection.source}->${connection.target}`,
-            source: connection.source,
-            target: connection.target,
-            sourceHandle: connection.sourceHandle,
-            targetHandle: connection.targetHandle,
-            type: "graph-edge",
-            data: { label: "h=0", weight: 23 },
-            markerEnd: {
-              type: MarkerType.ArrowClosed,
-              color: "#342e37",
-            },
-          },
-          eds
-        )
-      ),
-    [setEdges]
-  );
 
   const handleMatrix = () => {
     const matrix = [];
@@ -94,33 +86,13 @@ const Flow = () => {
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
     console.log("matrix", matrix);
-    setAdjmatrix(matrix);
+    setAdjacencyMatrix(matrix);
 
     // hide/show matrix
     setShowMatrix(!showMatrix);
   };
 
-  const addNode = () => {
-    const label = prompt("Introduzca la etiqueta del nodo");
-    // check if label exists in node.label
-    const nodeExists = nodes.find((node) => node.data.label === label);
-
-    if (typeof nodeExists === "undefined") {
-      const newNode = {
-        id: `${nodes.length}`,
-        handleId: `${nodes.length}`,
-        type: "graph-node-start",
-        data: { label: label },
-        position: { x: 210, y: 400 },
-      };
-
-      setNodes(nodes.concat(newNode));
-      console.log("nodes", nodes);
-    } else {
-      alert("Ya existe un nodo con ese nombre.");
-    }
-  };
-
+  // TODO: add delete persona
   const handleRemoveElements = () => {
     const newNodes = nodes.slice(0, nodes.length - 1);
     setNodes(newNodes);
@@ -151,7 +123,7 @@ const Flow = () => {
   return (
     <>
       {showMatrix ? (
-        <AdjacencyMatrix nodes={nodes} matrix={adjmatrix} />
+        <AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />
       ) : (
         <> </>
       )}

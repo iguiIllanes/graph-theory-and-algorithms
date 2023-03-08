@@ -1,6 +1,8 @@
 import React from "react";
 
 const AdjacencyMatrix = ({ nodes, matrix }) => {
+  console.log("nodes inside component", nodes);
+  console.log("matrix inside component", matrix);
   return (
     <div>
       <table>
