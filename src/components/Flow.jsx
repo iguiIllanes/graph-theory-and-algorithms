@@ -152,17 +152,7 @@ const Flow = () => {
         connectionMode="loose"
         proOptions={{ hideAttribution: true }}
       >
-        <MiniMap
-          nodeStrokeColor={(n) => {
-            if (n.type === "input") return "#0f41d0";
-            if (n.type === "selectorNode") return bgColor;
-            if (n.type === "output") return "#ff0072";
-          }}
-          nodeColor={(n) => {
-            if (n.type === "selectorNode") return bgColor;
-            return "#fff";
-          }}
-        />
+        <MiniMap />
         <Controls>
           <ControlButton onClick={() => window.location.reload(true)}>
             <img

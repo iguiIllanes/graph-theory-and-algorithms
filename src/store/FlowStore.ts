@@ -97,6 +97,30 @@ const useStore = create<RFState>((set, get) => ({
 
   // edges
   edges: [],
+  setWeight: (edgeId: String) =>
+    set((state) => {
+      const weight = prompt("Introduzca el peso de la arista:");
+      // validate weight
+      if (weight.length === 0 || typeof weight === "undefined") {
+        alert("El peso no puede estar vacío");
+        return state.edges;
+      } else {
+        const newEdges = state.edges.map((edge) => {
+          if (edge.id === edgeId) {
+            return {
+              ...edge,
+              data: { ...edge.data, weight: weight },
+            };
+          } else {
+            return edge;
+          }
+        });
+        return {
+          edges: newEdges,
+        };
+      }
+      console.log("weight", weight);
+    }),
   setEdges: (edges: Edge[]) => set({ edges: edges }),
   onEdgesChange: (changes: EdgeChange[]) => {
     set({
@@ -113,7 +137,7 @@ const useStore = create<RFState>((set, get) => ({
           sourceHandle: connection.sourceHandle,
           targetHandle: connection.targetHandle,
           type: "graph-edge",
-          data: { label: "h=0", weight: 21 },
+          data: { label: "", weight: 1 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             color: "#342e37",

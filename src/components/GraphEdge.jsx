@@ -1,8 +1,15 @@
 import React from "react";
-import { getBezierPath, EdgeLabelRenderer, getStraightPath, ControlButton } from "reactflow";
+import {
+  getBezierPath,
+  EdgeLabelRenderer,
+  getStraightPath,
+  ControlButton,
+} from "reactflow";
 import editIcon from "/icons/editar.png";
-import CreateNodeIcon from "/icons/createNode.png";
-const foreignObjectSize = 10;
+
+import useStore from "./../store/FlowStore";
+
+const foreignObjectSize = 40;
 const GraphEdge = ({
   id,
   sourceX,
@@ -16,9 +23,11 @@ const GraphEdge = ({
     stroke: "#342e37",
     strokeWidth: 3,
   },
-  data = { label: "" },
+  data = { label: "", weight: 1 },
   markerEnd,
 }) => {
+  const setWeight = useStore((state) => state.setWeight);
+
   const [edgePath, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,
@@ -50,7 +59,6 @@ const GraphEdge = ({
           }}
           className="nodrag nopan"
         >
-          {data.weight}
           <br />
           <br />
           {data.label}
@@ -63,18 +71,12 @@ const GraphEdge = ({
         x={labelX - foreignObjectSize / 2}
         y={labelY - foreignObjectSize / 2}
         className="edgebutton-foreignobject"
+        requiredExtensions="http://www.w3.org/1999/xhtml"
       >
         <div>
-        <ControlButton onClick="">
-            <img
-              src={editIcon}
-              alt="A"
-              style={{
-                width: "10px",
-                hover: "pointer",
-              }}
-            />
-          </ControlButton>
+          <button className="edgebutton" onClick={() => setWeight(id)}>
+            {data.weight}
+          </button>
         </div>
       </foreignObject>
     </>

@@ -32,9 +32,6 @@ th {
   background-color: #eee;
 }
 
-
-
-
 /* .react-flow__node-graph-node-start {
   --primary-color: #0041d0;
   background-color: white;
@@ -82,9 +79,27 @@ th {
 .edgebutton:hover {
   box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
 }
+.edgebutton {
+  min-width: 40px;
+  width: 40px;
+  height: 20px;
+  background: #eee;
+  border: 1px solid #fff;
+  cursor: pointer;
+  border-radius: 500%;
+  font-size: 12px;
+  line-height: 1;
+}
 
-
-
+.edgebutton-foreignobject div {
+  background: transparent;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+}
 
 [class^="react-flow__node-graph-node"]
   .react-flow__handle.react-flow__handle-left,
@@ -109,13 +124,12 @@ th {
   .react-flow__handle.react-flow__handle-right {
   right: -0.25rem;
 } */
-.capa1{ 
-  z-index:1; 
-  }
-.capa2{
-  z-index:2;
-  }
-.capa3{
-  z-index:3;
-  }
-  
+.capa1 {
+  z-index: 1;
+}
+.capa2 {
+  z-index: 2;
+}
+.capa3 {
+  z-index: 3;
+}
