@@ -1,6 +1,8 @@
 import React from "react";
-import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
-
+import { getBezierPath, EdgeLabelRenderer, getStraightPath, ControlButton } from "reactflow";
+import editIcon from "/icons/editar.png";
+import CreateNodeIcon from "/icons/createNode.png";
+const foreignObjectSize = 10;
 const GraphEdge = ({
   id,
   sourceX,
@@ -35,7 +37,7 @@ const GraphEdge = ({
         d={edgePath}
         markerEnd={markerEnd}
       />
-      <EdgeLabelRenderer>
+      <EdgeLabelRenderer id="capa2">
         <div
           style={{
             position: "absolute",
@@ -54,6 +56,27 @@ const GraphEdge = ({
           {data.label}
         </div>
       </EdgeLabelRenderer>
+      <foreignObject
+        id="capa1"
+        width={foreignObjectSize}
+        height={foreignObjectSize}
+        x={labelX - foreignObjectSize / 2}
+        y={labelY - foreignObjectSize / 2}
+        className="edgebutton-foreignobject"
+      >
+        <div>
+        <ControlButton onClick="">
+            <img
+              src={editIcon}
+              alt="A"
+              style={{
+                width: "10px",
+                hover: "pointer",
+              }}
+            />
+          </ControlButton>
+        </div>
+      </foreignObject>
     </>
   );
 };
