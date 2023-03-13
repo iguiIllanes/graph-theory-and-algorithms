@@ -21,6 +21,7 @@ export default memo(({ id, handleId, data, isConnectable }) => {
   const handleNodeClick = () => {
     if (deletePersona) {
       console.log("DELETE PERSONA ACTIVATED");
+      console.log("ID: " + id);
       deleteNode(id);
     }
   };

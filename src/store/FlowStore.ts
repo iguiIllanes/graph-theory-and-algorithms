@@ -83,6 +83,18 @@ const useStore = create<RFState>((set, get) => ({
           newEdges.push(edge);
         }
       });
+      newEdges.forEach((edge: Edge, index: number) => {
+        if(parseInt(edge.source) > parseInt(nodeId)) {
+          edge.source = (parseInt(edge.source)-1).toString();
+        }
+        if(parseInt(edge.target) > parseInt(nodeId)) {
+          edge.target = (parseInt(edge.target)-1).toString();
+        }
+      }
+      );
+      newNodes.forEach((node: Node, index: number) => {
+        node.id = `${index}`;
+      });
       return {
         nodes: newNodes,
         edges: newEdges,
