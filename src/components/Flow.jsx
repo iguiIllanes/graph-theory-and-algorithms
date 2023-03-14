@@ -20,6 +20,7 @@ import UploadIcon from "/icons/upload.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import AdjacencyMatrix from "./AdjacencyMatrix";
+import Modal from "./Modal";
 
 import fileService from "./../service/file";
 
@@ -35,6 +36,10 @@ const nodeTypes = {
 const edgeTypes = {
   "graph-edge": GraphEdge,
 };
+/* Set state modal */
+//const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
 const selector = (state) => ({
   // Persona
@@ -78,8 +83,11 @@ const Flow = () => {
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
+  const showModal = () => {
+    setShowMatrix(!showMatrix);
+  };
 
-  const handleMatrix = () => {
+  const handleMatrix = () => {  
     const matrix = [];
     // fill matrix with zeros
     for (let i = 0; i < nodes.length; i++) {
@@ -94,7 +102,7 @@ const Flow = () => {
     setAdjacencyMatrix(matrix);
 
     // hide/show matrix
-    setShowMatrix(!showMatrix);
+     setShowMatrix(!showMatrix);
   };
 
   // TODO: add delete persona
@@ -128,10 +136,17 @@ const Flow = () => {
   return (
     <>
       {showMatrix ? (
-        <AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />
-      ) : (
-        <> </>
-      )}
+        <div>
+        <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
+        show={showModal} onClose={showModal}>
+
+
+          </Modal>
+          </div>
+              ) : 
+              (<></>
+        )}
+     
       <input
         id="file-input"
         type="file"
@@ -160,7 +175,7 @@ const Flow = () => {
           }}
           nodeColor={(n) => {
             if (n.type === "selectorNode") return bgColor;
-            return "#5191df";
+            return "#fff";
           }}
         />
         <Controls>
@@ -235,7 +250,8 @@ const Flow = () => {
             ?
           </ControlButton>
         </Controls>
-      </ReactFlow>
+      
+        </ReactFlow>
     </>
   );
 };
