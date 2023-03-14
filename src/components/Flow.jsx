@@ -115,21 +115,109 @@ const Flow = () => {
     // Para sacar alpha prima
     let alphaPrime=alphaMatrix(max);
     console.log('alphaprima',alphaPrime);
+    
+    // comparacion entre la mtariz principal y alpha prima
     let comparacion= restarMatrices(matrixConverted,alphaPrime);
     console.log('matrix - alpha',comparacion);
-    let maxfilas= mayoresElementosPorFila(comparacion);
+
+    // maximos elementos por fila
+    let maxfilas= rowElements(comparacion);
     console.log('Beta',maxfilas);
-    let betaPrime= copiarTresVecesEnColumnas(maxfilas);
+
+    //Beta prima
+    let betaPrime= betaPrima(maxfilas);
     console.log('prime', betaPrime);
+
+    // matrix-alpha-beta
+    //que es la matriz a nalizar
     let AAB= restarMatrices(comparacion,betaPrime);
     console.log('MATRIZ A ANALIZAR',AAB);
+
+    // Buscar ceros en la matriz final
+    //obtiene un arreglo de pares, cada par es una posicion de ceros
     let ceros = assignInitial(AAB);
     console.log('PosicionesCeros',ceros);
+
+    // obtiene un array de los costos 
     let costo=extractValues(matrixConverted,ceros);
     console.log('costo', costo);
+
+    // suma de todo el costo
     let costotot= sum(costo);
     console.log(costotot);
   };
+
+
+  //minimos de cada columna
+  function minColumns(matrix) {
+    let min = new Array(matrix[0].length).fill(0); 
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] < min[j]) {
+          min[j] = matrix[i][j];
+        }
+      }
+    }
+    return min;
+  }
+
+  //maximos de cada columna xd
+  function maxColumns(matrix) {
+    let max = new Array(matrix[0].length).fill(0); 
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] > max[j]) {
+          max[j] = matrix[i][j];
+        }
+      }
+    }
+    return max;
+  }
+
+
+  // alpha prima 
+
+  function alphaMatrix(matrix){
+    let alphaPrima=[];
+    for(let i=0;i<matrix.length;i++){
+      alphaPrima.push(matrix);
+    }
+    return alphaPrima;
+  }
+
+  // maximos elementos por fila
+  function rowElements(matrix) {
+    const maxRow = [];
+    for (let i = 0; i < matrix.length; i++) {
+      let max = matrix[i][0];  
+      for (let j = 1; j < matrix[i].length; j++) {
+        if (matrix[i][j] > max) {
+          max = matrix[i][j];
+        }
+      }
+      maxRow.push(max);
+    }
+    return maxRow;
+  }
+
+  // BETA PRIMA
+
+  function betaPrima(lista) {
+    const resultado = [];
+    for (let i = 0; i < lista.length; i++) {
+      let columna = [];
+      for (let j = 0; j < lista.length; j++) {
+        if (j === 1) {
+          columna.push(lista[i]);
+        } else {
+          columna.push(0);
+        }
+      }
+      resultado.push(columna);
+    }
+    return resultado;
+  }
+
 
 
 
@@ -188,100 +276,29 @@ const Flow = () => {
   
   
   
-  function alphaMatrix(list){
-    let alphaPrima=[];
-    for(let i=0;i<list.length;i++){
-      alphaPrima.push(list);
-    }
-    return alphaPrima;
 
-  }
 
-  function copiarTresVecesEnColumnas(lista) {
-    const resultado = [];
-  
-    for (let i = 0; i < lista.length; i++) {
-      let columna = [];
-  
-      for (let j = 0; j < lista.length; j++) {
-        if (j === 1) {
-          columna.push(lista[i]);
-        } else {
-          columna.push(0);
-        }
-      }
-  
-      resultado.push(columna);
-    }
-  
-    return resultado;
-  }
-  
-  //minimos de cada columna
-  function minColumns(matrix) {
-    let min = new Array(matrix[0].length).fill(0); 
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix[i].length; j++) {
-        if (matrix[i][j] < min[j]) {
-          min[j] = matrix[i][j];
-        }
-      }
-    }
-    return min;
-  }
 
-  //maximos de cada columna xd
-  function maxColumns(matrix) {
-    let max = new Array(matrix[0].length).fill(0); 
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix[i].length; j++) {
-        if (matrix[i][j] > max[j]) {
-          max[j] = matrix[i][j];
-        }
-      }
-    }
-    return max;
-  }
+  
+
   function restarMatrices(matriz1, matriz2) {
-    // Verificar si las matrices tienen la misma dimensión
     if (matriz1.length !== matriz2.length || matriz1[0].length !== matriz2[0].length) {
       return null;
     }
-  
-    // Crear una matriz vacía con la misma dimensión que las matrices originales
     const resultado = [];
     for (let i = 0; i < matriz1.length; i++) {
       resultado.push(new Array(matriz1[0].length));
     }
-  
-    // Calcular la diferencia de los elementos correspondientes en cada posición
     for (let i = 0; i < matriz1.length; i++) {
       for (let j = 0; j < matriz1[0].length; j++) {
         resultado[i][j] = matriz1[i][j] - matriz2[i][j];
       }
     }
-  
     return resultado;
   }
 
 
-  function mayoresElementosPorFila(matriz) {
-    const resultados = [];
-  
-    for (let i = 0; i < matriz.length; i++) {
-      let mayorElemento = matriz[i][0];
-  
-      for (let j = 1; j < matriz[i].length; j++) {
-        if (matriz[i][j] > mayorElemento) {
-          mayorElemento = matriz[i][j];
-        }
-      }
-  
-      resultados.push(mayorElemento);
-    }
-  
-    return resultados;
-  }
+
 
   // TODO: add delete persona
   const handleRemoveElements = () => {
