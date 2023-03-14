@@ -185,6 +185,27 @@ const Flow = () => {
     return alphaPrima;
   }
 
+
+  //restar matrices
+  function restarMatrices(matriz1, matriz2) {
+    if (matriz1.length !== matriz2.length || matriz1[0].length !== matriz2[0].length) {
+      return null;
+    }
+    const resultado = [];
+    for (let i = 0; i < matriz1.length; i++) {
+      resultado.push(new Array(matriz1[0].length));
+    }
+    for (let i = 0; i < matriz1.length; i++) {
+      for (let j = 0; j < matriz1[0].length; j++) {
+        resultado[i][j] = matriz1[i][j] - matriz2[i][j];
+      }
+    }
+    return resultado;
+  }
+
+
+
+
   // maximos elementos por fila
   function rowElements(matrix) {
     const maxRow = [];
@@ -219,32 +240,7 @@ const Flow = () => {
   }
 
 
-
-
-
-  function sum(costo){
-    let cost=0;
-    console.log(typeof costo[0]);
-    for(let i=0;i<costo.length;i++){
-      cost=cost+costo[i];
-    }
-    return cost
-  }
-
-  function extractValues(matrix, positions) {
-    let values = [];
-  
-    for (let i = 0; i < positions.length; i++) {
-      let row = positions[i][0];
-      let col = positions[i][1];
-  
-      let value = matrix[row][col];
-      values.push(value);
-    }
-  
-    return values;
-  }
-  
+  // encontrar 0 que dan solucion
 
   function assignInitial(matrix) {
     let assignments = [];
@@ -273,32 +269,31 @@ const Flow = () => {
     
     return assignments;
   }
-  
-  
-  
 
-
-
+  //extrae los valores de los 0 
+  function extractValues(matrix, positions) {
+    let values = [];
   
-
-  function restarMatrices(matriz1, matriz2) {
-    if (matriz1.length !== matriz2.length || matriz1[0].length !== matriz2[0].length) {
-      return null;
+    for (let i = 0; i < positions.length; i++) {
+      let row = positions[i][0];
+      let col = positions[i][1];
+  
+      let value = matrix[row][col];
+      values.push(value);
     }
-    const resultado = [];
-    for (let i = 0; i < matriz1.length; i++) {
-      resultado.push(new Array(matriz1[0].length));
-    }
-    for (let i = 0; i < matriz1.length; i++) {
-      for (let j = 0; j < matriz1[0].length; j++) {
-        resultado[i][j] = matriz1[i][j] - matriz2[i][j];
-      }
-    }
-    return resultado;
+  
+    return values;
   }
 
-
-
+  //costo total xd
+  function sum(costo){
+    let cost=0;
+    //console.log(typeof costo[0]);
+    for(let i=0;i<costo.length;i++){
+      cost=cost+costo[i];
+    }
+    return cost
+  }
 
   // TODO: add delete persona
   const handleRemoveElements = () => {
