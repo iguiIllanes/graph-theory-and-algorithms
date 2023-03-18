@@ -26,6 +26,8 @@ import fileService from "./../service/file";
 
 import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
+import { johnsonAlgorithm } from "../algorithms/johnson";
+
 
 const bgColor = "#fff";
 
@@ -87,7 +89,7 @@ const Flow = () => {
     setShowMatrix(!showMatrix);
   };
 
-  const handleMatrix = () => {  
+  const handleMatrix = () => {
     const matrix = [];
     // fill matrix with zeros
     for (let i = 0; i < nodes.length; i++) {
@@ -102,7 +104,7 @@ const Flow = () => {
     setAdjacencyMatrix(matrix);
 
     // hide/show matrix
-     setShowMatrix(!showMatrix);
+    setShowMatrix(!showMatrix);
   };
 
   // TODO: add delete persona
@@ -133,20 +135,51 @@ const Flow = () => {
     });
   };
 
+  const handleJohson = () => {
+    if (nodes.length === 0) {
+      alert("Please add nodes to the graph");
+      return;
+    }
+
+    const matrix = [];
+    // fill matrix with zeros
+    for (let i = 0; i < nodes.length; i++) {
+      matrix[i] = new Array(nodes.length).fill(0);
+    }
+    // fill matrix with zeros
+    for (let i = 0; i < nodes.length; i++) {
+      matrix[i] = new Array(nodes.length).fill(0);
+    }
+    // fill the matrix with the weights
+    edges.forEach((edge) => {
+      matrix[edge.source][edge.target] =
+        typeof edge.data.weight === "undefined" ? 1 : parseInt(edge.data.weight);
+    });
+    // console.log("matrix", matrix);
+
+    // johnson algorithm
+    let slacks, earlyTimes, lateTimes;
+
+    ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
+    // console.log("slacks", slacks);
+    // console.log("earlyTimes", earlyTimes);
+    // console.log("lateTimes", lateTimes);
+  }
+
   return (
     <>
       {showMatrix ? (
         <div>
-        <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
-        show={showModal} onClose={showModal}>
+          <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
+            show={showModal} onClose={showModal}>
 
 
           </Modal>
-          </div>
-              ) : 
-              (<></>
+        </div>
+      ) :
+        (<></>
         )}
-     
+
       <input
         id="file-input"
         type="file"
@@ -243,6 +276,9 @@ const Flow = () => {
               }}
             />
           </ControlButton>
+          <ControlButton onClick={handleJohson}>
+
+          </ControlButton>
           <ControlButton
             onClick={() => window.open("/manual.pdf")}
             style={{ color: "#000" }}
@@ -250,8 +286,8 @@ const Flow = () => {
             ?
           </ControlButton>
         </Controls>
-      
-        </ReactFlow>
+
+      </ReactFlow>
     </>
   );
 };
