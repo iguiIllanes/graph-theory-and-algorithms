@@ -80,7 +80,7 @@ const Flow = () => {
   const [showMatrix, setShowMatrix] = useState(false);
 
   const handleMatrix = () => {
-    const matrix = [];
+    let matrix = [];
     // fill matrix with zeros
     for (let i = 0; i < nodes.length; i++) {
       matrix[i] = new Array(nodes.length).fill(0);
@@ -102,18 +102,19 @@ const Flow = () => {
 
     */
    // Si cambias los pesos de los nodos se vuelve string, por eso  convierto xd
+    matrix = [[7,3,12],[2,4,6],[2,7,4]] 
     let matrixConverted=  matrix.map(innerArr => innerArr.map(Number));
      
     console.log(matrixConverted);
 
     //Array de valores minimos por columna
     let min= minColumns(matrixConverted);
-    console.log(min);
+    console.log('minimos',min);
     //Array de valores maximos por columna
     let max = maxColumns(matrixConverted);
     console.log('maximos',max);
     // Para sacar alpha prima
-    let alphaPrime=alphaMatrix(max);
+    let alphaPrime=alphaMatrix(min);
     console.log('alphaprima',alphaPrime);
     
     // comparacion entre la mtariz principal y alpha prima
@@ -124,8 +125,15 @@ const Flow = () => {
     let maxfilas= rowElements(comparacion);
     console.log('Beta',maxfilas);
 
+    //minimos elementos por fila
+    let minfilas= minrowElements(comparacion);
+    console.log('Beta',minfilas);
+
+
     //Beta prima
-    let betaPrime= betaPrima(maxfilas);
+    let betaPrime= betaPrima(minfilas)
+    
+    ;
     console.log('prime', betaPrime);
 
     // matrix-alpha-beta
@@ -150,15 +158,17 @@ const Flow = () => {
 
   //minimos de cada columna
   function minColumns(matrix) {
-    let min = new Array(matrix[0].length).fill(0); 
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix[i].length; j++) {
-        if (matrix[i][j] < min[j]) {
-          min[j] = matrix[i][j];
+    const minCol = [];
+    for (let i = 0; i < matrix[0].length; i++) {
+      let min = matrix[0][i];  
+      for (let j = 1; j < matrix.length; j++) {
+        if (matrix[j][i] < min) {
+          min = matrix[j][i];
         }
       }
+      minCol.push(min);
     }
-    return min;
+    return minCol;
   }
 
   //maximos de cada columna xd
@@ -220,6 +230,21 @@ const Flow = () => {
     }
     return maxRow;
   }
+
+  // minimos elementos por fila
+    function minrowElements(matrix) {
+      const minRow = [];
+      for (let i = 0; i < matrix.length; i++) {
+        let min = matrix[i][0];  
+        for (let j = 1; j < matrix[i].length; j++) {
+          if (matrix[i][j] < min) {
+            min = matrix[i][j];
+          }
+        }
+        minRow.push(min);
+      }
+      return minRow;
+    }
 
   // BETA PRIMA
 
