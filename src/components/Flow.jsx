@@ -36,7 +36,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  "graph-edge": GraphEdge,
+  "graph-edge": GraphEdge
 };
 /* Set state modal */
 //const [isModalOpen, setIsModalOpen] = useState(false);
@@ -174,11 +174,10 @@ const Flow = () => {
         },
         markerEnd: {
           ...edge.markerEnd,
-          color: slacks[edge.source][edge.target] === 0 ? "green" : "red",
-        }
+          color: slacks[edge.source][edge.target] === 0 ? "green" : "#342e37",
+        },
       };
     });
-    console.log("newEdges", newEdges);
     setEdges(newEdges);
   }
 
@@ -210,7 +209,7 @@ const Flow = () => {
         onConnect={onConnect}
         style={{ background: bgColor }}
         nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
+        edgeTypes={{ ...edgeTypes }}
         connectionLineType="straight"
         connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"

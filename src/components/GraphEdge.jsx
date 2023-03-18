@@ -56,6 +56,13 @@ const GraphEdge = ({
       targetY,
       targetPosition,
     });
+    // Change color when using johnson algorithm
+    if (data.label !== "") {
+      style = {
+        ...style,
+        stroke: data.label === "h = 0" ? "green" : "#342e37",
+      };
+    }
   }
 
   return (
