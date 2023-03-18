@@ -15,6 +15,7 @@ import CreateNodeIcon from "/icons/createNode.png";
 import RemoveNodeIcon from "/icons/removeNode.png";
 import ShowAdjacencyMatrixIcon from "/icons/showMatrix.png";
 import HideAdjacencyMatrixIcon from "/icons/hideMatrix.png";
+import JonsonIcon from "/icons/cpm.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
 import GraphNode from "./GraphNode";
@@ -190,8 +191,6 @@ const Flow = () => {
         <div>
           <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
             show={showModal} onClose={showModal}>
-
-
           </Modal>
         </div>
       ) :
@@ -275,6 +274,16 @@ const Flow = () => {
               }}
             />
           </ControlButton>
+          <ControlButton onClick={handleJohson}>
+            <img
+              src={JonsonIcon}
+              alt="A"
+              style={{
+                width: "20px",
+              }}
+            />
+          </ControlButton>
+
           <ControlButton
             onClick={() => fileService.download(nodes, edges, "archivo.json")}
           >
@@ -297,9 +306,7 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleJohson}>
 
-          </ControlButton>
           <ControlButton
             onClick={() => window.open("/manual.pdf")}
             style={{ color: "#000" }}
