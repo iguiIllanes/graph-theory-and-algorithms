@@ -164,6 +164,22 @@ const Flow = () => {
     // console.log("slacks", slacks);
     // console.log("earlyTimes", earlyTimes);
     // console.log("lateTimes", lateTimes);
+    // set edges clone the edges and add the slack
+    const newEdges = edges.map((edge) => {
+      return {
+        ...edge,
+        data: {
+          ...edge.data,
+          label: `h = ${slacks[edge.source][edge.target]}`,
+        },
+        markerEnd: {
+          ...edge.markerEnd,
+          color: slacks[edge.source][edge.target] === 0 ? "green" : "red",
+        }
+      };
+    });
+    console.log("newEdges", newEdges);
+    setEdges(newEdges);
   }
 
   return (
