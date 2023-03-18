@@ -42,7 +42,6 @@ const edgeTypes = {
 //const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-
 const selector = (state) => ({
   // Persona
   deletePersona: state.deletePersona,
@@ -57,12 +56,14 @@ const selector = (state) => ({
   addNode: state.addNode,
   setNodes: state.setNodes,
   onNodesChange: state.onNodesChange,
+  setWeight: state.setWeight,
 
   // edges
   edges: state.edges,
   setEdges: state.setEdges,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+
 });
 
 const Flow = () => {
@@ -79,6 +80,7 @@ const Flow = () => {
     onNodesChange,
     onEdgesChange,
     onConnect,
+    setWeight,
   } = useFlowStore(selector, shallow);
   // // adjacency matrix
   // const adjMatrix = useFlowStore((state) => state.adjMatrix);
@@ -136,34 +138,23 @@ const Flow = () => {
   };
 
   const handleJohson = () => {
-    if (nodes.length === 0) {
-      alert("Please add nodes to the graph");
+    if (nodes.length === 0 || edges.length === 0) {
+      prompt("There are no nodes or edges");
       return;
     }
+    // matrix with zeros
+    const matrix = new Array(nodes.length).fill(0).map(() => new Array(nodes.length).fill(0));
 
-    const matrix = [];
-    // fill matrix with zeros
-    for (let i = 0; i < nodes.length; i++) {
-      matrix[i] = new Array(nodes.length).fill(0);
-    }
-    // fill matrix with zeros
-    for (let i = 0; i < nodes.length; i++) {
-      matrix[i] = new Array(nodes.length).fill(0);
-    }
     // fill the matrix with the weights
     edges.forEach((edge) => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : parseInt(edge.data.weight);
     });
-    // console.log("matrix", matrix);
 
     // johnson algorithm
     let slacks, earlyTimes, lateTimes;
 
     ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
-    // console.log("slacks", slacks);
-    // console.log("earlyTimes", earlyTimes);
-    // console.log("lateTimes", lateTimes);
     // set edges clone the edges and add the slack
     const newEdges = edges.map((edge) => {
       return {
@@ -214,6 +205,9 @@ const Flow = () => {
         connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"
         proOptions={{ hideAttribution: true }}
+      // onEdgeClick={(event, edge) => {
+      //   console.log("edge", edge);
+      // }}
       >
         <MiniMap
           nodeStrokeColor={(n) => {
