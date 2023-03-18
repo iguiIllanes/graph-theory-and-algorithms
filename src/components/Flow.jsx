@@ -155,7 +155,7 @@ const Flow = () => {
     let slacks, earlyTimes, lateTimes;
 
     ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
-    // set edges clone the edges and add the slack
+    // set edges labels and 
     const newEdges = edges.map((edge) => {
       return {
         ...edge,
@@ -170,6 +170,18 @@ const Flow = () => {
       };
     });
     setEdges(newEdges);
+
+    const newNodes = nodes.map((node, index) => {
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          earlyTime: earlyTimes[index],
+          lateTime: lateTimes[index],
+        },
+      };
+    });
+    setNodes(newNodes);
   }
 
   return (
