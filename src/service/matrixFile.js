@@ -1,7 +1,9 @@
 // Description: This file contains the functions to download and upload a matrix file for the tranport and assignment problem.
-const downloadMatrix = (algorithm, matrix, filename) => {
+const downloadMatrix = (algorithm, numRows, numColumns, matrix, filename) => {
     const data = {
         algorithm: algorithm,
+        numRows: numRows,
+        numColumns: numColumns,
         matrix: matrix,
     };
     const json = JSON.stringify(data);
@@ -17,15 +19,22 @@ const downloadMatrix = (algorithm, matrix, filename) => {
 
 const uploadMatrix = (file) => {
     return new Promise((resolve, reject) => {
+        const file = event.target.files[0];
         const reader = new FileReader();
-        reader.onload = (event) => {
-            const data = JSON.parse(event.target.result);
-            resolve(data);
+        reader.readAsText(file, "UTF-8");
+        reader.onload = () => {
+            const data = JSON.parse(reader.result);
+            // console.log("upload", data);
+            resolve({
+                algorithm: data.algorithm,
+                numRows: data.numRows,
+                numColumns: data.numColumns,
+                matrix: data.matrix,
+            });
         };
-        reader.onerror = (error) => {
-            reject(error);
+        reader.onerror = () => {
+            reject(reader.error);
         };
-        reader.readAsText(file);
     });
 }
 

@@ -8,7 +8,7 @@ const AssignmentTransport = () => {
     const [chooseAlgorithm, setChooseAlgorithm] = useState(false);
     const [numRows, setNumRows] = useState(2);
     const [numColumns, setNumColumns] = useState(2);
-    const [inputMatrix, setInputMatrix] = useState(Array.from({ length: numRows + 1 }, () => new Array(numColumns + 1).fill("")));
+    const [inputMatrix, setInputMatrix] = useState(Array.from({ length: numRows + 2 }, () => new Array(numColumns + 2).fill("")));
 
 
     const handleAlgorithm = () => {
@@ -26,7 +26,8 @@ const AssignmentTransport = () => {
         }
         newNumRows = parseInt(newNumRows);
         setNumRows(newNumRows);
-        setInputMatrix(Array.from({ length: newNumRows + ((!chooseAlgorithm) ? 1 : 2) }, () => new Array(numColumns + ((!chooseAlgorithm) ? 1 : 2)).fill("")));
+        // TODO: prevent the matrix from being reset when the number of rows is changed
+        setInputMatrix(Array.from({ length: newNumRows + 2 }, () => new Array(numColumns + 2).fill("")));
     };
 
     const handleNumColumns = () => {
@@ -40,13 +41,17 @@ const AssignmentTransport = () => {
         }
         newNumColumns = parseInt(newNumColumns);
         setNumColumns(newNumColumns);
-        setInputMatrix(Array.from({ length: numRows + ((!chooseAlgorithm) ? 1 : 2) }, () => new Array(newNumColumns + ((!chooseAlgorithm) ? 1 : 2)).fill("")));
+        // TODO: prevent the matrix from being reset when the number of columns is changed
+        setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(newNumColumns + 2).fill("")));
     }
 
     const handleFileUpload = async (event) => {
-        await fileService.upload(event).then((response) => {
-            setNodes(response.nodes);
-            setEdges(response.edges);
+        await fileService.uploadMatrix(event).then((response) => {
+            console.log(response);
+            setChooseAlgorithm((response.algorithm === "transport") ? true : false);
+            setNumRows(response.numRows);
+            setNumColumns(response.numColumns);
+            setInputMatrix(response.matrix);
             return response;
         });
     };
@@ -149,7 +154,15 @@ const AssignmentTransport = () => {
                             </div>
                             {Array.from({ length: numColumns }, (_, i) => (
                                 <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
-                                    <input type="text" />
+                                    <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
+                                        const value = e.target.value;
+                                        setInputMatrix((prev) => {
+                                            const newMatrix = [...prev];
+                                            newMatrix[numRows + 1][i + 1] = value;
+                                            return newMatrix;
+                                        });
+                                    }}
+                                    />
                                 </div>
                             ))}
                             <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
@@ -169,6 +182,7 @@ const AssignmentTransport = () => {
                 <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
                 <button className="controls-botton" style={{ fontSize: 10 }}>MIN</button>
                 <button className="controls-botton"
+                    onClick={() => document.getElementById("file-input").click()}
                 >
                     <img
                         src={UploadIcon}
@@ -179,7 +193,7 @@ const AssignmentTransport = () => {
                     />
                 </button>
                 <button className="controls-botton"
-                    onClick={() => fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), inputMatrix, "matriz.json")}
+                    onClick={() => fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, "matriz.json")}
                 >
                     <img
                         src={DownloadIcon}
