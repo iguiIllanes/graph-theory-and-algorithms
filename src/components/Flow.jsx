@@ -20,6 +20,7 @@ import UploadIcon from "/icons/upload.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import AdjacencyMatrix from "./AdjacencyMatrix";
+import AssignationIcon from "/icons/assignation.svg";
 
 import fileService from "./../service/file";
 
@@ -27,7 +28,7 @@ import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 
 import assign from "../helpers/assignation.js";
-import assignWithMunkres from "../helpers/assingMatrix";
+import assignWithMunkres from "../helpers/assignation.js";
 
 const bgColor = "#fff";
 
@@ -83,6 +84,17 @@ const Flow = () => {
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
+
+  const handleAssignation = () => {
+    let matrix = [[7,3,12],[2,4,6],[2,7,4]];
+    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
+    console.log("handleAssignation");
+    const totalCost = assign(matrix,true);
+    console.log(totalCost);
+    let mat2 = matrixConverted;
+    mat2 = assignWithMunkres(mat2);
+    console.log("Posiciones",mat2);
+  };
 
   const handleMatrix = () => {
     let matrix = [];
@@ -158,11 +170,7 @@ const Flow = () => {
     console.log(costotot);
 
     //prueba si es la solucion optima
-    const totalCost = assign(matrix);
-    console.log(totalCost);
-    let mat = matrixConverted;
-    mat = assignWithMunkres(mat);
-    console.log(mat);
+   
   
     
 
@@ -482,7 +490,17 @@ const Flow = () => {
                 width: "20px",
               }}
             />
+            
           </ControlButton>
+          <ControlButton onClick={handleAssignation}>
+              <img
+                src={AssignationIcon}
+                alt="assignation"
+                style={{
+                  width: "20px",
+                }} 
+              />
+            </ControlButton>
           <ControlButton
             onClick={() => fileService.download(nodes, edges, "archivo.json")}
           >
