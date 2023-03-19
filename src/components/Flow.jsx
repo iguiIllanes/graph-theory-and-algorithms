@@ -29,6 +29,7 @@ import { shallow } from "zustand/shallow";
 
 import assign from "../helpers/assignation.js";
 import assignWithMunkres from "../helpers/assingMatrix.js";
+import Modal from "./Modal";
 
 const bgColor = "#fff";
 
@@ -84,6 +85,7 @@ const Flow = () => {
     onNodesChange,
     onEdgesChange,
     onConnect,
+    
   } = useFlowStore(selector, shallow);
   // // adjacency matrix
   // const adjMatrix = useFlowStore((state) => state.adjMatrix);
@@ -91,8 +93,16 @@ const Flow = () => {
   //
   const [showMatrix, setShowMatrix] = useState(false);
   const [showAssignation, setShowAssignation] = useState(false);
- 
+  const [showModal, setShowModal] = useState(false);
 
+  const handleOpenModal = (value) => {
+    setShowModal(value);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  
   const handleMatrix = () => {
     let matrix = [];
     // fill matrix with zeros
@@ -106,14 +116,11 @@ const Flow = () => {
     });
     console.log("matrix", matrix);
     setAdjacencyMatrix(matrix);
+   
 
     // hide/show matrix
     setShowMatrix(!showMatrix);
-
-    //handleAssignation();
-
-
-
+    handleOpenModal(!showMatrix);
     /* 
     
     ALGORITMO de Asignacion 
@@ -176,18 +183,9 @@ const Flow = () => {
   
 
   };
-  const handleAssignationAux = () => {
-    let matrix = [[7,3,12],[2,4,6],[2,7,4]];
-    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
-    console.log("handleAssignation");
-    const totalCost = assign(matrix,false);
-    console.log("Costo optimizado",totalCost);
-    let mat2 = matrixConverted;
-    let x = assignWithMunkres(mat2);
-    let y = extractValues(mat2,x);
-    console.log("Posiciones",x);
-    
-  };
+  
+
+
   const handleAssignation = () => {
     //TODO: quitar esta función de acá y ponerla en el helper
     function removeZeros(matrix) {
@@ -232,8 +230,6 @@ const Flow = () => {
     */
    //mostrar matriz
   }
-
-
 
 
   //minimos de cada columna
@@ -470,11 +466,20 @@ const Flow = () => {
 
   return (
     <>
-      {showMatrix ? (
-        <AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />
+       {showMatrix ? (
+        <div>
+        <Modal show={showModal} onClose={handleCloseModal}
+        title={"Matriz de Adyacencia"}
+        content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}>
+          
+
+        </Modal>
+        </div>
+        
       ) : (
         <> </>
-      )}
+      )} 
+      
       <input
         id="file-input"
         type="file"
