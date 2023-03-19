@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import fileService from "../service/matrixFile";
 
 import "../styles/AssignmentTransport.css";
 const AssignmentTransport = () => {
@@ -42,6 +43,13 @@ const AssignmentTransport = () => {
         setInputMatrix(Array.from({ length: numRows + ((!chooseAlgorithm) ? 1 : 2) }, () => new Array(newNumColumns + ((!chooseAlgorithm) ? 1 : 2)).fill("")));
     }
 
+    const handleFileUpload = async (event) => {
+        await fileService.upload(event).then((response) => {
+            setNodes(response.nodes);
+            setEdges(response.edges);
+            return response;
+        });
+    };
 
     const handleMax = () => {
         console.log(inputMatrix);
@@ -50,6 +58,13 @@ const AssignmentTransport = () => {
 
     return (
         <>
+            <input
+                id="file-input"
+                type="file"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+            />
+
             <h1>
                 {!chooseAlgorithm ? "Algoritmo de Asignación" : "Algoritmo de Transporte"}
             </h1>
@@ -153,7 +168,8 @@ const AssignmentTransport = () => {
                 <button className="controls-botton" onClick={handleNumColumns}>#C</button>
                 <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
                 <button className="controls-botton" style={{ fontSize: 10 }}>MIN</button>
-                <button className="controls-botton">
+                <button className="controls-botton"
+                >
                     <img
                         src={UploadIcon}
                         alt="A"
@@ -162,7 +178,9 @@ const AssignmentTransport = () => {
                         }}
                     />
                 </button>
-                <button className="controls-botton">
+                <button className="controls-botton"
+                    onClick={() => fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), inputMatrix, "matriz.json")}
+                >
                     <img
                         src={DownloadIcon}
                         alt="A"

@@ -1,5 +1,5 @@
 // Description: This file contains the functions to download and upload a matrix file for the tranport and assignment problem.
-const download = (algorithm, matrix, filename) => {
+const downloadMatrix = (algorithm, matrix, filename) => {
     const data = {
         algorithm: algorithm,
         matrix: matrix,
@@ -15,7 +15,7 @@ const download = (algorithm, matrix, filename) => {
     document.body.removeChild(link);
 };
 
-const upload = (file) => {
+const uploadMatrix = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -30,6 +30,6 @@ const upload = (file) => {
 }
 
 export default {
-    download: download,
-    upload: upload,
+    downloadMatrix,
+    uploadMatrix,
 };
