@@ -11,11 +11,11 @@ function assign(matrix, minimize = true) {
   const matrixCopy = matrix.map((row) => row.slice());
 
   // Convertimos la matriz de costos a una matriz de ganancias o pérdidas
-  const max = Math.max(...matrixCopy.flat()) + 1;
+  const max = Math.min(...matrixCopy.flat()) + 1;
   const sign = minimize ? 1 : -1;
   for (let i = 0; i < matrixCopy.length; i++) {
     for (let j = 0; j < matrixCopy[i].length; j++) {
-      matrixCopy[i][j] = sign * (matrixCopy[i][j] - max);
+      matrixCopy[i][j] = sign *(matrixCopy[i][j] - max);
     }
   }
 
@@ -30,7 +30,7 @@ function assign(matrix, minimize = true) {
   for (let i = 0; i < indexes.length; i++) {
     const row = indexes[i][0];
     const col = indexes[i][1];
-    totalCost += matrix[row][col];
+    totalCost += matrixCopy[row][col]+max;
   }
 
   return totalCost;

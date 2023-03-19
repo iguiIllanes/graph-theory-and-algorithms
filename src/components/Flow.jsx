@@ -30,6 +30,7 @@ import { shallow } from "zustand/shallow";
 import assign from "../helpers/assignation.js";
 import assignWithMunkres from "../helpers/assingMatrix.js";
 import Modal from "./Modal";
+import ModalWithOptions from "./ModalWithOptions";
 
 const bgColor = "#fff";
 
@@ -198,6 +199,7 @@ const Flow = () => {
       }
       return filteredMatrix;
     }
+    
 
     let matrix = [];
     // fill matrix with zeros
@@ -214,20 +216,22 @@ const Flow = () => {
     // convertir la matrix sin conexiones 
     let matrixFinal = removeZeros(matrix);
     console.log("matrixFinal", matrixFinal);
+    setAdjacencyMatrix(matrixFinal);
     
     
 
     //algoritmo de asignación
-    const totalCost = assign(matrixFinal,false);
+    const totalCost = assign(matrixFinal,true);
     console.log("Costo optimizado",totalCost);
     let mat2 = matrixFinal;
-    let x = assignWithMunkres(mat2);
-    let y = extractValues(mat2,x);
+    let x = assignWithMunkres(mat2,true);
     console.log("Posiciones",x);
-
+    console.log("matrz",mat2);
     //comparar las matrices
-    /*.....
-    */
+    function compareMatrix(matrix1,matrix2){
+      return;
+    }
+
    //mostrar matriz
   }
 
@@ -396,45 +400,7 @@ const Flow = () => {
     return cost
   }
 
-  //compara si es la solucion optima
-  
-
-
-  function isOptimalSolution(matrix, assignments) {
-    // Obtenemos el costo de la solución inicial
-    const initialCost = sum(extractValues(matrix, assignments));
-    
-    // Generamos todas las posibles asignaciones
-    const allAssignments = generateAssignments(matrix);
-    
-    // Buscamos la asignación con menor costo
-    let minCost = Infinity;
-    for (let i = 0; i < allAssignments.length; i++) {
-      const cost = sum(extractValues(matrix, allAssignments[i]));
-      if (cost < minCost) {
-        minCost = cost;
-      }
-    }
-    
-    // Comparamos el costo de la solución inicial con el costo mínimo
-    if (initialCost === minCost) {
-      return true; // La solución es óptima
-    } else {
-      return false; // La solución no es óptima
-    }
-  }
-
-  function generateAssignments(matrix) {
-    const rows = matrix.length;
-    const cols = matrix[0].length;
-    const assignments = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        assignments.push([i, j]);
-      }
-    }
-    return assignments;
-  }
+ 
 
   // TODO: add delete persona
   const handleRemoveElements = () => {
@@ -470,15 +436,14 @@ const Flow = () => {
         <div>
         <Modal show={showModal} onClose={handleCloseModal}
         title={"Matriz de Adyacencia"}
-        content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}>
-          
-
+        content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}>     
         </Modal>
         </div>
         
       ) : (
         <> </>
       )} 
+     
       
       <input
         id="file-input"

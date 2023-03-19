@@ -1,22 +1,18 @@
 import munkres from "munkres-js";
 
-function assignWithMunkres(matrix) {
+function assignWithMunkres(matrix, minimize = true) {
   // Copiamos la matriz original para no modificarla
   const matrixCopy = matrix.map((row) => row.slice());
 
-  // Convertimos la matriz de costos a una matriz de ganancias
-  const max = Math.max(...matrixCopy.flat()) + 1;
-  for (let i = 0; i < matrixCopy.length; i++) {
-    for (let j = 0; j < matrixCopy[i].length; j++) {
-      matrixCopy[i][j] = max - matrixCopy[i][j];
-    }
-  }
+  // Convertimos la matriz de costos a una matriz de ganancias o viceversa dependiendo de si se debe maximizar o minimizar
+  const coef = minimize ? 1 : -1;
+  const matrixTransformed = matrixCopy.map((row) => row.map((val) => coef * val));
 
   // Obtenemos la matriz de asignación
-  const assignments = munkres(matrixCopy);
+  const assignments = munkres(matrixTransformed);
 
   // Creamos la matriz de asignaciones
-  const n = matrixCopy.length;
+  const n = matrixTransformed.length;
   const assignedMatrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
 
   // Iteramos sobre las asignaciones para obtener la matriz asignada y las posiciones de los elementos
