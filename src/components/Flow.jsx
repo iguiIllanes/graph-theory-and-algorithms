@@ -60,6 +60,10 @@ const selector = (state) => ({
   setEdges: state.setEdges,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+
+  //assignation matrix
+  assignationMatrix: state.assignationMatrix,
+  setAssignationMatrix: state.setAssignationMatrix,
 });
 
 
@@ -70,6 +74,8 @@ const Flow = () => {
     toggleDeletePersona,
     adjacencyMatrix,
     setAdjacencyMatrix,
+    assignationMatrix,
+    setAssignationMatrix,
     nodes,
     addNode,
     setNodes,
@@ -84,19 +90,8 @@ const Flow = () => {
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
-
-  const handleAssignation = () => {
-    let matrix = [[7,3,12],[2,4,6],[2,7,4]];
-    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
-    console.log("handleAssignation");
-    const totalCost = assign(matrix,true);
-    console.log(totalCost);
-    let mat2 = matrixConverted;
-    let x = assignWithMunkres(mat2);
-    let y = extractValues(mat2,x);
-
-    console.log("Posiciones",x);
-  };
+  const [showAssignation, setShowAssignation] = useState(false);
+ 
 
   const handleMatrix = () => {
     let matrix = [];
@@ -114,6 +109,10 @@ const Flow = () => {
 
     // hide/show matrix
     setShowMatrix(!showMatrix);
+
+    //handleAssignation();
+
+
 
     /* 
     
@@ -172,12 +171,69 @@ const Flow = () => {
     console.log(costotot);
 
     //prueba si es la solucion optima
-   
-  
-    
 
+    
+  
 
   };
+  const handleAssignationAux = () => {
+    let matrix = [[7,3,12],[2,4,6],[2,7,4]];
+    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
+    console.log("handleAssignation");
+    const totalCost = assign(matrix,false);
+    console.log("Costo optimizado",totalCost);
+    let mat2 = matrixConverted;
+    let x = assignWithMunkres(mat2);
+    let y = extractValues(mat2,x);
+    console.log("Posiciones",x);
+    
+  };
+  const handleAssignation = () => {
+    //TODO: quitar esta función de acá y ponerla en el helper
+    function removeZeros(matrix) {
+      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
+      for(let i = 0;i<filteredMatrix.length;i++){
+        if(filteredMatrix[i].length === 0){
+          filteredMatrix.splice(i,1);
+          i--;
+        }
+      }
+      return filteredMatrix;
+    }
+
+    let matrix = [];
+    // fill matrix with zeros
+    for (let i = 0; i < nodes.length; i++) {
+      matrix[i] = new Array(nodes.length).fill(0);
+    }
+
+    edges.forEach((edge) => {
+      matrix[edge.source][edge.target] =
+        typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
+    });
+    console.log("matrix", matrix);
+    matrix = matrix.map(innerArr => innerArr.map(Number));
+    // convertir la matrix sin conexiones 
+    let matrixFinal = removeZeros(matrix);
+    console.log("matrixFinal", matrixFinal);
+    
+    
+
+    //algoritmo de asignación
+    const totalCost = assign(matrixFinal,false);
+    console.log("Costo optimizado",totalCost);
+    let mat2 = matrixFinal;
+    let x = assignWithMunkres(mat2);
+    let y = extractValues(mat2,x);
+    console.log("Posiciones",x);
+
+    //comparar las matrices
+    /*.....
+    */
+   //mostrar matriz
+  }
+
+
 
 
   //minimos de cada columna
