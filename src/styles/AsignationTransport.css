@@ -1,0 +1,29 @@
+.controls-bottom-left {
+    left: 0;
+    bottom: 0;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+    position: absolute;
+    z-index: 5;
+    margin: 15px;
+}
+
+.controls-botton {
+    border: none;
+    background: #fefefe;
+    border-bottom: 1px solid #eee;
+    box-sizing: content-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 5px;
+}
+
+.controls-botton:hover {
+    background: #f4f4f4;
+}
