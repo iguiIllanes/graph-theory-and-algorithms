@@ -19,15 +19,27 @@ function assignWithMunkres(matrix) {
   const n = matrixCopy.length;
   const assignedMatrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
 
-  // Iteramos sobre las asignaciones para obtener la matriz asignada y la asignación en sí misma
-  const assignment = [];
+  // Iteramos sobre las asignaciones para obtener la matriz asignada y las posiciones de los elementos
+  const positions = new Array(n).fill(0).map(() => new Array(n).fill(0));
   for (let i = 0; i < assignments.length; i++) {
     const [row, col] = assignments[i];
     assignedMatrix[row][col] = 1;
-    assignment.push([row, col]);
+    positions[row][col] = 1;
   }
 
-  return assignment;
+  // Creamos la matriz de posiciones de los elementos
+  const originalPositions = new Array(n).fill(0).map(() => new Array(n).fill(0));
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (positions[i][j] === 1) {
+        originalPositions[i][j] = 1;
+      } else {
+        originalPositions[i][j] = 0;
+      }
+    }
+  }
+
+  return originalPositions;
 }
 
 export default assignWithMunkres;

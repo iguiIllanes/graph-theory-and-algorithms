@@ -28,7 +28,7 @@ import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 
 import assign from "../helpers/assignation.js";
-import assignWithMunkres from "../helpers/assignation.js";
+import assignWithMunkres from "../helpers/assingMatrix.js";
 
 const bgColor = "#fff";
 
@@ -92,8 +92,10 @@ const Flow = () => {
     const totalCost = assign(matrix,true);
     console.log(totalCost);
     let mat2 = matrixConverted;
-    mat2 = assignWithMunkres(mat2);
-    console.log("Posiciones",mat2);
+    let x = assignWithMunkres(mat2);
+    let y = extractValues(mat2,x);
+
+    console.log("Posiciones",x);
   };
 
   const handleMatrix = () => {
