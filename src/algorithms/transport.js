@@ -145,51 +145,57 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
         allocationMatrix[i][j] = alpha;
         // We need to balance the solution 
         let op = "sub"
+        let last = "";
         const ii = i;
         const jj = j;
         do {
             // Move the cursor from i to 0 (Up)
             for (let k = i - 1; k >= 0; k--) {
-                if (i === ii && j === jj && k === 0) break;
+                if (last === "down") break;
                 if (allocationMatrix[k][j] !== 0) {
                     allocationMatrix[k][j] = op === "sub" ? allocationMatrix[k][j] - alpha : allocationMatrix[k][j] + alpha;
                     op = op === "sub" ? "add" : "sub";
                     i = k;
+                    last = "up";
                     break;
                 }
             }
             // Move the cursor from j to numColumns - 1 (Right)
             for (let k = j + 1; k < numColumns; k++) {
-                if (i === ii && j === jj && k === numColumns - 1) break;
+                if (last === "left") break;
                 if (allocationMatrix[i][k] !== 0) {
                     allocationMatrix[i][k] = op === "sub" ? allocationMatrix[i][k] - alpha : allocationMatrix[i][k] + alpha;
                     op = op === "sub" ? "add" : "sub";
                     j = k;
+                    last = "right";
                     break;
                 }
             }
             // Move the cursor from i to numRows - 1 (Down)
             for (let k = i + 1; k < numRows; k++) {
-                if (i === ii && j === jj && k === numRows - 1) break;
+                if (last === "up") break;
                 if (allocationMatrix[k][j] !== 0) {
                     allocationMatrix[k][j] = op === "sub" ? allocationMatrix[k][j] - alpha : allocationMatrix[k][j] + alpha;
                     op = op === "sub" ? "add" : "sub";
                     i = k;
+                    last = "down";
                     break;
                 }
             }
             // Move the cursor from j to 0 (Left)
             for (let k = j - 1; k >= 0; k--) {
-                if (i === ii && j === jj && k === 0) break;
+                if (last === "right") break;
                 if (allocationMatrix[i][k] !== 0) {
                     allocationMatrix[i][k] = op === "sub" ? allocationMatrix[i][k] - alpha : allocationMatrix[i][k] + alpha;
                     op = op === "sub" ? "add" : "sub";
                     j = k;
+                    last = "left";
                     break;
                 }
             }
         }
-        while (ii !== i || jj !== j);
+        while (allocationMatrix[ii][jj] === alpha);
+        allocationMatrix[i][j] = alpha;
         console.log(allocationMatrix);
     }
 
