@@ -4,7 +4,7 @@ import "./styles/styles.css";
 import "reactflow/dist/style.css";
 // TODO: Remove the imports when routing is implemented
 import React, { useState } from 'react';
-import AsignationTransport from './components/AsignationTransport';
+import AssignmentTransport from './components/AssignmentTransport';
 
 const App = () => {
   // TODO: Remove the state when routing is implemented
@@ -16,7 +16,7 @@ const App = () => {
   return (
     <div className="App">
       <button onClick={handleToggle} className="toggle"> {showFlow ? 'Algoritmos de Asignacion/Transporte' : 'Grafos / Johnson'} </button>
-      {showFlow ? <Flow /> : <AsignationTransport />}
+      {showFlow ? <Flow /> : <AssignmentTransport />}
     </div>
   );
 };

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
 
-import "../styles/AsignationTransport.css";
-const AsignationTransport = () => {
+import "../styles/AssignmentTransport.css";
+const AssignmentTransport = () => {
     const [chooseAlgorithm, setChooseAlgorithm] = useState(false);
     const [numRows, setNumRows] = useState(2);
     const [numColumns, setNumColumns] = useState(2);
@@ -183,4 +183,4 @@ const AsignationTransport = () => {
 
 
 
-export default AsignationTransport;
+export default AssignmentTransport;
