@@ -26,6 +26,9 @@ import fileService from "./../service/file";
 import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 
+import assign from "../helpers/assignation.js";
+import assignWithMunkres from "../helpers/assingMatrix";
+
 const bgColor = "#fff";
 
 const nodeTypes = {
@@ -57,6 +60,8 @@ const selector = (state) => ({
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
 });
+
+
 
 const Flow = () => {
   const {
@@ -102,9 +107,9 @@ const Flow = () => {
 
     */
    // Si cambias los pesos de los nodos se vuelve string, por eso  convierto xd
-    matrix = [[7,3,12],[2,4,6],[2,7,4]] 
-    let matrixConverted=  matrix.map(innerArr => innerArr.map(Number));
-     
+    matrix = [[7,3,12],[2,4,6],[2,7,4]];
+    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
+    
     console.log(matrixConverted);
 
     //Array de valores minimos por columna
@@ -121,9 +126,9 @@ const Flow = () => {
     let comparacion= restarMatrices(matrixConverted,alphaPrime);
     console.log('matrix - alpha',comparacion);
 
-    // maximos elementos por fila
+    /* maximos elementos por fila
     let maxfilas= rowElements(comparacion);
-    console.log('Beta',maxfilas);
+    console.log('Beta máximos',maxfilas); */
 
     //minimos elementos por fila
     let minfilas= minrowElements(comparacion);
@@ -132,12 +137,10 @@ const Flow = () => {
 
     //Beta prima
     let betaPrime= betaPrima(minfilas)
-    
-    ;
     console.log('prime', betaPrime);
 
     // matrix-alpha-beta
-    //que es la matriz a nalizar
+    //que es la matriz a analizar
     let AAB= restarMatrices(comparacion,betaPrime);
     console.log('MATRIZ A ANALIZAR',AAB);
 
@@ -153,6 +156,17 @@ const Flow = () => {
     // suma de todo el costo
     let costotot= sum(costo);
     console.log(costotot);
+
+    //prueba si es la solucion optima
+    const totalCost = assign(matrix);
+    console.log(totalCost);
+    let mat = matrixConverted;
+    mat = assignWithMunkres(mat);
+    console.log(mat);
+  
+    
+
+
   };
 
 
@@ -248,6 +262,7 @@ const Flow = () => {
 
   // BETA PRIMA
 
+ 
   function betaPrima(lista) {
     const resultado = [];
     for (let i = 0; i < lista.length; i++) {
@@ -263,8 +278,7 @@ const Flow = () => {
     }
     return resultado;
   }
-
-
+  
   // encontrar 0 que dan solucion
 
   function assignInitial(matrix) {
@@ -318,6 +332,46 @@ const Flow = () => {
       cost=cost+costo[i];
     }
     return cost
+  }
+
+  //compara si es la solucion optima
+  
+
+
+  function isOptimalSolution(matrix, assignments) {
+    // Obtenemos el costo de la solución inicial
+    const initialCost = sum(extractValues(matrix, assignments));
+    
+    // Generamos todas las posibles asignaciones
+    const allAssignments = generateAssignments(matrix);
+    
+    // Buscamos la asignación con menor costo
+    let minCost = Infinity;
+    for (let i = 0; i < allAssignments.length; i++) {
+      const cost = sum(extractValues(matrix, allAssignments[i]));
+      if (cost < minCost) {
+        minCost = cost;
+      }
+    }
+    
+    // Comparamos el costo de la solución inicial con el costo mínimo
+    if (initialCost === minCost) {
+      return true; // La solución es óptima
+    } else {
+      return false; // La solución no es óptima
+    }
+  }
+
+  function generateAssignments(matrix) {
+    const rows = matrix.length;
+    const cols = matrix[0].length;
+    const assignments = [];
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        assignments.push([i, j]);
+      }
+    }
+    return assignments;
   }
 
   // TODO: add delete persona
