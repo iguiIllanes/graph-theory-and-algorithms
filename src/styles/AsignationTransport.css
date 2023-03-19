@@ -27,3 +27,68 @@
 .controls-botton:hover {
     background: #f4f4f4;
 }
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #212529;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.matrix {
+    width: 50%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: auto;
+}
+
+.matrix-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: bold;
+    background-color: #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.matrix-header-cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.matrix-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.matrix-cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    border-right: 1px solid #ccc;
+}
+
+input[type="text"] {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
