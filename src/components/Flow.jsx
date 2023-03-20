@@ -18,6 +18,7 @@ import HideAdjacencyMatrixIcon from "/icons/hideMatrix.png";
 import JonsonIcon from "/icons/cpm.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import CriticPathIcon from "/icons/johnson.jpeg";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import AdjacencyMatrix from "./AdjacencyMatrix";
@@ -88,6 +89,7 @@ const Flow = () => {
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
+  const [JohnsonRef, setJohnsonRef] = useState(false);
   const showModal = () => {
     setShowMatrix(!showMatrix);
   };
@@ -138,7 +140,16 @@ const Flow = () => {
     });
   };
 
+  const handleFileDownload = () => {
+    console.log("downloading");
+    const fileName = prompt("Introduzca el nombre del archivo");
+    console.log(fileName);
+    fileService.download(nodes, edges, `${fileName}.json`);
+  }
+
+
   const handleJohson = () => {
+    setJohnsonRef(true);
     if (nodes.length === 0 || edges.length === 0) {
       prompt("There are no nodes or edges");
       return;
@@ -196,13 +207,13 @@ const Flow = () => {
       ) :
         (<></>
         )}
-
       <input
         id="file-input"
         type="file"
         onChange={handleFileUpload}
         style={{ display: "none" }}
       />
+
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -284,9 +295,7 @@ const Flow = () => {
             />
           </ControlButton>
 
-          <ControlButton
-            onClick={() => fileService.download(nodes, edges, "archivo.json")}
-          >
+          <ControlButton onClick={handleFileDownload}>
             <img
               src={DownloadIcon}
               alt="A"
@@ -316,6 +325,23 @@ const Flow = () => {
         </Controls>
 
       </ReactFlow>
+      {JohnsonRef ? (
+        <div style={
+          {
+            position: "absolute",
+            bottom: "0",
+            left: "60px",
+            display: "flex",
+            alignItems: "center",
+          }
+        }>
+          <h5 style={{ display: "inline-block", marginRight: "10px" }}>
+            Ruta Critica - Johnson
+          </h5>
+          <img src={CriticPathIcon} alt="Critic Path" style={{ width: "80px" }} />
+        </div>
+      ) :
+        (<></>)}
     </>
   );
 };

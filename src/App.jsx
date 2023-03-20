@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <button onClick={handleToggle} className="toggle"> {showFlow ? 'Algoritmos de Asignacion/Transporte' : 'Grafos / Johnson'} </button>
+      {/* <button onClick={handleToggle} className="toggle"> {showFlow ? 'Algoritmos de Asignacion/Transporte' : 'Grafos / Johnson'} </button> */}
       {showFlow ? <Flow /> : <AssignmentTransport />}
     </div>
   );
