@@ -6,15 +6,16 @@ import { Munkres } from "munkres-js";
   @param {Boolean} minimize - Si es verdadero (por defecto), minimiza los costos. Si es falso, maximiza los costos.
 */
 
-function assign(matrix) {
+function assignMax(matrix) {
   // Copiamos la matriz original para no modificarla
   const matrixCopy = matrix.map((row) => row.slice());
 
   // Convertimos la matriz de costos a una matriz de ganancias o pérdidas
-  const max = Math.max(...matrixCopy.flat()) + 1;
+  const max = Math.min(...matrixCopy.flat()) + 1;
+
   for (let i = 0; i < matrixCopy.length; i++) {
     for (let j = 0; j < matrixCopy[i].length; j++) {
-      matrixCopy[i][j] = (matrixCopy[i][j] - max);
+      matrixCopy[i][j] =  (matrixCopy[i][j] + max);
     }
   }
 
@@ -29,10 +30,10 @@ function assign(matrix) {
   for (let i = 0; i < indexes.length; i++) {
     const row = indexes[i][0];
     const col = indexes[i][1];
-    totalCost += matrixCopy[row][col]+max;
+    totalCost += matrix[row][col];
   }
 
   return totalCost;
 }
 
-export default assign;
+export default assignMax;

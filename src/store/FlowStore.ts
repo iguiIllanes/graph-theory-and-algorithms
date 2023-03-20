@@ -20,6 +20,9 @@ import {
 type RFState = {
   deletePersona: Boolean;
   adjacencyMatrix: number[][];
+  assignationMatrix:number[][];
+  totalCost: string;
+  posMatrix: number[][];
   nodes: Node[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
@@ -38,6 +41,25 @@ const useStore = create<RFState>((set, get) => ({
   adjacencyMatrix: [],
   setAdjacencyMatrix: (adjacencyMatrix: number[][]) =>
     set({ adjacencyMatrix: adjacencyMatrix }),
+
+
+  //Assignation
+
+  assignationMatrix: [],
+  setAssignationMatrix: (assignationMatrix: number[][]) =>
+    set({ assignationMatrix: assignationMatrix }),
+
+  //Pos matrix
+
+  posMatrix: [],
+  setPosMatrix: (posMatrix: number[][]) =>
+    set({ posMatrix: posMatrix }),
+
+  // total cost
+  
+  totalCost: '',
+  setTotalCost: (totalCost: string) =>
+    set({ totalCost: totalCost }),
 
   // nodes
   // BIG WARNING: lsp server marks this as error, it works fine though
@@ -144,9 +166,17 @@ const useStore = create<RFState>((set, get) => ({
           },
         },
         get().edges
+        
+        
       ),
+      
     });
   },
+  
 }));
+
+
+// Nodes assign
+
 
 export default useStore;
