@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import ReactFlow, {
   MiniMap,
@@ -116,23 +116,27 @@ const Flow = () => {
   const [showAssignationMax, setShowAssignationMax] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [showModalOptions, setShowModalOptions] = useState(false);
 
+  /*const [showModalMin, setShowModalMin] = useState(false);
+  
+  const [showModalMax, setShowModalMax] = useState(false);*/
 
+  const[showModalAssignation, setShowModalAssignation] = useState(false);
+  const[titleAssignation, setTitleAssignation] = useState('');
+  
 
+  //Matriz de adyancecia
   const handleCloseModal = () => {
     setShowModal(false);
     setShowMatrix(false);
   };
- 
-  const handleCloseModalMin = () => {
-    setShowModalOptions(false);
+  
+  //modal de asignación
+  const handleCloseModalAssignation = () => {
     setShowAssignationMin(false);
+    setShowModalAssignation(false);
   };
-  const handleCloseModalMax = () => {
-    setShowModalOptions(false);
-    setShowAssignationMax(false);
-  };
+  
 
   const handleMatrix = () => {
     let matrix = [];
@@ -199,29 +203,8 @@ const Flow = () => {
     console.log('MATRIZ A ANALIZAR',AAB);
   };
 
-  const handleAssignationMin = () => {
-    let matrix = [[7,3,12],[2,4,6],[2,7,4]];
-    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
-    console.log("handleAssignation");
-    const totalCost1 = assign(matrix,false);  
-    let mat2 = [...matrixConverted];
-    let x = assignWithMunkres(mat2,true);
-    let y = extractValues(mat2,x);
-    setAssignationMatrix(mat2);
-    
-    setShowAssignationMin(!showAssignationMin);
-    
-    setTotalCost(totalCost1);
-    console.log(totalCost);
-    console.log("Posiciones",x);
-    //console.log("matrix",typeof(mat2));
-    let ceros = assignInitial(x);
-    console.log('PosicionesCeros',ceros);
-    setPosMatrix(ceros);
-    setShowModalOptions(!showModalOptions);
-
-    
-  };
+  
+  
   const handleAssignationMin_2 = () =>{
     function removeZeros(matrix) {
       const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
@@ -257,9 +240,6 @@ const Flow = () => {
     let y = extractValues(mat2,x);
     console.log("Posiciones",x);
 
-    setAssignationMatrix(mat2);
-    
-    setShowAssignationMax(!showAssignationMin);
     
     setTotalCost(totalCost1);
     console.log(totalCost);
@@ -268,8 +248,12 @@ const Flow = () => {
     let ceros = assignInitial(x);
     console.log('PosicionesCeros',ceros);
     setPosMatrix(ceros);
-    setShowModalOptions(!showModalOptions);
+    setShowModalAssignation(!showModalAssignation);
+    setAssignationMatrix(mat2);
+    setTitleAssignation('Minimización');
 
+    setShowAssignationMin(!showAssignationMin);
+    console.log("showAssignationMin 1" ,showAssignationMin);
   }
 
   const handleAssignationMax = () => {
@@ -305,25 +289,27 @@ const Flow = () => {
 
     //algoritmo de asignación
     //FIXME: no maximiza unu
-    const totalCost1 = assignMax(matrixFinal) + 10;
-    console.log("Costo optimizado",totalCost);
-    let mat2 = matrixFinal;
+    const totalCost1 = assignMax(matrixFinal);
+    console.log("Costo optimizado",totalCost1);
+    let mat2 = [...matrixFinal];
     let x = assignWithMunkres(mat2,false);
     let y = extractValues(mat2,x);
+    console.log("Costo",totalCost1,"Posiciones",y);
     console.log("Posiciones",x);
 
-    setAssignationMatrix(mat2);
-    
-    setShowAssignationMax(!showAssignationMax);
-    
     setTotalCost(totalCost1);
-    console.log(totalCost);
     console.log("Posiciones",x);
     //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
     console.log('PosicionesCeros',ceros);
     setPosMatrix(ceros);
-    setShowModalOptions(!showModalOptions);
+    setAssignationMatrix(mat2);
+    
+    setShowAssignationMax(!showAssignationMax);
+    setShowModalAssignation(!showModalAssignation);
+    console.log("showAssignationMax",showAssignationMax);
+    setTitleAssignation("Máximizar");
+    //setShowModalOptions(!showModalOptions);
 
    //mostrar matriz
   }
@@ -550,22 +536,15 @@ const Flow = () => {
         <> </>
       )}
 
-        {showAssignationMin ? (
-        <Modal show={showModalOptions} onClose={handleCloseModalMax}
-        title="Asignacion de nodos (Maximización)"
+        {showModalAssignation ? (
+        <Modal show={showModalAssignation} onClose={handleCloseModalAssignation}
+        title={`Asignacion de nodos ${titleAssignation}`}
         content={<AssignationMatrix  matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost}/>}
         ></Modal>
       ) : (
         <> </>
       )}   
-      {showAssignationMax ? (
-        <Modal show={showModalOptions} onClose={handleCloseModalMin}
-        title="Asignacion de nodos (Minimización)"
-        content={<AssignationMatrix  matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost}/>}
-        ></Modal>
-      ) : (
-        <> </>
-      )}   
+      
       <input
         id="file-input"
         type="file"

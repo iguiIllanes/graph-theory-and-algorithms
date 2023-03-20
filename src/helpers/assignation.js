@@ -3,7 +3,6 @@ import { Munkres } from "munkres-js";
 /*
   Función para asignar las tareas
   @param {Array} matrix - Matriz de costos
-  @param {Boolean} minimize - Si es verdadero (por defecto), minimiza los costos. Si es falso, maximiza los costos.
 */
 
 function assign(matrix) {
