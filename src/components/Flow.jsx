@@ -131,7 +131,7 @@ const Flow = () => {
   };
   const handleCloseModalMax = () => {
     setShowModalOptions(false);
-    setShowAssignationMin(false);
+    setShowAssignationMax(false);
   };
 
   const handleMatrix = () => {
@@ -222,6 +222,55 @@ const Flow = () => {
 
     
   };
+  const handleAssignationMin_2 = () =>{
+    function removeZeros(matrix) {
+      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
+      for(let i = 0;i<filteredMatrix.length;i++){
+        if(filteredMatrix[i].length === 0){
+          filteredMatrix.splice(i,1);
+          i--;
+        }
+      }
+      return filteredMatrix;
+    }
+    let matrix = [];
+    // fill matrix with zeros
+    for (let i = 0; i < nodes.length; i++) {
+      matrix[i] = new Array(nodes.length).fill(0);
+    }
+
+    edges.forEach((edge) => {
+      matrix[edge.source][edge.target] =
+        typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
+    });
+    console.log("matrix", matrix);
+    matrix = matrix.map(innerArr => innerArr.map(Number));
+    // convertir la matrix sin conexiones 
+    let matrixFinal = removeZeros(matrix);
+    console.log("matrixFinal", matrixFinal);
+    //algoritmo de asignación
+    //FIXME: no maximiza unu
+    const totalCost1 = assign(matrixFinal);
+    console.log("Costo optimizado",totalCost);
+    let mat2 = matrixFinal;
+    let x = assignWithMunkres(mat2,true);
+    let y = extractValues(mat2,x);
+    console.log("Posiciones",x);
+
+    setAssignationMatrix(mat2);
+    
+    setShowAssignationMax(!showAssignationMin);
+    
+    setTotalCost(totalCost1);
+    console.log(totalCost);
+    console.log("Posiciones",x);
+    //console.log("matrix",typeof(mat2));
+    let ceros = assignInitial(x);
+    console.log('PosicionesCeros',ceros);
+    setPosMatrix(ceros);
+    setShowModalOptions(!showModalOptions);
+
+  }
 
   const handleAssignationMax = () => {
     //TODO: quitar esta función de acá y ponerla en el helper
@@ -592,7 +641,7 @@ const Flow = () => {
             />
             
           </ControlButton>
-          <ControlButton onClick={handleAssignationMin}>
+          <ControlButton onClick={handleAssignationMin_2}>
               <img
                 src={AssignationIconMin}
                 alt="assignation"

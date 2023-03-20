@@ -11,7 +11,7 @@ function assignMax(matrix) {
   const matrixCopy = matrix.map((row) => row.slice());
 
   // Convertimos la matriz de costos a una matriz de ganancias o pérdidas
-  const max = Math.min(...matrixCopy.flat()) + 1;
+  const max = Math.max(...matrixCopy.flat()) + 1;
 
   for (let i = 0; i < matrixCopy.length; i++) {
     for (let j = 0; j < matrixCopy[i].length; j++) {
