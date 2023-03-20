@@ -11,18 +11,33 @@
 //     ]
 // };
 
-const data = {
-    "algorithm": "transport-min",
-    "numRows": 3,
-    "numColumns": 4,
-    "matrix": [
-        ["", "1", "2", "3", "4", ""],
-        ["a", "3", "2", "6", "8", "6"],
-        ["b", "6", "3", "3", "9", "6"],
-        ["c", "2", "6", "4", "2", "7"],
-        ["", "2", "6", "10", "1", ""]
-    ]
-};
+// const data = {
+//     "algorithm": "transport-min",
+//     "numRows": 3,
+//     "numColumns": 4,
+//     "matrix": [
+//         ["", "1", "2", "3", "4", ""],
+//         ["a", "3", "2", "6", "8", "6"],
+//         ["b", "6", "3", "3", "9", "6"],
+//         ["c", "2", "6", "4", "2", "7"],
+//         ["", "2", "6", "10", "1", ""]
+//     ]
+// };
+
+// const data = {
+//     "algorithm": "transport-min",
+//     "numRows": 4,
+//     "numColumns": 4,
+//     "matrix": [
+//         ["", "1", "2", "3", "4", ""],
+//         ["a", "3", "2", "8", "9", "1"],
+//         ["b", "7", "3", "2", "6", "8"],
+//         ["c", "7", "3", "3", "5", "3"],
+//         ["d", "2", "6", "4", "2", "7"],
+//         ["", "4", "5", "5", "5", ""]
+//     ]
+// };
+
 const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     // Create arrays for supply, demand, and cost using Array.from() and arrow functions
     const supply = Array.from(matrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1]));
@@ -30,7 +45,7 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     const cost = Array.from(matrix.slice(1, numRows + 1), row => Array.from(row.slice(1, numColumns + 1), val => parseInt(val)));
 
     // Create allocation matrix using Array.fill()
-    const allocationMatrix = Array.from({ length: numRows }, () => Array.from({ length: numColumns }, () => 0));
+    const allocationMatrix = Array.from({ length: numRows }, () => Array.from({ length: numColumns }, () => null));
 
     // Initialize the comparison function
     let compareFunc;
@@ -46,14 +61,14 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
         if (supply.reduce((a, b) => a + b) > demand.reduce((a, b) => a + b)) {
             cost.forEach(row => row.push(0));
             demand.push(supply.reduce((a, b) => a + b) - demand.reduce((a, b) => a + b));
-            allocationMatrix.forEach(row => row.push(0));
+            allocationMatrix.forEach(row => row.push(null));
             numColumns++;
         }
         // In case the demand is greater than the supply, add a new row of zeros to the cost matrix
         else if (supply.reduce((a, b) => a + b) < demand.reduce((a, b) => a + b)) {
             cost.push(Array.from({ length: numColumns }, () => 0));
             supply.push(demand.reduce((a, b) => a + b) - supply.reduce((a, b) => a + b));
-            allocationMatrix.push(Array.from({ length: numColumns }, () => 0));
+            allocationMatrix.push(Array.from({ length: numColumns }, () => null));
             numRows++;
         }
     }
@@ -98,8 +113,8 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
             demand[j] = 0;
             // Move to the next row
             i++;
-            // Move to the next column
-            j++;
+            // // Move to the next column
+            // j++;
         }
     }
     // Let's check if the solution is optimal
@@ -116,28 +131,28 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
             // we add the cost of the cell to the balance array 
             // Move the cursor from i to 0 
             for (let k = i; k >= 0; k--) {
-                if (allocationMatrix[k][j] !== 0) {
+                if (allocationMatrix[k][j] !== null) {
                     balance.push(allocationMatrix[k][j]);
                     break;
                 }
             }
             // Move the cursor from i to numRows - 1
             for (let k = i + 1; k < numRows; k++) {
-                if (allocationMatrix[k][j] !== 0) {
+                if (allocationMatrix[k][j] !== null) {
                     balance.push(allocationMatrix[k][j]);
                     break;
                 }
             }
             // Move the cursor from j to 0
             for (let k = j; k >= 0; k--) {
-                if (allocationMatrix[i][k] !== 0) {
+                if (allocationMatrix[i][k] !== null) {
                     balance.push(allocationMatrix[i][k]);
                     break;
                 }
             }
             // Move the cursor from j to numColumns - 1
             for (let k = j + 1; k < numColumns; k++) {
-                if (allocationMatrix[i][k] !== 0) {
+                if (allocationMatrix[i][k] !== null) {
                     balance.push(allocationMatrix[i][k]);
                     break;
                 }
@@ -149,11 +164,11 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
             let last = "";
             const ii = i;
             const jj = j;
-            do {
+            while (allocationMatrix[ii][jj] === alpha) {
                 // Move the cursor from i to 0 (Up)
                 for (let k = i - 1; k >= 0; k--) {
                     if (last === "down") break;
-                    if (allocationMatrix[k][j] !== 0) {
+                    if (allocationMatrix[k][j] !== null) {
                         allocationMatrix[k][j] = op === "sub" ? allocationMatrix[k][j] - alpha : allocationMatrix[k][j] + alpha;
                         op = op === "sub" ? "add" : "sub";
                         i = k;
@@ -161,10 +176,12 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
                         break;
                     }
                 }
+                if (allocationMatrix[ii][jj] !== alpha) break;
+
                 // Move the cursor from j to numColumns - 1 (Right)
                 for (let k = j + 1; k < numColumns; k++) {
                     if (last === "left") break;
-                    if (allocationMatrix[i][k] !== 0) {
+                    if (allocationMatrix[i][k] !== null) {
                         allocationMatrix[i][k] = op === "sub" ? allocationMatrix[i][k] - alpha : allocationMatrix[i][k] + alpha;
                         op = op === "sub" ? "add" : "sub";
                         j = k;
@@ -172,10 +189,12 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
                         break;
                     }
                 }
+                if (allocationMatrix[ii][jj] !== alpha) break;
+
                 // Move the cursor from i to numRows - 1 (Down)
                 for (let k = i + 1; k < numRows; k++) {
                     if (last === "up") break;
-                    if (allocationMatrix[k][j] !== 0) {
+                    if (allocationMatrix[k][j] !== null) {
                         allocationMatrix[k][j] = op === "sub" ? allocationMatrix[k][j] - alpha : allocationMatrix[k][j] + alpha;
                         op = op === "sub" ? "add" : "sub";
                         i = k;
@@ -183,10 +202,12 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
                         break;
                     }
                 }
+                if (allocationMatrix[ii][jj] !== alpha) break;
+
                 // Move the cursor from j to 0 (Left)
                 for (let k = j - 1; k >= 0; k--) {
                     if (last === "right") break;
-                    if (allocationMatrix[i][k] !== 0) {
+                    if (allocationMatrix[i][k] !== null) {
                         allocationMatrix[i][k] = op === "sub" ? allocationMatrix[i][k] - alpha : allocationMatrix[i][k] + alpha;
                         op = op === "sub" ? "add" : "sub";
                         j = k;
@@ -194,10 +215,11 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
                         break;
                     }
                 }
+                if (allocationMatrix[ii][jj] !== alpha) break;
             }
-            while (allocationMatrix[ii][jj] === alpha);
             allocationMatrix[i][j] = alpha;
         }
+        break;
     }
     const totalCost = getTotalCost(cost, allocationMatrix);
     console.table(allocationMatrix);
@@ -216,14 +238,13 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix, compareFun
     u[0] = cost.reduce((a, b) => a.concat(b)).sort(compareFunc)[0];
     // We will use a while loop to calculate the U and V values. 
     // The loop will continue until all the U and V values are calculated.
+    let k = 0;
     while (u.includes(null) || v.includes(null)) {
-
         // Loop through the cost matrix
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
-
                 // If the current cell is not empty
-                if (allocationMatrix[i][j] !== 0) {
+                if (allocationMatrix[i][j] !== null) {
                     // If the U value at the current row is not null
                     if (u[i] !== null) {
                         // If the V value at the current column is null
@@ -239,15 +260,15 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix, compareFun
                             // Calculate the U value at the current row
                             u[i] = cost[i][j] - v[j];
                         }
-                    } else {
-                        // If the U and V values at the current row and column are null 
-                        u[j] = u[0];
                     }
                 }
             }
         }
+        k++;
+        if (u[k] === null) {
+            u[k] = u[0];
+        }
     }
-
 
     // Create a new matrix that follows the rules of the MODI method
     const cMatrix = Array.from({ length: numRows }, () => Array.from({ length: numColumns }, () => null));
@@ -264,16 +285,21 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix, compareFun
         }
     }
     // Return the position where the minimum/maximum value is negative
-    let i = -1;
-    let j = -1;
+    let i = [];
+    let j = [];
+    let min = [];
     for (let k = 0; k < numRows; k++) {
         for (let l = 0; l < numColumns; l++) {
             if (cMatrix[k][l] < 0) {
-                i = k;
-                j = l;
+                i.push(k);
+                j.push(l);
+                min.push(cMatrix[k][l]);
             }
         }
     }
+    i = i[min.indexOf(Math.max(...min))];
+    j = j[min.indexOf(Math.max(...min))];
+
     // If the minimum/maximum value is negative, the solution is not optimal
     return {
         isOptimal: i === -1 && j === -1,
