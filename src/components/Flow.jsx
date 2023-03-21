@@ -44,6 +44,10 @@ const nodeTypes = {
 const edgeTypes = {
   "graph-edge": GraphEdge,
 };
+/* Set state modal */
+//const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
 const selector = (state) => ({
   // Persona
@@ -111,6 +115,7 @@ const Flow = () => {
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
+
   //const [showMatrix2, setShowMatrix2] = useState(false);
   const [showAssignationMin, setShowAssignationMin] = useState(false);
   const [showAssignationMax, setShowAssignationMax] = useState(false);
@@ -153,6 +158,7 @@ const Flow = () => {
     setAdjacencyMatrix(matrix);
 
     // hide/show matrix
+
     setShowMatrix(!showMatrix);
     setShowModal(!showModal);
     console.log("showMatrix", showMatrix);
@@ -573,7 +579,7 @@ const Flow = () => {
           }}
           nodeColor={(n) => {
             if (n.type === "selectorNode") return bgColor;
-            return "#5191df";
+            return "#fff";
           }}
         />
         <Controls>
@@ -667,7 +673,8 @@ const Flow = () => {
             ?
           </ControlButton>
         </Controls>
-      </ReactFlow>
+      
+        </ReactFlow>
     </>
   );
 };

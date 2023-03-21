@@ -12,6 +12,7 @@ const Modal = ({ show, onClose, title, content }) => {
         </button>
         {title && <h2>{title}</h2>}
         <div className="modal-content">{content}</div>
+
       </div>
     </div>
   );
