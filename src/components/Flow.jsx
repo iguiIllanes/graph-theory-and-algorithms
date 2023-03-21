@@ -15,8 +15,10 @@ import CreateNodeIcon from "/icons/createNode.png";
 import RemoveNodeIcon from "/icons/removeNode.png";
 import ShowAdjacencyMatrixIcon from "/icons/showMatrix.png";
 import HideAdjacencyMatrixIcon from "/icons/hideMatrix.png";
+import JonsonIcon from "/icons/cpm.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import CriticPathIcon from "/icons/johnson.jpeg";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import AdjacencyMatrix from "./AdjacencyMatrix";
@@ -34,6 +36,8 @@ import assignWithMunkres from "../helpers/assingMatrix.js";
 import assignMax from "../helpers/assignationMax.js";
 
 import Modal from "./Modal";
+import { johnsonAlgorithm } from "../algorithms/johnson";
+
 
 const bgColor = "#fff";
 
@@ -42,11 +46,10 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  "graph-edge": GraphEdge,
+  "graph-edge": GraphEdge
 };
 /* Set state modal */
 //const [isModalOpen, setIsModalOpen] = useState(false);
-
 
 
 const selector = (state) => ({
@@ -57,7 +60,7 @@ const selector = (state) => ({
   // adjacency matrix
   adjacencyMatrix: state.adjacencyMatrix,
   setAdjacencyMatrix: state.setAdjacencyMatrix,
-    
+
   //assignation matrix
   assignationMatrix: state.assignationMatrix,
   setAssignationMatrix: state.setAssignationMatrix,
@@ -75,16 +78,13 @@ const selector = (state) => ({
   addNode: state.addNode,
   setNodes: state.setNodes,
   onNodesChange: state.onNodesChange,
-
-  
+  setWeight: state.setWeight,
 
   // edges
   edges: state.edges,
   setEdges: state.setEdges,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
-
-
 });
 
 
@@ -109,12 +109,14 @@ const Flow = () => {
     onNodesChange,
     onEdgesChange,
     onConnect,
+    setWeight,
   } = useFlowStore(selector, shallow);
   // // adjacency matrix
   // const adjMatrix = useFlowStore((state) => state.adjMatrix);
   // const setAdjMatrix = useFlowStore((state) => state.setAdjMatrix);
   //
   const [showMatrix, setShowMatrix] = useState(false);
+  const [JohnsonRef, setJohnsonRef] = useState(false);
 
   //const [showMatrix2, setShowMatrix2] = useState(false);
   const [showAssignationMin, setShowAssignationMin] = useState(false);
@@ -126,25 +128,24 @@ const Flow = () => {
   
   const [showModalMax, setShowModalMax] = useState(false);*/
 
-  const[showModalAssignation, setShowModalAssignation] = useState(false);
-  const[titleAssignation, setTitleAssignation] = useState('');
-  
+  const [showModalAssignation, setShowModalAssignation] = useState(false);
+  const [titleAssignation, setTitleAssignation] = useState('');
+
 
   //Matriz de adyancecia
   const handleCloseModal = () => {
     setShowModal(false);
     setShowMatrix(false);
   };
-  
+
   //modal de asignación
   const handleCloseModalAssignation = () => {
     setShowAssignationMin(false);
     setShowModalAssignation(false);
   };
-  
 
   const handleMatrix = () => {
-    let matrix = [];
+    const matrix = [];
     // fill matrix with zeros
     for (let i = 0; i < nodes.length; i++) {
       matrix[i] = new Array(nodes.length).fill(0);
@@ -158,7 +159,6 @@ const Flow = () => {
     setAdjacencyMatrix(matrix);
 
     // hide/show matrix
-
     setShowMatrix(!showMatrix);
     setShowModal(!showModal);
     console.log("showMatrix", showMatrix);
@@ -168,55 +168,55 @@ const Flow = () => {
     /* 
     
     ALGORITMO de Asignacion 
-
+ 
     */
-   // Si cambias los pesos de los nodos se vuelve string, por eso  convierto xd
-    matrix = [[7,3,12],[2,4,6],[2,7,4]];
-    let matrixConverted= matrix.map(innerArr => innerArr.map(Number));
-    
+    // Si cambias los pesos de los nodos se vuelve string, por eso  convierto xd
+    // matrix = [[7, 3, 12], [2, 4, 6], [2, 7, 4]];
+    let matrixConverted = matrix.map(innerArr => innerArr.map(Number));
+
     console.log(matrixConverted);
 
     //Array de valores minimos por columna
-    let min= minColumns(matrixConverted);
-    console.log('minimos',min);
+    let min = minColumns(matrixConverted);
+    console.log('minimos', min);
     //Array de valores maximos por columna
     let max = maxColumns(matrixConverted);
-    console.log('maximos',max);
+    console.log('maximos', max);
     // Para sacar alpha prima
-    let alphaPrime=alphaMatrix(min);
-    console.log('alphaprima',alphaPrime);
-    
+    let alphaPrime = alphaMatrix(min);
+    console.log('alphaprima', alphaPrime);
+
     // comparacion entre la mtariz principal y alpha prima
-    let comparacion= restarMatrices(matrixConverted,alphaPrime);
-    console.log('matrix - alpha',comparacion);
+    let comparacion = restarMatrices(matrixConverted, alphaPrime);
+    console.log('matrix - alpha', comparacion);
 
     /* maximos elementos por fila
     let maxfilas= rowElements(comparacion);
     console.log('Beta máximos',maxfilas); */
 
     //minimos elementos por fila
-    let minfilas= minrowElements(comparacion);
-    console.log('Beta',minfilas);
+    let minfilas = minrowElements(comparacion);
+    console.log('Beta', minfilas);
 
 
     //Beta prima
-    let betaPrime= betaPrima(minfilas);
+    let betaPrime = betaPrima(minfilas);
     console.log('prime', betaPrime);
 
     // matrix-alpha-beta
     //que es la matriz a analizar
-    let AAB= restarMatrices(comparacion,betaPrime);
-    console.log('MATRIZ A ANALIZAR',AAB);
+    let AAB = restarMatrices(comparacion, betaPrime);
+    console.log('MATRIZ A ANALIZAR', AAB);
   };
 
-  
-  
-  const handleAssignationMin_2 = () =>{
+
+
+  const handleAssignationMin_2 = () => {
     function removeZeros(matrix) {
       const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
-      for(let i = 0;i<filteredMatrix.length;i++){
-        if(filteredMatrix[i].length === 0){
-          filteredMatrix.splice(i,1);
+      for (let i = 0; i < filteredMatrix.length; i++) {
+        if (filteredMatrix[i].length === 0) {
+          filteredMatrix.splice(i, 1);
           i--;
         }
       }
@@ -240,35 +240,35 @@ const Flow = () => {
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assign(matrixFinal);
-    console.log("Costo optimizado",totalCost);
+    console.log("Costo optimizado", totalCost);
     let mat2 = matrixFinal;
-    let x = assignWithMunkres(mat2,true);
-    let y = extractValues(mat2,x);
-    console.log("Posiciones",x);
+    let x = assignWithMunkres(mat2, true);
+    let y = extractValues(mat2, x);
+    console.log("Posiciones", x);
 
-    
+
     setTotalCost(totalCost1);
     console.log(totalCost);
-    console.log("Posiciones",x);
+    console.log("Posiciones", x);
     //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
-    console.log('PosicionesCeros',ceros);
+    console.log('PosicionesCeros', ceros);
     setPosMatrix(ceros);
     setShowModalAssignation(!showModalAssignation);
     setAssignationMatrix(mat2);
     setTitleAssignation('Minimización');
 
     setShowAssignationMin(!showAssignationMin);
-    console.log("showAssignationMin 1" ,showAssignationMin);
+    console.log("showAssignationMin 1", showAssignationMin);
   }
 
   const handleAssignationMax = () => {
     //TODO: quitar esta función de acá y ponerla en el helper
     function removeZeros(matrix) {
       const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
-      for(let i = 0;i<filteredMatrix.length;i++){
-        if(filteredMatrix[i].length === 0){
-          filteredMatrix.splice(i,1);
+      for (let i = 0; i < filteredMatrix.length; i++) {
+        if (filteredMatrix[i].length === 0) {
+          filteredMatrix.splice(i, 1);
           i--;
         }
       }
@@ -290,34 +290,34 @@ const Flow = () => {
     // convertir la matrix sin conexiones 
     let matrixFinal = removeZeros(matrix);
     console.log("matrixFinal", matrixFinal);
-    
-    
+
+
 
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assignMax(matrixFinal);
-    console.log("Costo optimizado",totalCost1);
+    console.log("Costo optimizado", totalCost1);
     let mat2 = [...matrixFinal];
-    let x = assignWithMunkres(mat2,false);
-    let y = extractValues(mat2,x);
-    console.log("Costo",totalCost1,"Posiciones",y);
-    console.log("Posiciones",x);
+    let x = assignWithMunkres(mat2, false);
+    let y = extractValues(mat2, x);
+    console.log("Costo", totalCost1, "Posiciones", y);
+    console.log("Posiciones", x);
 
     setTotalCost(totalCost1);
-    console.log("Posiciones",x);
+    console.log("Posiciones", x);
     //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
-    console.log('PosicionesCeros',ceros);
+    console.log('PosicionesCeros', ceros);
     setPosMatrix(ceros);
     setAssignationMatrix(mat2);
-    
+
     setShowAssignationMax(!showAssignationMax);
     setShowModalAssignation(!showModalAssignation);
-    console.log("showAssignationMax",showAssignationMax);
+    console.log("showAssignationMax", showAssignationMax);
     setTitleAssignation("Máximizar");
     //setShowModalOptions(!showModalOptions);
 
-   //mostrar matriz
+    //mostrar matriz
   }
 
 
@@ -327,7 +327,7 @@ const Flow = () => {
   function minColumns(matrix) {
     const minCol = [];
     for (let i = 0; i < matrix[0].length; i++) {
-      let min = matrix[0][i];  
+      let min = matrix[0][i];
       for (let j = 1; j < matrix.length; j++) {
         if (matrix[j][i] < min) {
           min = matrix[j][i];
@@ -340,7 +340,7 @@ const Flow = () => {
 
   //maximos de cada columna xd
   function maxColumns(matrix) {
-    let max = new Array(matrix[0].length).fill(0); 
+    let max = new Array(matrix[0].length).fill(0);
     for (let i = 0; i < matrix.length; i++) {
       for (let j = 0; j < matrix[i].length; j++) {
         if (matrix[i][j] > max[j]) {
@@ -354,9 +354,9 @@ const Flow = () => {
 
   // alpha prima 
 
-  function alphaMatrix(matrix){
-    let alphaPrima=[];
-    for(let i=0;i<matrix.length;i++){
+  function alphaMatrix(matrix) {
+    let alphaPrima = [];
+    for (let i = 0; i < matrix.length; i++) {
       alphaPrima.push(matrix);
     }
     return alphaPrima;
@@ -387,7 +387,7 @@ const Flow = () => {
   function rowElements(matrix) {
     const maxRow = [];
     for (let i = 0; i < matrix.length; i++) {
-      let max = matrix[i][0];  
+      let max = matrix[i][0];
       for (let j = 1; j < matrix[i].length; j++) {
         if (matrix[i][j] > max) {
           max = matrix[i][j];
@@ -399,23 +399,23 @@ const Flow = () => {
   }
 
   // minimos elementos por fila
-    function minrowElements(matrix) {
-      const minRow = [];
-      for (let i = 0; i < matrix.length; i++) {
-        let min = matrix[i][0];  
-        for (let j = 1; j < matrix[i].length; j++) {
-          if (matrix[i][j] < min) {
-            min = matrix[i][j];
-          }
+  function minrowElements(matrix) {
+    const minRow = [];
+    for (let i = 0; i < matrix.length; i++) {
+      let min = matrix[i][0];
+      for (let j = 1; j < matrix[i].length; j++) {
+        if (matrix[i][j] < min) {
+          min = matrix[i][j];
         }
-        minRow.push(min);
       }
-      return minRow;
+      minRow.push(min);
     }
+    return minRow;
+  }
 
   // BETA PRIMA
 
- 
+
   function betaPrima(lista) {
     const resultado = [];
     for (let i = 0; i < lista.length; i++) {
@@ -431,58 +431,58 @@ const Flow = () => {
     }
     return resultado;
   }
-  
+
   // encontrar 0 que dan solucion
 
   function assignInitial(matrix) {
     let assignments = [];
     let rows = matrix.length;
     let cols = matrix[0].length;
-  
+
     let assignedRows = new Set();
     let assignedCols = new Set();
-  
+
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         if (matrix[i][j] == 1 && !assignedRows.has(i) && !assignedCols.has(j)) {
-          
+
           let rowSum = matrix[i].reduce((acc, val) => acc + val, 0);
           let colSum = 0;
           for (let k = 0; k < rows; k++) {
             colSum += matrix[k][j];
           }
-            assignments.push([i, j]);
-            assignedRows.add(i);
-            assignedCols.add(j);
-          
+          assignments.push([i, j]);
+          assignedRows.add(i);
+          assignedCols.add(j);
+
         }
       }
     }
-    
+
     return assignments;
   }
 
   //extrae los valores de los 0 
   function extractValues(matrix, positions) {
     let values = [];
-  
+
     for (let i = 0; i < positions.length; i++) {
       let row = positions[i][0];
       let col = positions[i][1];
-  
+
       let value = matrix[row][col];
       values.push(value);
     }
-  
+
     return values;
   }
 
   //costo total xd
-  function sum(costo){
-    let cost=0;
+  function sum(costo) {
+    let cost = 0;
     //console.log(typeof costo[0]);
-    for(let i=0;i<costo.length;i++){
-      cost=cost+costo[i];
+    for (let i = 0; i < costo.length; i++) {
+      cost = cost + costo[i];
     }
     return cost
   }
@@ -528,35 +528,90 @@ const Flow = () => {
     });
   };
 
+  const handleFileDownload = () => {
+    const fileName = prompt("Introduzca el nombre del archivo");
+    if (fileName === null) return;
+    console.log(fileName);
+    fileService.download(nodes, edges, `${fileName}.json`);
+  }
+
+
+  const handleJohson = () => {
+    setJohnsonRef(true);
+    if (nodes.length === 0 || edges.length === 0) {
+      prompt("No hay nodos o aristas");
+      return;
+    }
+    // matrix with zeros
+    const matrix = new Array(nodes.length).fill(0).map(() => new Array(nodes.length).fill(0));
+
+    // fill the matrix with the weights
+    edges.forEach((edge) => {
+      matrix[edge.source][edge.target] =
+        typeof edge.data.weight === "undefined" ? 1 : parseInt(edge.data.weight);
+    });
+
+    // johnson algorithm
+    let slacks, earlyTimes, lateTimes;
+
+    ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
+    // set edges labels and 
+    const newEdges = edges.map((edge) => {
+      return {
+        ...edge,
+        data: {
+          ...edge.data,
+          label: `h = ${slacks[edge.source][edge.target]}`,
+        },
+        markerEnd: {
+          ...edge.markerEnd,
+          color: slacks[edge.source][edge.target] === 0 ? "green" : "#342e37",
+        },
+      };
+    });
+    setEdges(newEdges);
+
+    const newNodes = nodes.map((node, index) => {
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          earlyTime: earlyTimes[index],
+          lateTime: lateTimes[index],
+        },
+      };
+    });
+    setNodes(newNodes);
+  }
+
   return (
     <>
       {showMatrix ? (
-        
-       <Modal show={showModal} onClose={handleCloseModal} 
-       title="Matriz de adyacencia"
-        content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix}></AdjacencyMatrix>}
-        />
-       
-        
+        <div>
+          <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
+            show={showModal} onClose={handleCloseModal} >
+          </Modal>
+        </div>
+      ) :
+        (<></>
+        )}
+
+      {showModalAssignation ? (
+        <Modal show={showModalAssignation} onClose={handleCloseModalAssignation}
+          title={`Asignacion de nodos ${titleAssignation}`}
+          content={<AssignationMatrix matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost} />}
+        ></Modal>
       ) : (
         <> </>
       )}
 
-        {showModalAssignation ? (
-        <Modal show={showModalAssignation} onClose={handleCloseModalAssignation}
-        title={`Asignacion de nodos ${titleAssignation}`}
-        content={<AssignationMatrix  matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost}/>}
-        ></Modal>
-      ) : (
-        <> </>
-      )}   
-      
       <input
         id="file-input"
         type="file"
         onChange={handleFileUpload}
         style={{ display: "none" }}
       />
+
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -570,6 +625,9 @@ const Flow = () => {
         connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"
         proOptions={{ hideAttribution: true }}
+      // onEdgeClick={(event, edge) => {
+      //   console.log("edge", edge);
+      // }}
       >
         <MiniMap
           nodeStrokeColor={(n) => {
@@ -624,29 +682,37 @@ const Flow = () => {
                 width: "20px",
               }}
             />
-            
+
           </ControlButton>
           <ControlButton onClick={handleAssignationMin_2}>
-              <img
-                src={AssignationIconMin}
-                alt="assignation"
-                style={{
-                  width: "20px",
-                }} 
-              />
+            <img
+              src={AssignationIconMin}
+              alt="assignation"
+              style={{
+                width: "20px",
+              }}
+            />
           </ControlButton>
           <ControlButton onClick={handleAssignationMax}>
-              <img
-                src={AssignationIconMax}
-                alt="assignation"
-                style={{
-                  width: "20px",
-                }} 
-              />
+            <img
+              src={AssignationIconMax}
+              alt="assignation"
+              style={{
+                width: "20px",
+              }}
+            />
           </ControlButton>
-          <ControlButton
-            onClick={() => fileService.download(nodes, edges, "archivo.json")}
-          >
+          <ControlButton onClick={handleJohson}>
+            <img
+              src={JonsonIcon}
+              alt="A"
+              style={{
+                width: "20px",
+              }}
+            />
+          </ControlButton>
+
+          <ControlButton onClick={handleFileDownload}>
             <img
               src={DownloadIcon}
               alt="A"
@@ -666,6 +732,7 @@ const Flow = () => {
               }}
             />
           </ControlButton>
+
           <ControlButton
             onClick={() => window.open("/manual.pdf")}
             style={{ color: "#000" }}
@@ -673,8 +740,25 @@ const Flow = () => {
             ?
           </ControlButton>
         </Controls>
-      
-        </ReactFlow>
+
+      </ReactFlow>
+      {JohnsonRef ? (
+        <div style={
+          {
+            position: "absolute",
+            bottom: "0",
+            left: "60px",
+            display: "flex",
+            alignItems: "center",
+          }
+        }>
+          <h5 style={{ display: "inline-block", marginRight: "10px" }}>
+            Ruta Critica - Johnson
+          </h5>
+          <img src={CriticPathIcon} alt="Critic Path" style={{ width: "80px" }} />
+        </div>
+      ) :
+        (<></>)}
     </>
   );
 };
