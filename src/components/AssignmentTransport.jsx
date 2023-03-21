@@ -5,6 +5,7 @@ import fileService from "../service/matrixFile";
 import { transportAlgorithm } from '../algorithms/transport';
 import { assignmentAlgorithm } from '../algorithms/assignment';
 import Modal from "./Modal";
+import RemoveAllIcon from "/icons/removeAll.png";
 
 import "../styles/AssignmentTransport.css";
 import TransportationMatrix from './TransportationMatrix';
@@ -35,7 +36,18 @@ const AssignmentTransport = () => {
     // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
     const handleAlgorithm = () => {
         setChooseAlgorithm(!chooseAlgorithm);
-        setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(numColumns + 2).fill("")));
+        // In case of chosing the assignment algorithm, we reset the only the supply and demand
+        if (!chooseAlgorithm) {
+            const newInputMatrix = inputMatrix.map((row) => row.map((cell) => cell));
+            // Clear the last row and column with ""
+            for (let i = 0; i < newInputMatrix[0].length; i++) {
+                newInputMatrix[newInputMatrix.length - 1][i] = "";
+            }
+            for (let i = 0; i < newInputMatrix.length; i++) {
+                newInputMatrix[i][newInputMatrix[0].length - 1] = "";
+            }
+            setInputMatrix(newInputMatrix);
+        }
     };
 
     // We can change the number of rows by clicking on the button
@@ -49,9 +61,24 @@ const AssignmentTransport = () => {
             return;
         }
         newNumRows = parseInt(newNumRows);
+        const difference = newNumRows - numRows;
+        // In case we increase the number of rows, we add a new row with before the last row
+        if (difference > 0) {
+            const newInputMatrix = inputMatrix.map((row) => row.map((cell) => cell));
+            for (let i = 0; i < difference; i++) {
+                newInputMatrix.splice(newInputMatrix.length - 1, 0, new Array(newInputMatrix[0].length).fill(""));
+            }
+            setInputMatrix(newInputMatrix);
+        }
+        // In case we decrease the number of rows, we remove the last rows except the last one
+        else {
+            const newInputMatrix = inputMatrix.map((row) => row.map((cell) => cell));
+            for (let i = 0; i < -difference; i++) {
+                newInputMatrix.splice(newInputMatrix.length - 2, 1);
+            }
+            setInputMatrix(newInputMatrix);
+        }
         setNumRows(newNumRows);
-        // TODO: prevent the matrix from being reset when the number of rows is changed
-        setInputMatrix(Array.from({ length: newNumRows + 2 }, () => new Array(numColumns + 2).fill("")));
     };
 
     // We can change the number of columns by clicking on the button
@@ -65,15 +92,34 @@ const AssignmentTransport = () => {
             return;
         }
         newNumColumns = parseInt(newNumColumns);
+        const difference = newNumColumns - numColumns;
+        // In case we increase the number of columns, we add a new column with before the last column
+        if (difference > 0) {
+            const newInputMatrix = inputMatrix.map((row) => row.map((cell) => cell));
+            for (let i = 0; i < difference; i++) {
+                for (let j = 0; j < newInputMatrix.length; j++) {
+                    newInputMatrix[j].splice(newInputMatrix[j].length - 1, 0, "");
+                }
+            }
+            setInputMatrix(newInputMatrix);
+        }
+        // In case we decrease the number of columns, we remove the last columns except the last one
+        else {
+            const newInputMatrix = inputMatrix.map((row) => row.map((cell) => cell));
+            for (let i = 0; i < -difference; i++) {
+                for (let j = 0; j < newInputMatrix.length; j++) {
+                    newInputMatrix[j].splice(newInputMatrix[j].length - 2, 1);
+                }
+            }
+            setInputMatrix(newInputMatrix);
+        }
         setNumColumns(newNumColumns);
-        // TODO: prevent the matrix from being reset when the number of columns is changed
-        setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(newNumColumns + 2).fill("")));
     }
 
     // We can change the value of the matrix by clicking on the input, this depends on matrixFile service
     const handleFileUpload = async (event) => {
         await fileService.uploadMatrix(event).then((response) => {
-            console.log(response);
+            // console.log(response);
             setChooseAlgorithm((response.algorithm === "transport") ? true : false);
             setNumRows(response.numRows);
             setNumColumns(response.numColumns);
@@ -141,6 +187,13 @@ const AssignmentTransport = () => {
             setMinMax(true);
         }
     }
+
+    const handleClear = () => {
+        setNumRows(2);
+        setNumColumns(2);
+        setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(numColumns + 2).fill("")));
+    }
+
 
     return (
         <>
@@ -278,6 +331,15 @@ const AssignmentTransport = () => {
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleAlgorithm}>ALG</button>
                     <button className="controls-botton" onClick={handleNumRows}>#F</button>
                     <button className="controls-botton" onClick={handleNumColumns}>#C</button>
+                    <button className="controls-botton" onClick={handleClear}>
+                        <img
+                            src={RemoveAllIcon}
+                            alt="Remove All"
+                            style={{
+                                width: "20px",
+                            }}
+                        /></button>
+
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
                     <button className="controls-botton"

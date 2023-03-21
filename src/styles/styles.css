@@ -133,3 +133,13 @@ th {
 .capa3 {
   z-index: 3;
 }
+
+.toggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
+}
