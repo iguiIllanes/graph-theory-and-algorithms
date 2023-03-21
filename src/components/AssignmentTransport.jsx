@@ -219,7 +219,6 @@ const AssignmentTransport = () => {
                         </Modal>
                     </div>
                 )
-
             ) :
                 (<></>
                 )}
@@ -384,8 +383,5 @@ const AssignmentTransport = () => {
         </>
     );
 };
-
-
-
 
 export default AssignmentTransport;
