@@ -1,28 +1,28 @@
+// const data = {
+//     "algorithm": "transport-max",
+//     "numRows": 3,
+//     "numColumns": 4,
+//     "matrix": [
+//         ["", "1", "2", "3", "4", ""],
+//         ["a", "3", "2", "8", "9", "6"],
+//         ["b", "7", "3", "2", "6", "5"],
+//         ["c", "7", "3", "3", "3", "3"],
+//         ["", "2", "6", "5", "1", ""]
+//     ]
+// };
+
 const data = {
     "algorithm": "transport-max",
     "numRows": 3,
     "numColumns": 4,
     "matrix": [
         ["", "1", "2", "3", "4", ""],
-        ["a", "3", "2", "8", "9", "6"],
-        ["b", "7", "3", "2", "6", "5"],
-        ["c", "7", "3", "3", "3", "3"],
-        ["", "2", "6", "5", "1", ""]
+        ["a", "3", "2", "6", "8", "6"],
+        ["b", "6", "3", "3", "9", "6"],
+        ["c", "2", "6", "4", "2", "7"],
+        ["", "2", "6", "10", "1", ""]
     ]
 };
-
-// const data = {
-//     "algorithm": "transport-min",
-//     "numRows": 3,
-//     "numColumns": 4,
-//     "matrix": [
-//         ["", "1", "2", "3", "4", ""],
-//         ["a", "3", "2", "6", "8", "6"],
-//         ["b", "6", "3", "3", "9", "6"],
-//         ["c", "2", "6", "4", "2", "7"],
-//         ["", "2", "6", "10", "1", ""]
-//     ]
-// };
 
 // const data = {
 //     "algorithm": "transport-min",
@@ -122,108 +122,43 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     // Let's check if the solution is optimal
     let isOptimal = false;
     let optimalSol;
-    let count = 0;
+    let totalCost = Infinity;
+    let copyAllocationMatrix;
+    console.table(cost);
     while (!isOptimal) {
+        console.table(allocationMatrix);
         optimalSol = optimalSolution(numRows, numColumns, cost, allocationMatrix);
         isOptimal = optimalSol.isOptimal;
         i = optimalSol.i;
         j = optimalSol.j;
         if (!isOptimal) {
-            // Create an empty list to store the coordinates of the cells in the path
-            const path = [];
-            // Start from the pivot cell
-            let currentCell = [i, j];
-            // Add the current cell to the path
-            path.push(currentCell);
-
-            // Define a variable to keep track of the direction of movement
-            // 0  - horizontal movement
-            // 1  - vertical movement
-            let direction = 0;
-            while (true) {
-                // If the direction is vertical
-                if (direction === 1) {
-                    let flag = false;
-                    for (let k = 0; k < numRows; k++) {
-                        if (k === i && currentCell[1] === j && path.length > 1) {
-                            flag = true;
-                            break;
-                        }
-                        if (allocationMatrix[k][currentCell[1]] !== null && path[path.length - 1][0] !== k) {
-                            // if there is only null values in the row, then dont change the current cell
-                            currentCell = [k, currentCell[1]];
-                            if (k > i) {
-                                break;
-                            }
-                        }
-                    }
-                    if (flag) {
-                        path.push([i, j]);
-                    } else {
-                        path.push(currentCell);
-                    }
-                    direction = 0;
+            let path = [];
+            let alpha;
+            for (let k = 0; k < i.length; k++) {
+                allocationMatrix[i[k]][j[k]] = 0;
+                console.log(k);
+                try {
+                    path = getLoopPath(numRows, numColumns, allocationMatrix, i[k], j[k]);
                 }
-                // If the direction is horizontal
-                else if (direction === 0) {
-                    let flag = false;
-                    for (let k = 0; k < numColumns; k++) {
-                        if (currentCell[0] === i && k === j && path.length > 1) {
-                            flag = true;
-                            break;
-                        }
-                        if (allocationMatrix[currentCell[0]][k] !== null && path[path.length - 1][1] !== k) {
-                            currentCell = [currentCell[0], k];
-                            if (k > j) {
-                                break;
-                            }
-                        }
-                    }
-                    if (flag) {
-                        path.push([i, j]);
-                    }
-                    else {
-                        path.push(currentCell);
-                    }
-                    direction = 1;
+                catch (err) {
+                    allocationMatrix[i[k]][j[k]] = null;
+                    continue;
                 }
-                if (path[0][0] === path[path.length - 1][0] && path[0][1] === path[path.length - 1][1] && path.length > 1) {
+                allocationMatrix[i[k]][j[k]] = null;
+                // Find the minimum value between the evenly postioned cells in the path
+                alpha = Infinity;
+                for (let l = 0; l < path.length - 1; l++) {
+                    if (l % 2 !== 0) {
+                        if (allocationMatrix[path[l][0]][path[l][1]] < alpha) {
+                            alpha = allocationMatrix[path[l][0]][path[l][1]];
+                        }
+                    }
+                }
+                if (alpha > 0) {
                     break;
                 }
             }
-            // If we find repeated cells in the path, then delete the repeated cells
-            const repeat = [];
-            for (let k = 0; k < path.length; k++) {
-                for (let l = 0; l < path.length; l++) {
-                    if (path[k][0] === path[l][0] && path[k][1] === path[l][1] && k !== l && k !== 0 && l !== 0) {
-                        repeat.push(path[k]);
-                        break;
-                    }
-                }
-            }
-            console.table(path);
 
-            // delete the repeated cells from the path
-            for (let k = 0; k < repeat.length; k++) {
-                for (let l = 0; l < path.length; l++) {
-                    if (repeat[k][0] === path[l][0] && repeat[k][1] === path[l][1]) {
-                        path.splice(l, 1);
-                        break;
-                    }
-                }
-            }
-            console.table(repeat);
-
-
-            // Find the minimum value between the evenly postioned cells in the path
-            let alpha = Infinity;
-            for (let k = 0; k < path.length - 1; k++) {
-                if (k % 2 !== 0) {
-                    if (allocationMatrix[path[k][0]][path[k][1]] < alpha) {
-                        alpha = allocationMatrix[path[k][0]][path[k][1]];
-                    }
-                }
-            }
             // We need to balance the solution, so will add alpha to the odd positioned cells and subtract alpha from the even positioned cells
             for (let k = 0; k < path.length - 1; k++) {
                 if (k % 2 === 0) {
@@ -232,27 +167,28 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
                     allocationMatrix[path[k][0]][path[k][1]] -= alpha;
                 }
             }
-        }
-        // Replace the 0 values with null
-        for (let i = 0; i < numRows; i++) {
-            for (let j = 0; j < numColumns; j++) {
-                if (allocationMatrix[i][j] === 0) {
-                    allocationMatrix[i][j] = null;
+            // Replace the 0 values with null
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numColumns; j++) {
+                    if (allocationMatrix[i][j] === 0) {
+                        allocationMatrix[i][j] = null;
+                    }
                 }
             }
-        }
-        console.table(allocationMatrix);
-        count++;
-        if (count === 4) {
+            if (totalCost < getTotalCost(cost, allocationMatrix)) {
+                break;
+            }
+            totalCost = getTotalCost(cost, allocationMatrix);
+            copyAllocationMatrix = allocationMatrix.map(row => row.map(cell => cell));
             break;
+
         }
     }
-
-    // console.table(allocationMatrix);
-    // // Calculate the total cost
-    // const totalCost = getTotalCost(cost, allocationMatrix);
-    // console.table(allocationMatrix);
-    // console.log(totalCost);
+    // Print the allocation matrix
+    console.table(copyAllocationMatrix);
+    // Calculate the total cost in with the costCopy matrix
+    totalCost = getTotalCost(costCopy, copyAllocationMatrix);
+    console.log(totalCost);
 
 }
 
@@ -298,7 +234,6 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix) {
             u[k] = u[0];
         }
     }
-
     // Create a new matrix that follows the rules of the MODI method
     const cMatrix = Array.from({ length: numRows }, () => Array.from({ length: numColumns }, () => null));
     // Loop through the cost matrix
@@ -314,29 +249,118 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix) {
         }
     }
     // Return the position where the minimum value is negative
-    let i = [];
-    let j = [];
-    let min = [];
+    let values = [];
+    let isOptimal = true;
     for (let k = 0; k < numRows; k++) {
         for (let l = 0; l < numColumns; l++) {
             if (cMatrix[k][l] < 0) {
-                i.push(k);
-                j.push(l);
-                min.push(cMatrix[k][l]);
+                // we push an array with the value, row and column
+                values.push([cMatrix[k][l], k, l]);
+                isOptimal = false;
             }
         }
     }
-    i = i[min.indexOf(Math.min(...min))];
-    j = j[min.indexOf(Math.min(...min))];
-
+    // sort the min array from the smallest to the largest value, note that the first element is the minimum value
+    values.sort((a, b) => a[0] - b[0]);
+    // Get the row and column of the minimum value
+    let i = [];
+    let j = [];
+    for (let k = 0; k < values.length; k++) {
+        i.push(values[k][1]);
+        j.push(values[k][2]);
+    }
     console.table(cMatrix);
-
+    console.table(values);
     // If the minimum value is negative, the solution is not optimal
     return {
-        isOptimal: i === -1 && j === -1,
+        isOptimal: isOptimal,
         i: i,
         j: j
     }
+}
+
+function getLoopPath(numRows, numColumns, allocationMatrix, i, j) {
+    // Create an empty list to store the coordinates of the cells in the path
+    const path = [];
+    // Start from the pivot cell
+    let currentCell = [i, j, ""]
+    // Add the current cell to the path
+    path.push(currentCell);
+    // Create a matrix with falses in order to keep track of the cells that doesn't make a loop
+    const visited = Array.from({ length: numRows }, () => Array.from({ length: numColumns }, () => false));
+    // Count the not null cells
+    const count = allocationMatrix.reduce((accumulator, row) => {
+        return accumulator + row.filter(column => column !== null).length;
+    }, 0);
+
+    for (let k = 0; k < count; k++) {
+        let flag = false;
+        let ii = currentCell[0];
+        let jj = currentCell[1];
+        // Move the cursor from i to 0 (Up)
+        for (let k = ii - 1; k >= 0; k--) {
+            if (currentCell[2] === "down") break; // Don't go back to the cell from which you came
+            if (allocationMatrix[k][jj] !== null && !visited[k][jj]) {
+                currentCell = [k, jj, "up"];
+                path.push(currentCell);
+                flag = true;
+                break;
+            }
+        }
+        if (currentCell[0] === i && currentCell[1] === j && path.length > 1) break;
+        if (flag) continue;
+        // Move the cursor from j to numColumns - 1 (Right)
+        for (let k = jj + 1; k < numColumns; k++) {
+            if (currentCell[2] === "left") break; // Don't go back to the cell from which you came
+            if (allocationMatrix[ii][k] !== null && !visited[ii][k]) {
+                currentCell = [ii, k, "right"];
+                path.push(currentCell);
+                flag = true;
+                break;
+            }
+        }
+        if (currentCell[0] === i && currentCell[1] === j && path.length > 1) break;
+        if (flag) continue;
+        // Move the cursor from i to numRows - 1 (Down)
+        for (let k = ii + 1; k < numRows; k++) {
+            if (currentCell[2] === "up") break; // Don't go back to the cell from which you came
+            if (allocationMatrix[k][jj] !== null && !visited[k][jj]) {
+                currentCell = [k, jj, "down"];
+                path.push(currentCell);
+                flag = true;
+                break;
+            }
+        }
+        if (currentCell[0] === i && currentCell[1] === j && path.length > 1) break;
+        if (flag) continue;
+        // Move the cursor from j to 0 (Left)
+        for (let k = jj - 1; k >= 0; k--) {
+            if (currentCell[2] === "right") break; // Don't go back to the cell from which you came
+            if (allocationMatrix[ii][k] !== null && !visited[ii][k]) {
+                currentCell = [ii, k, "left"];
+                path.push(currentCell);
+                flag = true;
+                break;
+            }
+        }
+        if (currentCell[0] === i && currentCell[1] === j && path.length > 1) break;
+        if (flag) continue;
+        // If we reach this point, then the node is not connected to the pivot cell
+        visited[currentCell[0]][currentCell[1]] = true;
+        // Remove the last cell from the path
+        path.pop();
+        // Set the last cell of the path as the current cell
+        currentCell = path[path.length - 1];
+        k--;
+    }
+    // If we find two consecutive moves in the same direction, then we have to remove the first one
+    for (let k = 0; k < path.length - 1; k++) {
+        if (path[k][2] === path[k + 1][2]) {
+            path.splice(k, 1);
+            k--;
+        }
+    }
+    return path;
 }
 
 function getTotalCost(cost, allocationMatrix) {
