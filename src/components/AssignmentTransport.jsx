@@ -3,8 +3,10 @@ import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
 import fileService from "../service/matrixFile";
 import { transportAlgorithm } from '../algorithms/transport';
+import Modal from "./Modal";
 
 import "../styles/AssignmentTransport.css";
+import TransportationMatrix from './TransportationMatrix';
 const AssignmentTransport = () => {
     // 0: Assignment, 1: Transport
     const [chooseAlgorithm, setChooseAlgorithm] = useState(false);
@@ -18,9 +20,9 @@ const AssignmentTransport = () => {
     // Response for the transport algorithm
     const [allocationMatrix, setAllocationMatrix] = useState([]);
     const [totalCost, setTotalCost] = useState(0);
-    // Demand and supply
-    const [demand, setDemand] = useState([]);
-    const [supply, setSupply] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    // False: Minimize, True: Maximize
+    const [minMax, setMinMax] = useState(false);
 
     // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
     const handleAlgorithm = () => {
@@ -76,7 +78,7 @@ const AssignmentTransport = () => {
     const handleFileDownload = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         console.log(fileName);
-        fileService.download((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
+        fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
     // Maximize the matrix
@@ -93,8 +95,8 @@ const AssignmentTransport = () => {
             console.log(totalCost);
             setAllocationMatrix(allocationMatrix);
             setTotalCost(totalCost);
-            setSupply(Array.from(inputMatrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1])));
-            setDemand(Array.from(inputMatrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val)));
+            setShowModal(true);
+            setMinMax(true);
         } else {
             console.log("Implementar el algoritmo de asignación");
         }
@@ -113,8 +115,8 @@ const AssignmentTransport = () => {
             console.log(totalCost);
             setAllocationMatrix(allocationMatrix);
             setTotalCost(totalCost);
-            setSupply(Array.from(inputMatrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1])));
-            setDemand(Array.from(inputMatrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val)));
+            setShowModal(true);
+            setMinMax(false);
         } else {
             console.log("Implementar el algoritmo de asignación");
         }
@@ -122,6 +124,15 @@ const AssignmentTransport = () => {
 
     return (
         <>
+            {(showModal && chooseAlgorithm) ? (
+                <div>
+                    <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
+                        show={showModal} onClose={() => setShowModal(false)}>
+                    </Modal>
+                </div>
+            ) :
+                (<></>
+                )}
             <input
                 id="file-input"
                 type="file"
@@ -233,40 +244,44 @@ const AssignmentTransport = () => {
 
 
 
+            {(!showModal) ? (
+                <div className="controls-bottom-left">
+                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleAlgorithm}>ALG</button>
+                    <button className="controls-botton" onClick={handleNumRows}>#F</button>
+                    <button className="controls-botton" onClick={handleNumColumns}>#C</button>
+                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
+                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
+                    <button className="controls-botton"
+                        onClick={() => document.getElementById("file-input").click()}
+                    >
+                        <img
+                            src={UploadIcon}
+                            alt="A"
+                            style={{
+                                width: "20px",
+                            }}
+                        />
+                    </button>
+                    <button className="controls-botton"
+                        onClick={handleFileDownload}
+                    >
+                        <img
+                            src={DownloadIcon}
+                            alt="A"
+                            style={{
+                                width: "20px",
+                            }}
+                        />
+                    </button>
+                    <button className="controls-botton"
+                        onClick={() => window.open("/manual.pdf")}
+                        style={{ color: "#000" }}
+                    >?</button>
+                </div>
+            ) :
+                (<></>
+                )}
 
-            <div className="controls-bottom-left">
-                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleAlgorithm}>ALG</button>
-                <button className="controls-botton" onClick={handleNumRows}>#F</button>
-                <button className="controls-botton" onClick={handleNumColumns}>#C</button>
-                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
-                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
-                <button className="controls-botton"
-                    onClick={() => document.getElementById("file-input").click()}
-                >
-                    <img
-                        src={UploadIcon}
-                        alt="A"
-                        style={{
-                            width: "20px",
-                        }}
-                    />
-                </button>
-                <button className="controls-botton"
-                    onClick={handleFileDownload}
-                >
-                    <img
-                        src={DownloadIcon}
-                        alt="A"
-                        style={{
-                            width: "20px",
-                        }}
-                    />
-                </button>
-                <button className="controls-botton"
-                    onClick={() => window.open("/manual.pdf")}
-                    style={{ color: "#000" }}
-                >?</button>
-            </div>
         </>
     );
 };

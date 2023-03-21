@@ -37,6 +37,16 @@ h1 {
     margin-bottom: 0.5rem;
 }
 
+h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #212529;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+
 .matrix {
     width: 50%;
     border: 1px solid gray;
