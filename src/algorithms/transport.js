@@ -1,31 +1,31 @@
-// const data = {
-//     "algorithm": "transport-max",
-//     "numRows": 3,
-//     "numColumns": 4,
-//     "matrix": [
-//         ["", "1", "2", "3", "4", ""],
-//         ["a", "3", "2", "8", "9", "6"],
-//         ["b", "7", "3", "2", "6", "5"],
-//         ["c", "7", "3", "3", "3", "3"],
-//         ["", "2", "6", "5", "1", ""]
-//     ]
-// };
-
 const data = {
-    "algorithm": "transport-max",
+    "algorithm": "transport-min",
     "numRows": 3,
     "numColumns": 4,
     "matrix": [
         ["", "1", "2", "3", "4", ""],
-        ["a", "3", "2", "6", "8", "6"],
-        ["b", "6", "3", "3", "9", "6"],
-        ["c", "2", "6", "4", "2", "7"],
-        ["", "2", "6", "10", "1", ""]
+        ["a", "3", "2", "8", "9", "6"],
+        ["b", "7", "3", "2", "6", "5"],
+        ["c", "7", "3", "3", "3", "3"],
+        ["", "2", "6", "5", "1", ""]
     ]
 };
 
 // const data = {
 //     "algorithm": "transport-min",
+//     "numRows": 3,
+//     "numColumns": 4,
+//     "matrix": [
+//         ["", "1", "2", "3", "4", ""],
+//         ["a", "3", "2", "6", "8", "6"],
+//         ["b", "6", "3", "3", "9", "6"],
+//         ["c", "2", "6", "4", "2", "7"],
+//         ["", "2", "6", "10", "1", ""]
+//     ]
+// };
+
+// const data = {
+//     "algorithm": "transport-max",
 //     "numRows": 4,
 //     "numColumns": 4,
 //     "matrix": [
@@ -38,7 +38,7 @@ const data = {
 //     ]
 // };
 
-const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
+export const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     // Create arrays for supply, demand, and cost using Array.from() and arrow functions
     const supply = Array.from(matrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1]));
     const demand = Array.from(matrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val));
@@ -124,25 +124,23 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     let optimalSol;
     let totalCost = Infinity;
     let copyAllocationMatrix;
-    console.table(cost);
     while (!isOptimal) {
-        console.table(allocationMatrix);
         optimalSol = optimalSolution(numRows, numColumns, cost, allocationMatrix);
         isOptimal = optimalSol.isOptimal;
         i = optimalSol.i;
         j = optimalSol.j;
+        let flag = false;
         if (!isOptimal) {
             let path = [];
             let alpha;
             for (let k = 0; k < i.length; k++) {
                 allocationMatrix[i[k]][j[k]] = 0;
-                console.log(k);
                 try {
                     path = getLoopPath(numRows, numColumns, allocationMatrix, i[k], j[k]);
                 }
                 catch (err) {
-                    allocationMatrix[i[k]][j[k]] = null;
-                    continue;
+                    flag = true;
+                    allocationMatrix[i[k]][j[k]] = 0;
                 }
                 allocationMatrix[i[k]][j[k]] = null;
                 // Find the minimum value between the evenly postioned cells in the path
@@ -180,16 +178,17 @@ const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
             }
             totalCost = getTotalCost(cost, allocationMatrix);
             copyAllocationMatrix = allocationMatrix.map(row => row.map(cell => cell));
-            break;
-
+            if (flag) {
+                break;
+            }
         }
     }
     // Print the allocation matrix
-    console.table(copyAllocationMatrix);
+    // console.table(copyAllocationMatrix);
     // Calculate the total cost in with the costCopy matrix
     totalCost = getTotalCost(costCopy, copyAllocationMatrix);
-    console.log(totalCost);
-
+    // console.log(totalCost);
+    return { allocationMatrix: copyAllocationMatrix, totalCost: totalCost };
 }
 
 function optimalSolution(numRows, numColumns, cost, allocationMatrix) {
@@ -269,8 +268,6 @@ function optimalSolution(numRows, numColumns, cost, allocationMatrix) {
         i.push(values[k][1]);
         j.push(values[k][2]);
     }
-    console.table(cMatrix);
-    console.table(values);
     // If the minimum value is negative, the solution is not optimal
     return {
         isOptimal: isOptimal,
@@ -373,6 +370,7 @@ function getTotalCost(cost, allocationMatrix) {
     return totalCost;
 }
 
-
-
 transportAlgorithm(data);
+
+// TODO: SOLVE WHEN WE GET A REPEATED NEGATIVE VALUE IN THE MODI MATRIX
+// FIND A WAY TO CHOOSE THE RIGHT PATH WHEN WE HAVE MULTIPLE NEGATIVE VALUES

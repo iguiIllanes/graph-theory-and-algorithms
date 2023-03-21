@@ -2,19 +2,33 @@ import React, { useState } from 'react';
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
 import fileService from "../service/matrixFile";
+import { transportAlgorithm } from '../algorithms/transport';
 
 import "../styles/AssignmentTransport.css";
 const AssignmentTransport = () => {
+    // 0: Assignment, 1: Transport
     const [chooseAlgorithm, setChooseAlgorithm] = useState(false);
+    // Number of rows and columns of the matrix
     const [numRows, setNumRows] = useState(2);
+    // Number of rows and columns of the matrix
     const [numColumns, setNumColumns] = useState(2);
+    // Matrix of inputs
     const [inputMatrix, setInputMatrix] = useState(Array.from({ length: numRows + 2 }, () => new Array(numColumns + 2).fill("")));
 
+    // Response for the transport algorithm
+    const [allocationMatrix, setAllocationMatrix] = useState([]);
+    const [totalCost, setTotalCost] = useState(0);
+    // Demand and supply
+    const [demand, setDemand] = useState([]);
+    const [supply, setSupply] = useState([]);
 
+    // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
     const handleAlgorithm = () => {
         setChooseAlgorithm(!chooseAlgorithm);
+        setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(numColumns + 2).fill("")));
     };
 
+    // We can change the number of rows by clicking on the button
     const handleNumRows = () => {
         let newNumRows = prompt("Ingrese el numero de filas");
         if (newNumRows === null || newNumRows === "") {
@@ -30,6 +44,7 @@ const AssignmentTransport = () => {
         setInputMatrix(Array.from({ length: newNumRows + 2 }, () => new Array(numColumns + 2).fill("")));
     };
 
+    // We can change the number of columns by clicking on the button
     const handleNumColumns = () => {
         let newNumColumns = prompt("Ingrese el numero de columnas");
         if (newNumColumns === null || newNumColumns === "") {
@@ -45,6 +60,7 @@ const AssignmentTransport = () => {
         setInputMatrix(Array.from({ length: numRows + 2 }, () => new Array(newNumColumns + 2).fill("")));
     }
 
+    // We can change the value of the matrix by clicking on the input, this depends on matrixFile service
     const handleFileUpload = async (event) => {
         await fileService.uploadMatrix(event).then((response) => {
             console.log(response);
@@ -56,10 +72,53 @@ const AssignmentTransport = () => {
         });
     };
 
-    const handleMax = () => {
-        console.log(inputMatrix);
+    // We can download the matrix by clicking on the button, this depends on matrixFile service
+    const handleFileDownload = () => {
+        const fileName = prompt("Introduzca el nombre del archivo");
+        console.log(fileName);
+        fileService.download((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
+    // Maximize the matrix
+    const handleMax = () => {
+        const data = {
+            algorithm: (chooseAlgorithm ? "transport-max" : "assignment-max"),
+            numRows: numRows,
+            numColumns: numColumns,
+            matrix: inputMatrix
+        }
+        if (chooseAlgorithm) {
+            const { allocationMatrix, totalCost } = transportAlgorithm(data);
+            console.table(allocationMatrix);
+            console.log(totalCost);
+            setAllocationMatrix(allocationMatrix);
+            setTotalCost(totalCost);
+            setSupply(Array.from(inputMatrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1])));
+            setDemand(Array.from(inputMatrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val)));
+        } else {
+            console.log("Implementar el algoritmo de asignación");
+        }
+    }
+    // Minimize the matrix
+    const handleMin = () => {
+        const data = {
+            algorithm: (chooseAlgorithm ? "transport-min" : "assignment-min"),
+            numRows: numRows,
+            numColumns: numColumns,
+            matrix: inputMatrix
+        }
+        if (chooseAlgorithm) {
+            const { allocationMatrix, totalCost } = transportAlgorithm(data);
+            console.table(allocationMatrix);
+            console.log(totalCost);
+            setAllocationMatrix(allocationMatrix);
+            setTotalCost(totalCost);
+            setSupply(Array.from(inputMatrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1])));
+            setDemand(Array.from(inputMatrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val)));
+        } else {
+            console.log("Implementar el algoritmo de asignación");
+        }
+    }
 
     return (
         <>
@@ -180,7 +239,7 @@ const AssignmentTransport = () => {
                 <button className="controls-botton" onClick={handleNumRows}>#F</button>
                 <button className="controls-botton" onClick={handleNumColumns}>#C</button>
                 <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
-                <button className="controls-botton" style={{ fontSize: 10 }}>MIN</button>
+                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
                 <button className="controls-botton"
                     onClick={() => document.getElementById("file-input").click()}
                 >
@@ -193,7 +252,7 @@ const AssignmentTransport = () => {
                     />
                 </button>
                 <button className="controls-botton"
-                    onClick={() => fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, "matriz.json")}
+                    onClick={handleFileDownload}
                 >
                     <img
                         src={DownloadIcon}

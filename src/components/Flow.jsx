@@ -141,7 +141,6 @@ const Flow = () => {
   };
 
   const handleFileDownload = () => {
-    console.log("downloading");
     const fileName = prompt("Introduzca el nombre del archivo");
     console.log(fileName);
     fileService.download(nodes, edges, `${fileName}.json`);
