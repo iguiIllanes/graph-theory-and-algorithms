@@ -221,7 +221,7 @@ const Flow = () => {
         onConnect={onConnect}
         style={{ background: bgColor }}
         nodeTypes={nodeTypes}
-        edgeTypes={{ ...edgeTypes }}
+        edgeTypes={edgeTypes}
         connectionLineType="straight"
         connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"

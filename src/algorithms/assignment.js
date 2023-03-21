@@ -39,7 +39,7 @@ const data = {
 //     ]
 // };
 
-const assignmentAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
+export const assignmentAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
     // Create array of the cost matrix
     const cost = Array.from(matrix.slice(1, numRows + 1), row => Array.from(row.slice(1, numColumns + 1), val => parseInt(val)));
     // Ceate a copy of the cost matrix

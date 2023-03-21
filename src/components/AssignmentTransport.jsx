@@ -3,10 +3,13 @@ import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
 import fileService from "../service/matrixFile";
 import { transportAlgorithm } from '../algorithms/transport';
+import { assignmentAlgorithm } from '../algorithms/assignment';
 import Modal from "./Modal";
 
 import "../styles/AssignmentTransport.css";
 import TransportationMatrix from './TransportationMatrix';
+import AssignmentMatrix from './AssignmentMatrix';
+
 const AssignmentTransport = () => {
     // 0: Assignment, 1: Transport
     const [chooseAlgorithm, setChooseAlgorithm] = useState(false);
@@ -19,10 +22,15 @@ const AssignmentTransport = () => {
 
     // Response for the transport algorithm
     const [allocationMatrix, setAllocationMatrix] = useState([]);
-    const [totalCost, setTotalCost] = useState(0);
-    const [showModal, setShowModal] = useState(false);
+    // Response for the assignment algorithm
+    const [assignmentMatrix, setAssignmentMatrix] = useState([]);
+
     // False: Minimize, True: Maximize
     const [minMax, setMinMax] = useState(false);
+    // Common response for both algorithms
+    const [totalCost, setTotalCost] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+
 
     // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
     const handleAlgorithm = () => {
@@ -98,7 +106,13 @@ const AssignmentTransport = () => {
             setShowModal(true);
             setMinMax(true);
         } else {
-            console.log("Implementar el algoritmo de asignación");
+            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+            console.table(assignmentMatrix);
+            console.log(totalCost);
+            setAssignmentMatrix(assignmentMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(true);
         }
     }
     // Minimize the matrix
@@ -118,18 +132,33 @@ const AssignmentTransport = () => {
             setShowModal(true);
             setMinMax(false);
         } else {
-            console.log("Implementar el algoritmo de asignación");
+            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+            console.table(assignmentMatrix);
+            console.log(totalCost);
+            setAssignmentMatrix(assignmentMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(true);
         }
     }
 
     return (
         <>
-            {(showModal && chooseAlgorithm) ? (
-                <div>
-                    <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
-                        show={showModal} onClose={() => setShowModal(false)}>
-                    </Modal>
-                </div>
+            {(showModal) ? (
+                (chooseAlgorithm) ? (
+                    <div>
+                        <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
+                            show={showModal} onClose={() => setShowModal(false)}>
+                        </Modal>
+                    </div>
+                ) : (
+                    <div>
+                        <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
+                            show={showModal} onClose={() => setShowModal(false)}>
+                        </Modal>
+                    </div>
+                )
+
             ) :
                 (<></>
                 )}
