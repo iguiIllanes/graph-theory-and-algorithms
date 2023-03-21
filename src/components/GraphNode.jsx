@@ -25,6 +25,7 @@ export default memo(({ id, handleId, data, isConnectable }) => {
       deleteNode(id);
     }
   };
+  console.log(data.earlyTime);
 
   return (
     <div className="node-container" onClick={handleNodeClick}>
@@ -51,7 +52,17 @@ export default memo(({ id, handleId, data, isConnectable }) => {
         }}
         isConnectable={isConnectable}
       />
-      <div className="customNode">{data.label}</div>
+      {data.earlyTime === undefined && data.lateTime === undefined ? (
+        <div className="customNode">{data.label}</div>
+      ) :
+        <div class="customJohnsonNode">
+          {data.label}
+          <hr />
+          {data.earlyTime} | {data.lateTime}
+        </div>
+
+      }
+
       <Handle
         id={`${handleId}-top`}
         type="source"

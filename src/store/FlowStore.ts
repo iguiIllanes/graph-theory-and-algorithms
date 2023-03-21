@@ -106,11 +106,11 @@ const useStore = create<RFState>((set, get) => ({
         }
       });
       newEdges.forEach((edge: Edge, index: number) => {
-        if(parseInt(edge.source) > parseInt(nodeId)) {
-          edge.source = (parseInt(edge.source)-1).toString();
+        if (parseInt(edge.source) > parseInt(nodeId)) {
+          edge.source = (parseInt(edge.source) - 1).toString();
         }
-        if(parseInt(edge.target) > parseInt(nodeId)) {
-          edge.target = (parseInt(edge.target)-1).toString();
+        if (parseInt(edge.target) > parseInt(nodeId)) {
+          edge.target = (parseInt(edge.target) - 1).toString();
         }
       }
       );
