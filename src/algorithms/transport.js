@@ -39,6 +39,7 @@ const data = {
 // };
 
 export const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
+    validation(numRows, numColumns, matrix);
     // Create arrays for supply, demand, and cost using Array.from() and arrow functions
     const supply = Array.from(matrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1]));
     const demand = Array.from(matrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val));
@@ -370,7 +371,34 @@ function getTotalCost(cost, allocationMatrix) {
     return totalCost;
 }
 
-transportAlgorithm(data);
-
 // TODO: SOLVE WHEN WE GET A REPEATED NEGATIVE VALUE IN THE MODI MATRIX
 // FIND A WAY TO CHOOSE THE RIGHT PATH WHEN WE HAVE MULTIPLE NEGATIVE VALUES
+
+function validation(numRows, numColumns, matrix) {
+    // Check if the cost matrix contains only numbers greater or equal to 0
+    const cost = Array.from(matrix.slice(1, numRows + 1), row => Array.from(row.slice(1, numColumns + 1), val => parseInt(val)));
+    cost.forEach(row => row.forEach(val => {
+        if (isNaN(val)) throw new Error("La matriz de costos debe contener solo números");
+        if (val === null || val === "") throw new Error("La matriz de costos debe contener solo números");
+        if (val < 0) throw new Error("La matriz de costos debe contener solo números mayores o iguales a 0");
+    }));
+    // Check if the supply and demand arrays contain only numbers greater or equal to 0
+    const supply = Array.from(matrix.slice(1, numRows + 1), row => parseInt(row[numColumns + 1]));
+    supply.forEach(val => {
+        if (val < 0) throw new Error("El vector de disponibilidad debe contener solo números mayores o iguales a 0");
+        if (isNaN(val)) throw new Error("El vector de disponibilidad debe contener solo números");
+        if (val === null || val === "") throw new Error("El vector de disponibilidad debe contener solo números");
+    });
+    const demand = Array.from(matrix[numRows + 1].slice(1, numColumns + 1), val => parseInt(val));
+    demand.forEach(val => {
+        if (val < 0) throw new Error("El vector de demanda debe contener solo números mayores o iguales a 0");
+        if (isNaN(val)) throw new Error("El vector de demanda debe contener solo números");
+        if (val === null || val === "") throw new Error("El vector de demanda debe contener solo números");
+    });
+    // Check if the sum of the supply array is equal to the sum of the demand array
+    console.log(supply);
+    console.log(demand);
+    const sumSupply = supply.reduce((acc, val) => acc + val, 0);
+    const sumDemand = demand.reduce((acc, val) => acc + val, 0);
+    if (sumSupply !== sumDemand) throw new Error("La suma de los elementos del vector de disponibilidad debe ser igual a la suma de los elementos del vector de demanda");
+}

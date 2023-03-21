@@ -143,22 +143,26 @@ const AssignmentTransport = () => {
             numColumns: numColumns,
             matrix: inputMatrix
         }
-        if (chooseAlgorithm) {
-            const { allocationMatrix, totalCost } = transportAlgorithm(data);
-            console.table(allocationMatrix);
-            console.log(totalCost);
-            setAllocationMatrix(allocationMatrix);
-            setTotalCost(totalCost);
-            setShowModal(true);
-            setMinMax(true);
-        } else {
-            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-            console.table(assignmentMatrix);
-            console.log(totalCost);
-            setAssignmentMatrix(assignmentMatrix);
-            setTotalCost(totalCost);
-            setShowModal(true);
-            setMinMax(true);
+        try {
+            if (chooseAlgorithm) {
+                const { allocationMatrix, totalCost } = transportAlgorithm(data);
+                console.table(allocationMatrix);
+                console.log(totalCost);
+                setAllocationMatrix(allocationMatrix);
+                setTotalCost(totalCost);
+                setShowModal(true);
+                setMinMax(true);
+            } else {
+                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+                console.table(assignmentMatrix);
+                console.log(totalCost);
+                setAssignmentMatrix(assignmentMatrix);
+                setTotalCost(totalCost);
+                setShowModal(true);
+                setMinMax(true);
+            }
+        } catch (error) {
+            alert(error);
         }
     }
     // Minimize the matrix
@@ -169,22 +173,26 @@ const AssignmentTransport = () => {
             numColumns: numColumns,
             matrix: inputMatrix
         }
-        if (chooseAlgorithm) {
-            const { allocationMatrix, totalCost } = transportAlgorithm(data);
-            console.table(allocationMatrix);
-            console.log(totalCost);
-            setAllocationMatrix(allocationMatrix);
-            setTotalCost(totalCost);
-            setShowModal(true);
-            setMinMax(false);
-        } else {
-            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-            console.table(assignmentMatrix);
-            console.log(totalCost);
-            setAssignmentMatrix(assignmentMatrix);
-            setTotalCost(totalCost);
-            setShowModal(true);
-            setMinMax(true);
+        try {
+            if (chooseAlgorithm) {
+                const { allocationMatrix, totalCost } = transportAlgorithm(data);
+                console.table(allocationMatrix);
+                console.log(totalCost);
+                setAllocationMatrix(allocationMatrix);
+                setTotalCost(totalCost);
+                setShowModal(true);
+                setMinMax(false);
+            } else {
+                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+                console.table(assignmentMatrix);
+                console.log(totalCost);
+                setAssignmentMatrix(assignmentMatrix);
+                setTotalCost(totalCost);
+                setShowModal(true);
+                setMinMax(true);
+            }
+        } catch (error) {
+            alert(error);
         }
     }
 

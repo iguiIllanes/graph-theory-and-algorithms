@@ -40,6 +40,7 @@ const data = {
 // };
 
 export const assignmentAlgorithm = ({ algorithm, numRows, numColumns, matrix }) => {
+    validation(numRows, numColumns, matrix);
     // Create array of the cost matrix
     const cost = Array.from(matrix.slice(1, numRows + 1), row => Array.from(row.slice(1, numColumns + 1), val => parseInt(val)));
     // Ceate a copy of the cost matrix
@@ -149,4 +150,16 @@ function getTotalCost(cost, assignmentMatrix) {
         }
     }
     return totalCost;
+}
+
+function validation(numRows, numColumns, matrix) {
+    // Check if the cost matrix contains only numbers greater or equal to 0
+    const cost = Array.from(matrix.slice(1, numRows + 1), row => Array.from(row.slice(1, numColumns + 1), val => parseInt(val)));
+    cost.forEach(row => row.forEach(val => {
+        if (isNaN(val)) throw new Error("La matriz de costos debe contener solo números");
+        if (val === null || val === "") throw new Error("La matriz de costos debe contener solo números");
+        if (val < 0) throw new Error("La matriz de costos debe contener solo números mayores o iguales a 0");
+    }));
+    // Check if the cost matrix is square
+    if (cost.length !== cost[0].length) throw new Error("La matriz de costos debe ser cuadrada");
 }
