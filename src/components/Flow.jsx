@@ -585,7 +585,7 @@ const Flow = () => {
   }
 
   return (
-    <>
+    <div style={{ height: outerHeight }}>
       {showMatrix ? (
         <div>
           <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
@@ -759,7 +759,7 @@ const Flow = () => {
         </div>
       ) :
         (<></>)}
-    </>
+    </div>
   );
 };
 
