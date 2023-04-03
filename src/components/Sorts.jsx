@@ -23,7 +23,7 @@ const FourButtonsWithInput = () => {
     console.log("Selection Sort");
     isSorted = selectionSort(array);
     const sortedString = arrayToString(isSorted);
-    const sortedArrayFromString = sortedString.split('|');
+     const sortedArrayFromString = sortedString.split('|');
 
 
   }
