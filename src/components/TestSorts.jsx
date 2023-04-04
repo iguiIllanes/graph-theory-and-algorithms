@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { generarListaAleatoria, insertionSort, selectionSort, mergeSort, shellSort } from "../helpers/sorts_2";
-import { generateRandomArray,arrayToString, randomString} from "../algorithms/sorts";
+import { generateRandomArray,arrayToString} from "../algorithms/sorts";
 const TestSort = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [array, setArray] = useState([]);
   const [isRandom, setIsRandom] = React.useState(false);
   const [text, setText] = useState("");
-
+   const [readOnly, setReadOnly] = useState(false);
   
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -23,6 +23,7 @@ const TestSort = () => {
       // var randomArray = generarListaAleatoria();
       // setArray(randomArray);
       // console.log("Arreglo aleatorio",randomArray);
+      
       let n = prompt("Cuántos elementos ingresará?");
 
 
@@ -32,6 +33,8 @@ const TestSort = () => {
       const randomString = arrayToString(randomArray);
       const randomArrayFromString = randomString.split('|');
       setArray(randomArrayFromString);
+      setReadOnly(true);
+      
       
    }
 const handleInsertionSort = () => {
@@ -73,6 +76,7 @@ const handleInsertionSort = () => {
           value={isRandom ? array : text}
           onChange={handleTextChange}
           style={{ height: "auto", overflow: "hidden" }}
+          disabled={readOnly}
         />
         <h3>Input Field</h3>
         <input type="text" placeholder={isRandom ? array : ''}/>
