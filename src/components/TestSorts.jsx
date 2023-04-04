@@ -9,10 +9,10 @@ const TestSort = () => {
    const [readOnly, setReadOnly] = useState(false);
    const [Disabled, setDisabled] = useState(false);
   
-  const handleTextChange = (e) => {
+   const handleTextChange = (e) => {
     setText(e.target.value);
-    
-    setArray(text);
+    const arrayFromText = e.target.value.split(",").map(Number); // Convertir texto a arreglo
+    setArray(arrayFromText);
     console.log(array)
   };
 
@@ -29,24 +29,15 @@ const TestSort = () => {
   };
 
   const handleRandomArray = () => {
-      // var randomArray = generarListaAleatoria();
-      // setArray(randomArray);
-      // console.log("Arreglo aleatorio",randomArray);
-      
-      let n = prompt("Cuántos elementos ingresará?");
-
-
-      const randomArray = generateRandomArray(n);
-      console.log("Arreglo aleatorio",randomArray);
-      setIsRandom(!isRandom);
-      const randomString = arrayToString(randomArray);
-      const randomArrayFromString = randomString.split('|');
-      setArray(randomArrayFromString);
-      setReadOnly(true);
-      setDisabled(true);
-      
-      
-   }
+    let n = prompt("Cuántos elementos ingresará?");
+    const randomArray = generateRandomArray(n);
+    console.log("Arreglo aleatorio",randomArray);
+    setIsRandom(true);
+    setArray(randomArray);
+    setText(arrayToString(randomArray));
+    setReadOnly(true);
+    setDisabled(true);
+  };
 const handleInsertionSort = () => {
       const sortedArray = insertionSort(array);
       console.log("Arreglo ordenado - Insertion", sortedArray.sortedArray);
