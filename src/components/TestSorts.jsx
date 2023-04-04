@@ -1,8 +1,6 @@
-import React from "react";
-import { useState } from "react";
-import { generarListaAleatoria, insertionSort } from "../helpers/sorts_2";
-import { arrayToString, generateRandomArray, selectionSort } from "../algorithms/sorts";
-
+import React, { useState } from "react";
+import { generarListaAleatoria, insertionSort, selectionSort, mergeSort, shellSort } from "../helpers/sorts_2";
+import { generateRandomArray,arrayToString, randomString} from "../algorithms/sorts";
 const TestSort = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [array, setArray] = useState([]);
@@ -24,15 +22,16 @@ const TestSort = () => {
       // var randomArray = generarListaAleatoria();
       // setArray(randomArray);
       // console.log("Arreglo aleatorio",randomArray);
+      let n = prompt("Cuántos elementos ingresará?");
 
 
-
-      const randomArray = generateRandomArray();
+      const randomArray = generateRandomArray(n);
       console.log("Arreglo aleatorio",randomArray);
       setIsRandom(!isRandom);
       const randomString = arrayToString(randomArray);
       const randomArrayFromString = randomString.split('|');
       setArray(randomArrayFromString);
+      
    }
 const handleInsertionSort = () => {
       const sortedArray = insertionSort(array);
