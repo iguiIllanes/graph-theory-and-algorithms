@@ -1,7 +1,7 @@
 // Algoritmo de ordenamiento de selección
-export function generateRandomArray() {
+export function generateRandomArray(n) {
     const arr = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < n; i++) {
       arr.push(Math.floor(Math.random() * 100)); // Genera un número aleatorio entre 0 y 99
     }
     return arr;

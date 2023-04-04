@@ -1,6 +1,6 @@
-export function generarListaAleatoria() {
+export function generarListaAleatoria(n) {
    var lista = [];
-   for (var i = 0; i < 20000; i++) {
+   for (var i = 0; i < n; i++) {
      lista.push(Math.floor(Math.random() * 100450));
    }
    return lista;
