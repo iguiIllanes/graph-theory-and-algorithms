@@ -7,7 +7,6 @@ import "reactflow/dist/style.css";
 import React, { useState } from 'react';
 import AssignmentTransport from './components/AssignmentTransport';
 import TransportationMatrix from "./components/TransportationMatrix";
-import AssignmentScreen from "./components/AssignmentScreen";
 import Navbar from "./components/Sidebar";
 
 const App = () => {
