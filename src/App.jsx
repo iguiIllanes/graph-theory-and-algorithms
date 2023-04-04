@@ -19,8 +19,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Flow/>} ></Route> 
       | <Route path='/Jhonson' element={<Flow/>} ></Route> 
-      | <Route path='/Nortwest' component={<TransportationMatrix/>} />
         <Route path='/Asignacion' element={<AssignmentTransport/>} ></Route>
+      | <Route path='/Nortwest' component={<TransportationMatrix/>} />
       </Routes>
     </Router>
   </>
