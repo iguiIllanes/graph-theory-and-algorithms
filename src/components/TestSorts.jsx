@@ -4,7 +4,7 @@ import { generarListaAleatoria, insertionSort } from "../helpers/sorts_2";
 import { arrayToString, generateRandomArray, selectionSort } from "../algorithms/sorts";
 
 const TestSort = () => {
-  const [selectedOption, setSelectedOption] = React.useState("");
+  const [selectedOption, setSelectedOption] = useState("");
   const [array, setArray] = useState([]);
   const [isRandom, setIsRandom] = React.useState(false);
   const [text, setText] = useState("");
@@ -36,15 +36,40 @@ const TestSort = () => {
    }
 const handleInsertionSort = () => {
 
-      let sortedArrayObject = insertionSort(array);
-      console.log("Arreglo ordenado - Insertion",sortedArrayObject.sortedArray);
-      console.log("Operaciones - Insertion",sortedArrayObject.numOperations);
-      console.log("Runtime - Insertion",sortedArrayObject.runtime);
-}
-const handleSelectionSort = () => {
-      let sortedArray = selectionSort(array);
-      console.log("Arreglo ordenado - Selection",sortedArray);
-}
+  const handleRandomArray = () => {
+    const randomArray = generarListaAleatoria();
+    setArray(randomArray);
+
+    console.log("Arreglo aleatorio", randomArray);
+  };
+
+  const handleInsertionSort = () => {
+    const sortedArrayObject = insertionSort(array);
+    console.log("Arreglo ordenado - Insertion", sortedArrayObject.sortedArray);
+    console.log("Operaciones - Insertion", sortedArrayObject.numOperations);
+    console.log("Runtime - Insertion", sortedArrayObject.runtime);
+  };
+
+  const handleSelectionSort = () => {
+    const sortedArray = selectionSort(array);
+    console.log("Arreglo ordenado - Selection", sortedArray.sortedArray);
+    console.log("Operaciones - Selection", sortedArray.numOperations);
+    console.log("Runtime - Selection", sortedArray.runtime);
+  };
+
+  const handleShellSort = () => {
+    const sortedArray = shellSort(array);
+    console.log("Arreglo ordenado - Shell", sortedArray.sortedArray);
+    console.log("Operaciones - Shell", sortedArray.numOperations);
+    console.log("Runtime - Shell", sortedArray.runtime);
+  };
+
+  const handleMergeSort = () => {
+    const sortedArray = mergeSort(array);
+    console.log("Arreglo ordenado - Merge", sortedArray.sortedArray);
+    console.log("Operaciones - Merge", sortedArray.numSteps);
+    console.log("Runtime - Merge", sortedArray.runtime);
+  };
 
   return (
     <div>
@@ -62,18 +87,19 @@ const handleSelectionSort = () => {
         <input type="text" placeholder={isRandom ? array : ''}/>
       </div>
       <div>
-        <button onClick={handleRandomArray} >Random</button>
+        <button onClick={handleRandomArray}>Random</button>
       </div>
       <div>
         <button onClick={handleInsertionSort}>Insertion Sort</button>
       </div>
       <div>
-        <h3>Button 3</h3>
-        <button>Button 3</button>
+        <button onClick={handleSelectionSort}>Selection Sort</button>
       </div>
       <div>
-        <h3>Button 4</h3>
-        <button>Button 4</button>
+        <button onClick={handleShellSort}>Shell Sort</button>
+      </div>
+      <div>
+        <button onClick={handleMergeSort}>Merge Sort</button>
       </div>
 
       <div>
