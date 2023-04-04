@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { generarListaAleatoria, insertionSort, selectionSort, mergeSort, shellSort } from "../helpers/sorts_2";
 import { generateRandomArray,arrayToString} from "../algorithms/sorts";
+import "../styles/Sorts.css";
 const TestSort = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [array, setArray] = useState([]);
@@ -79,49 +80,28 @@ const handleInsertionSort = () => {
           style={{ height: "auto", overflow: "hidden" }}
           disabled={readOnly}
         />
-        <h3>Input Field</h3>
-        <input type="text" placeholder={isRandom ? array : ''}/>
       </div>
-      <div>
-        <button onClick={handleRandomArray} disabled={Disabled}>Random</button>
+      <div className="row-intial">
+        <button className="buttonSort" onClick={handleRandomArray} disabled={Disabled}>Random</button>
+        <button className="buttonSort" onClick={handleClear}>Clear</button>
       </div>
-      <div>
-        <button onClick={handleClear}>Clear</button>
-      </div>
-      <div>
+
+      <div className="row">
         <button onClick={handleInsertionSort}>Insertion Sort</button>
-      </div>
-      <div>
         <button onClick={handleSelectionSort}>Selection Sort</button>
       </div>
       <div>
-        <button onClick={handleShellSort}>Shell Sort</button>
+        
       </div>
-      <div>
+      <div className="row">
+        <button onClick={handleShellSort}>Shell Sort</button>
         <button onClick={handleMergeSort}>Merge Sort</button>
       </div>
-
       <div>
-        <h3>Radio Buttons</h3>
-        <label>
-          Option 1:
-          <input
-            type="radio"
-            value="option1"
-            checked={selectedOption === "option1"}
-            onChange={handleOptionChange}
-          />
-        </label>
-        <label>
-          Option 2:
-          <input
-            type="radio"
-            value="option2"
-            checked={selectedOption === "option2"}
-            onChange={handleOptionChange}
-          />
-        </label>
+        
       </div>
+
+      
     </div>
   );
   };
