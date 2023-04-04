@@ -7,6 +7,7 @@ const TestSort = () => {
   const [isRandom, setIsRandom] = React.useState(false);
   const [text, setText] = useState("");
    const [readOnly, setReadOnly] = useState(false);
+   const [Disabled, setDisabled] = useState(false);
   
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -17,6 +18,14 @@ const TestSort = () => {
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
+  };
+
+  const handleClear = () => {
+    setText("");
+    setArray([]);
+    setReadOnly(false);
+    setIsRandom(false);
+    setDisabled(false);
   };
 
   const handleRandomArray = () => {
@@ -34,6 +43,7 @@ const TestSort = () => {
       const randomArrayFromString = randomString.split('|');
       setArray(randomArrayFromString);
       setReadOnly(true);
+      setDisabled(true);
       
       
    }
@@ -82,7 +92,10 @@ const handleInsertionSort = () => {
         <input type="text" placeholder={isRandom ? array : ''}/>
       </div>
       <div>
-        <button onClick={handleRandomArray}>Random</button>
+        <button onClick={handleRandomArray} disabled={Disabled}>Random</button>
+      </div>
+      <div>
+        <button onClick={handleClear}>Clear</button>
       </div>
       <div>
         <button onClick={handleInsertionSort}>Insertion Sort</button>
