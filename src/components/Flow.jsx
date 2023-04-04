@@ -22,9 +22,6 @@ import CriticPathIcon from "/icons/johnson.jpeg";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import AdjacencyMatrix from "./AdjacencyMatrix";
-import AssignationMatrix from "./AssignationMatrix";
-import AssignationIconMax from "/icons/maxIcon.png";
-import AssignationIconMin from "/icons/minIcon.png";
 
 import fileService from "./../service/file";
 
@@ -211,116 +208,7 @@ const Flow = () => {
 
 
 
-  const handleAssignationMin_2 = () => {
-    function removeZeros(matrix) {
-      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
-      for (let i = 0; i < filteredMatrix.length; i++) {
-        if (filteredMatrix[i].length === 0) {
-          filteredMatrix.splice(i, 1);
-          i--;
-        }
-      }
-      return filteredMatrix;
-    }
-    let matrix = [];
-    // fill matrix with zeros
-    for (let i = 0; i < nodes.length; i++) {
-      matrix[i] = new Array(nodes.length).fill(0);
-    }
-
-    edges.forEach((edge) => {
-      matrix[edge.source][edge.target] =
-        typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
-    });
-    console.log("matrix", matrix);
-    matrix = matrix.map(innerArr => innerArr.map(Number));
-    // convertir la matrix sin conexiones 
-    let matrixFinal = removeZeros(matrix);
-    console.log("matrixFinal", matrixFinal);
-    //algoritmo de asignación
-    //FIXME: no maximiza unu
-    const totalCost1 = assign(matrixFinal);
-    console.log("Costo optimizado", totalCost);
-    let mat2 = matrixFinal;
-    let x = assignWithMunkres(mat2, true);
-    let y = extractValues(mat2, x);
-    console.log("Posiciones", x);
-
-
-    setTotalCost(totalCost1);
-    console.log(totalCost);
-    console.log("Posiciones", x);
-    //console.log("matrix",typeof(mat2));
-    let ceros = assignInitial(x);
-    console.log('PosicionesCeros', ceros);
-    setPosMatrix(ceros);
-    setShowModalAssignation(!showModalAssignation);
-    setAssignationMatrix(mat2);
-    setTitleAssignation('Minimización');
-
-    setShowAssignationMin(!showAssignationMin);
-    console.log("showAssignationMin 1", showAssignationMin);
-  }
-
-  const handleAssignationMax = () => {
-    //TODO: quitar esta función de acá y ponerla en el helper
-    function removeZeros(matrix) {
-      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
-      for (let i = 0; i < filteredMatrix.length; i++) {
-        if (filteredMatrix[i].length === 0) {
-          filteredMatrix.splice(i, 1);
-          i--;
-        }
-      }
-      return filteredMatrix;
-    }
-
-    let matrix = [];
-    // fill matrix with zeros
-    for (let i = 0; i < nodes.length; i++) {
-      matrix[i] = new Array(nodes.length).fill(0);
-    }
-
-    edges.forEach((edge) => {
-      matrix[edge.source][edge.target] =
-        typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
-    });
-    console.log("matrix", matrix);
-    matrix = matrix.map(innerArr => innerArr.map(Number));
-    // convertir la matrix sin conexiones 
-    let matrixFinal = removeZeros(matrix);
-    console.log("matrixFinal", matrixFinal);
-
-
-
-    //algoritmo de asignación
-    //FIXME: no maximiza unu
-    const totalCost1 = assignMax(matrixFinal);
-    console.log("Costo optimizado", totalCost1);
-    let mat2 = [...matrixFinal];
-    let x = assignWithMunkres(mat2, false);
-    let y = extractValues(mat2, x);
-    console.log("Costo", totalCost1, "Posiciones", y);
-    console.log("Posiciones", x);
-
-    setTotalCost(totalCost1);
-    console.log("Posiciones", x);
-    //console.log("matrix",typeof(mat2));
-    let ceros = assignInitial(x);
-    console.log('PosicionesCeros', ceros);
-    setPosMatrix(ceros);
-    setAssignationMatrix(mat2);
-
-    setShowAssignationMax(!showAssignationMax);
-    setShowModalAssignation(!showModalAssignation);
-    console.log("showAssignationMax", showAssignationMax);
-    setTitleAssignation("Máximizar");
-    //setShowModalOptions(!showModalOptions);
-
-    //mostrar matriz
-  }
-
-
+  
 
 
   //minimos de cada columna
@@ -382,21 +270,6 @@ const Flow = () => {
 
 
 
-
-  // maximos elementos por fila
-  function rowElements(matrix) {
-    const maxRow = [];
-    for (let i = 0; i < matrix.length; i++) {
-      let max = matrix[i][0];
-      for (let j = 1; j < matrix[i].length; j++) {
-        if (matrix[i][j] > max) {
-          max = matrix[i][j];
-        }
-      }
-      maxRow.push(max);
-    }
-    return maxRow;
-  }
 
   // minimos elementos por fila
   function minrowElements(matrix) {
@@ -477,47 +350,7 @@ const Flow = () => {
     return values;
   }
 
-  //costo total xd
-  function sum(costo) {
-    let cost = 0;
-    //console.log(typeof costo[0]);
-    for (let i = 0; i < costo.length; i++) {
-      cost = cost + costo[i];
-    }
-    return cost
-  }
-
-
-  function generateAssignments(matrix) {
-    const rows = matrix.length;
-    const cols = matrix[0].length;
-    const assignments = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        assignments.push([i, j]);
-      }
-    }
-    return assignments;
-  }
-
-  // TODO: add delete persona
-  const handleRemoveElements = () => {
-    const newNodes = nodes.slice(0, nodes.length - 1);
-    setNodes(newNodes);
-
-    const newEdges = [];
-    edges.forEach((edge) => {
-      // TODO: wtf is this? there is a better way to do this
-      if (
-        edge.source === String(nodes.length - 1) ||
-        edge.target === String(nodes.length - 1)
-      ) {
-      } else {
-        newEdges.push(edge);
-      }
-    });
-    setEdges(newEdges);
-  };
+ 
 
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
@@ -598,14 +431,6 @@ const Flow = () => {
         (<></>
         )}
 
-      {showModalAssignation ? (
-        <Modal show={showModalAssignation} onClose={handleCloseModalAssignation}
-          title={`Asignacion de nodos ${titleAssignation}`}
-          content={<AssignationMatrix matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost} />}
-        ></Modal>
-      ) : (
-        <> </>
-      )}
 
       <input
         id="file-input"
@@ -685,24 +510,6 @@ const Flow = () => {
               }}
             />
 
-          </ControlButton>
-          <ControlButton onClick={handleAssignationMin_2}>
-            <img
-              src={AssignationIconMin}
-              alt="assignation"
-              style={{
-                width: "20px",
-              }}
-            />
-          </ControlButton>
-          <ControlButton onClick={handleAssignationMax}>
-            <img
-              src={AssignationIconMax}
-              alt="assignation"
-              style={{
-                width: "20px",
-              }}
-            />
           </ControlButton>
           <ControlButton onClick={handleJohson}>
             <img
