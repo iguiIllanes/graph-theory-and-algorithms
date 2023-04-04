@@ -5,7 +5,7 @@ const FourButtonsWithInput = () => {
   const [selectedOption, setSelectedOption] = React.useState("");
   const [isRandom, setIsRandom] = React.useState(false);
   const [array, setArray] = React.useState([]);
-  const [isSorted, setIsSorted] = React.useState([]);
+  let [isSorted, setIsSorted] = React.useState([]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -23,9 +23,9 @@ const FourButtonsWithInput = () => {
     console.log("Selection Sort");
     isSorted = selectionSort(array);
     const sortedString = arrayToString(isSorted);
-     const sortedArrayFromString = sortedString.split('|');
-
-
+    const sortedArrayFromString = sortedString.split('|');
+    setIsSorted(sortedArrayFromString);
+    console.log(isSorted);
   }
 
   return (
@@ -33,17 +33,19 @@ const FourButtonsWithInput = () => {
       <h2>Algoritmos de ordenamiento</h2>
       <div>
         <h3>Input Field</h3>
-        <input type="text" placeholder="Enter text here" />
+        <input type="text" placeholder={isRandom ? <h1>{'ss'}</h1> : <h3></h3>} />
       </div>
 
       <div>
         <button onClick={handleRandom}>Random</button>
-        {isRandom ? <h1>{array}</h1> : <h3>Not Random</h3>}
+        
       </div>
 
       <div>
-        <h3>Button 1</h3>
-        <button>Button 1</button>
+        <h3>Selection sort</h3>
+        <button  onClick={handleSelectionSort}> Selection</button>
+        <h1>{isSorted}</h1>
+       
       </div>
       <div>
         <h3>Button 2</h3>
