@@ -7,6 +7,7 @@ import "reactflow/dist/style.css";
 import React, { useState } from 'react';
 import AssignmentTransport from './components/AssignmentTransport';
 import TransportationMatrix from "./components/TransportationMatrix";
+import AssignmentScreen from "./components/AssignmentScreen";
 import Navbar from "./components/Sidebar";
 
 const App = () => {
@@ -19,8 +20,9 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Flow/>} ></Route> 
       | <Route path='/Jhonson' element={<Flow/>} ></Route> 
-      | <Route path='/Nortwest' component={<TransportationMatrix/>} />
-        <Route path='/Asignacion' element={<AssignmentTransport/>} ></Route>
+      | <Route path='/Nortwest' element={<TransportationMatrix/>} ></Route>
+        <Route path='/AsignacionM' element={<AssignmentTransport/>} ></Route>
+        <Route path='/AsignacionN' element={<AssignmentScreen/>} ></Route>
       </Routes>
     </Router>
   </>
