@@ -5,6 +5,8 @@ import "reactflow/dist/style.css";
 // TODO: Remove the imports when routing is implemented
 import React, { useState } from 'react';
 import TestSorts from './components/TestSorts';
+import Sorts from './components/Sorts';
+
 const App = () => {
   // TODO: Remove the state when routing is implemented
   const [showFlow, setShowFlow] = useState(true);

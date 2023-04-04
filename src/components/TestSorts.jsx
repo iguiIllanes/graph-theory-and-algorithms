@@ -34,6 +34,11 @@ const TestSort = () => {
       setArray(randomArrayFromString);
    }
 const handleInsertionSort = () => {
+      const sortedArray = insertionSort(array);
+      console.log("Arreglo ordenado - Insertion", sortedArray.sortedArray);
+      console.log("Operaciones - Insertion", sortedArray.numOperations);
+      console.log("Runtime - Insertion", sortedArray.runtime);
+      };
 
   const handleSelectionSort = () => {
     const sortedArray = selectionSort(array);
@@ -110,6 +115,6 @@ const handleInsertionSort = () => {
       </div>
     </div>
   );
-};
-}
-export default TestSort;
+  };
+
+export default TestSort;   
