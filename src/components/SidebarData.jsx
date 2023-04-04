@@ -10,13 +10,9 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Asignacion Matriz',
-    path: '/AsignacionM',
-    cName: 'nav-text'
-  },
-  {
-    title: 'Asignacion N',
-    path: '/AsignacionN',
+    title: 'Asignacion',
+    path: '/Asignacion',
+    
     cName: 'nav-text'
   },
   {
