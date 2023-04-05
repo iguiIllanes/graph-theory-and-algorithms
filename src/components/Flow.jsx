@@ -524,7 +524,7 @@ const Flow = () => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
-      if (!(response.nodes[0].data.earlyTime === undefined)) {
+      if (!(response.nodes[0].data.earlyTime === undefined) || !(response.nodes[0].data.earlyTime === null)) {
         setJohnsonRef(true);
       }
       return response;
