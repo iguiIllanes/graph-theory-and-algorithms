@@ -2,7 +2,7 @@
 export function generateRandomArray(n) {
     const arr = [];
     for (let i = 0; i < n; i++) {
-      arr.push(Math.floor(Math.random() * 100)); // Genera un número aleatorio entre 0 y 99
+      arr.push(Math.floor(Math.random() * 10000+1)); // Genera un número aleatorio entre 0 y 10000
     }
     return arr;
 }
