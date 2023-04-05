@@ -734,7 +734,7 @@ const Flow = () => {
           </ControlButton>
 
           <ControlButton
-            onClick={() => window.open("/manual.pdf")}
+            onClick={() => window.open("https://docs.google.com/document/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit")}
             style={{ color: "#000" }}
           >
             ?
