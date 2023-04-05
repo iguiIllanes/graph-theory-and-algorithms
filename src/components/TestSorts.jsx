@@ -124,11 +124,20 @@ const TestSort = () => {
         <button className="buttonSort" onClick={handleRandomArray} disabled={Disabled}>Random</button>
         <button className="buttonSort" onClick={handleClear}>Clear</button>
       </div>
-
+      <div className="row">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif" alt="Insertion Sort" width="200" height="200" />
+        <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--T5-4vODQ--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://i0.wp.com/algorithms.tutorialhorizon.com/files/2019/01/Selection-Sort-Gif.gif%3Fzoom%3D1.25%26fit%3D300%252C214%26ssl%3D1" alt="Selection Sort" width="200" height="200" />
+      </div>
+ 
       <div className="row">
         <button onClick={handleInsertionSort}>Insertion Sort</button>
         <button onClick={handleSelectionSort}>Selection Sort</button>
       </div>
+
+      <div className="row">
+        <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1651064131557/DwUHiegcH.gif?auto=format,compress&gif-q=60&format=webm" alt="Shell Sort" width="200" height="200" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Merge-sort-example-300px.gif" alt="Merge Sort" width="200" height="200" />
+      </div> 
     
       <div className="row">
         <button onClick={handleShellSort}>Shell Sort</button>

@@ -738,7 +738,7 @@ const Flow = () => {
             />
           </ControlButton>
           <ControlButton
-            onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
+            onClick={() => window.open("https://docs.google.com/document/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit")}
             style={{ color: "#000" }}
           >
             ?
