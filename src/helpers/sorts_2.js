@@ -122,7 +122,7 @@ export function insertionSort(arr) {
    return {
      sortedArray: arr,
      numOperations: contador,
-     runtime: runtime,
+     runtime: runtime.toFixed(10),
    };
  }
  
@@ -155,7 +155,7 @@ export function insertionSort(arr) {
   return {
     sortedArray: arr,
     numOperations: contador,
-    runtime: runtime,
+    runtime: runtime.toFixed(10),
 }};
 
  
