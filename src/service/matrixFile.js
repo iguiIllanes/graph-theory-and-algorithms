@@ -38,7 +38,39 @@ const uploadMatrix = (file) => {
     });
 }
 
+const downloadMatrixApi = (algorithm, numRows, numColumns, matrix, filename) => {
+    // const url = "http://localhost:8080/api/v1/download";
+    const url = "http://164.90.144.35:8080/api/v1/download";
+    const data = {
+        algorithm: algorithm,
+        numRows: numRows,
+        numColumns: numColumns,
+        matrix: matrix,
+    };
+    filename = filename.replace(".json", "");
+    const body = {
+        fileName: filename,
+        matrixContent: data,
+    }
+    const json = JSON.stringify(body);
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "text/plain",
+        },
+        body: json,
+    })
+        .then(response => response.text())
+
+        .then((data) => {
+            console.log(data);
+            window.open(`${url}/${data}?fileName=${filename}`, "_blank");
+        })
+};
 export default {
     downloadMatrix,
     uploadMatrix,
+    downloadMatrixApi
 };
