@@ -524,6 +524,9 @@ const Flow = () => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
+      if (!(response.nodes[0].data.earlyTime === undefined)) {
+        setJohnsonRef(true);
+      }
       return response;
     });
   };
@@ -538,23 +541,19 @@ const Flow = () => {
   }
 
 
-  const handleJohson = () => {
+  const handleJohnson = () => {
     setJohnsonRef(true);
     if (nodes.length === 0 || edges.length === 0) {
       prompt("No hay nodos o aristas");
       return;
     }
     // matrix with zeros
-    const matrix = new Array(nodes.length + 1).fill(0).map(() => new Array(nodes.length + 1).fill(0));
-    // fill the matrix with the labels 
-    nodes.forEach((node, index) => {
-      matrix[0][index + 1] = node.data.label;
-      matrix[index + 1][0] = node.data.label;
-    });
+    const matrix = new Array(nodes.length).fill(0).map(() => new Array(nodes.length).fill(0));
 
-    // fill the rest of the matrix with the weights
-    edges.forEach((edge, index) => {
-      matrix[parseInt(edge.source) + 1][parseInt(edge.target) + 1] = typeof edge.data.weight === "undefined" ? 1 : parseInt(edge.data.weight);
+    // fill the matrix with the weights
+    edges.forEach((edge) => {
+      matrix[edge.source][edge.target] =
+        typeof edge.data.weight === "undefined" ? 1 : parseInt(edge.data.weight);
     });
 
     // johnson algorithm
@@ -699,7 +698,7 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleJohson}>
+          <ControlButton onClick={handleJohnson}>
             <img
               src={JonsonIcon}
               alt="A"
