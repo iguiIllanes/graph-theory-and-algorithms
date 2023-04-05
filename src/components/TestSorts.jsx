@@ -28,8 +28,13 @@ const TestSort = () => {
     setText(e.target.value);
     const arrayFromText = e.target.value.split(",").map(Number); // Convertir texto a arreglo
     setArray(arrayFromText);
-    console.log(array)
+    console.log(array);
+
   };
+  const autoResize = (e) =>{
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  }
 
   
 
@@ -50,6 +55,8 @@ const TestSort = () => {
     setArray(randomArray);
     setText(arrayToString(randomArray));
     setDisabled(true);
+    const textarea = document.getElementById("textarea");
+    autoResize.call(textarea, {target: textarea});
   };
   const handleInsertionSort = () => {
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
@@ -113,9 +120,11 @@ const TestSort = () => {
       <div>
 
         <textarea
+          id="textarea"
           rows="1"
           value={isRandom ? array : text}
           onChange={handleTextChange}
+          onInput={autoResize}
           style={{ height: "auto", overflow: "hidden" }}
           disabled={readOnly}
         />
