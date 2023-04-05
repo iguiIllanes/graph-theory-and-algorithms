@@ -147,7 +147,7 @@ const TestSort = () => {
       
         {showModal ? (
           <div>
-          <Modal content={<ArrayCuadraditos array={array} sortedArray={sortedArray} algorithm={algorithm} 
+          <Modal className='modal-main' content={<ArrayCuadraditos array={array} sortedArray={sortedArray} algorithm={algorithm} 
           operations={operations} runtime={runtime}/>}
             show={showModal} onClose={handleShowModal} >
           </Modal>
