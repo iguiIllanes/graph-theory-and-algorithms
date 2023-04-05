@@ -35,7 +35,7 @@ const TransportationMatrix = ({ inputMatrix, allocationMatrix, totalCost, minMax
                             {inputMatrix[i + 1][0]}
                         </div>
                         {Array.from({ length: numColumns }, (_, j) => (
-                            <div className="matrix-cell" key={j}>
+                            <div className="matrix-cell" key={j} style={{ backgroundColor: (allocationMatrix[i][j] !== null) ? "#F2EE82" : "#fff" }}>
                                 {(allocationMatrix[i][j] !== null) ? `${inputMatrix[i + 1][j + 1]} (${allocationMatrix[i][j]})` : `${inputMatrix[i + 1][j + 1]} (0)`}
                             </div>
                         ))}

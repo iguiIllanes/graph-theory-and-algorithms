@@ -132,7 +132,7 @@ const AssignmentTransport = () => {
     const handleFileDownload = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         console.log(fileName);
-        fileService.downloadMatrix((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
+        fileService.downloadMatrixApi((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
     // Maximize the matrix
@@ -189,7 +189,7 @@ const AssignmentTransport = () => {
                 setAssignmentMatrix(assignmentMatrix);
                 setTotalCost(totalCost);
                 setShowModal(true);
-                setMinMax(true);
+                setMinMax(false);
             }
         } catch (error) {
             alert(error);
@@ -338,28 +338,8 @@ const AssignmentTransport = () => {
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleAlgorithm}>ALG</button>
                     <button className="controls-botton" onClick={handleNumRows}>#F</button>
                     <button className="controls-botton" onClick={handleNumColumns}>#C</button>
-                    <button className="controls-botton" onClick={handleClear}>
-                        <img
-                            src={RemoveAllIcon}
-                            alt="Remove All"
-                            style={{
-                                width: "20px",
-                            }}
-                        /></button>
-
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
-                    <button className="controls-botton"
-                        onClick={() => document.getElementById("file-input").click()}
-                    >
-                        <img
-                            src={UploadIcon}
-                            alt="A"
-                            style={{
-                                width: "20px",
-                            }}
-                        />
-                    </button>
                     <button className="controls-botton"
                         onClick={handleFileDownload}
                     >
@@ -372,10 +352,30 @@ const AssignmentTransport = () => {
                         />
                     </button>
                     <button className="controls-botton"
-                        onClick={() => window.open("/manual.pdf")}
+                        onClick={() => document.getElementById("file-input").click()}
+                    >
+                        <img
+                            src={UploadIcon}
+                            alt="A"
+                            style={{
+                                width: "20px",
+                            }}
+                        />
+                    </button>
+                    <button className="controls-botton" onClick={handleClear}>
+                        <img
+                            src={RemoveAllIcon}
+                            alt="Remove All"
+                            style={{
+                                width: "20px",
+                            }}
+                        /></button>
+                    <button className="controls-botton"
+                        onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
                         style={{ color: "#000" }}
                     >?</button>
-                </div>
+
+                </div >
             ) :
                 (<></>
                 )}

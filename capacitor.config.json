@@ -2,5 +2,10 @@
   "appId": "com.ignacioillanes.graphs",
   "appName": "Graph Theory & Algoritms",
   "webDir": "dist",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
 }
