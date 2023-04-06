@@ -171,7 +171,6 @@ const useStore = create<RFState>((set, get) => ({
           sourceHandle: connection.sourceHandle,
           targetHandle: connection.targetHandle,
           type: "graph-edge",
-          data: { label: "", weight: 1 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             color: "#342e37",
