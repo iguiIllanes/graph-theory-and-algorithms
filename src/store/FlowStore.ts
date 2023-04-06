@@ -57,9 +57,8 @@ const useStore = create<RFState>((set, get) => ({
   setAdjacencyMatrix: (adjacencyMatrix: number[][]) =>
     set({ adjacencyMatrix: adjacencyMatrix }),
 
-  /*
-   * Assignation matrix state variable.
-   */
+  //Assignation
+
   assignationMatrix: [],
 
   /*
@@ -80,9 +79,11 @@ const useStore = create<RFState>((set, get) => ({
   totalCost: "",
   setTotalCost: (totalCost: string) => set({ totalCost: totalCost }),
 
-  /*
-   * Nodes state variable.
-   */
+  totalCost: "",
+  setTotalCost: (totalCost: string) => set({ totalCost: totalCost }),
+
+  // nodes
+  // BIG WARNING: lsp server marks this as error, it works fine though
   nodes: [],
 
   /*
@@ -142,19 +143,31 @@ const useStore = create<RFState>((set, get) => ({
       }
     });
 
-    // updates the id of the remaining nodes
-    remainingNodes.forEach((node: Node, index: number) => {
-      node.id = index.toString();
-    });
-
-    set({ nodes: remainingNodes, edges: remainingEdges });
-  },
-
-  /*
-   * Sets nodes state variable to the given nodes.
-   * @param nodes: Node[] the nodes to set.
-   * @returns new state of nodes.
-   */
+      const newEdges: Edge[] = [];
+      state.edges.forEach((edge: Edge) => {
+        // TODO: wtf? there must be a better way to do this
+        if (edge.source === nodeId || edge.target === nodeId) {
+          // do nothing
+        } else {
+          newEdges.push(edge);
+        }
+      });
+      newEdges.forEach((edge: Edge, index: number) => {
+        if (parseInt(edge.source) > parseInt(nodeId)) {
+          edge.source = (parseInt(edge.source) - 1).toString();
+        }
+        if (parseInt(edge.target) > parseInt(nodeId)) {
+          edge.target = (parseInt(edge.target) - 1).toString();
+        }
+      });
+      newNodes.forEach((node: Node, index: number) => {
+        node.id = `${index}`;
+      });
+      return {
+        nodes: newNodes,
+        edges: newEdges,
+      };
+    }),
   setNodes: (nodes: Node[]) => set({ nodes: nodes }),
 
   /*
