@@ -20,7 +20,7 @@ import {
 type RFState = {
   deletePersona: Boolean;
   adjacencyMatrix: number[][];
-  assignationMatrix:number[][];
+  assignationMatrix: number[][];
   totalCost: string;
   posMatrix: number[][];
   nodes: Node[];
@@ -56,7 +56,7 @@ const useStore = create<RFState>((set, get) => ({
     set({ posMatrix: posMatrix }),
 
   // total cost
-  
+
   totalCost: '',
   setTotalCost: (totalCost: string) =>
     set({ totalCost: totalCost }),
@@ -138,7 +138,14 @@ const useStore = create<RFState>((set, get) => ({
       if (weight.length === 0 || typeof weight === "undefined") {
         alert("El peso no puede estar vacío");
         return state.edges;
-      } else {
+      } else if (isNaN(parseInt(weight))) {
+        alert("El peso debe ser un número");
+        return state.edges;
+      } else if (parseInt(weight) < 0) {
+        alert("El peso debe ser un número positivo");
+        return state.edges;
+      }
+      else {
         const newEdges = state.edges.map((edge) => {
           if (edge.id === edgeId) {
             return {
@@ -161,6 +168,7 @@ const useStore = create<RFState>((set, get) => ({
       edges: applyEdgeChanges(changes, get().edges),
     });
   },
+
   onConnect: (connection: Connection) => {
     set({
       edges: addEdge(
@@ -171,20 +179,20 @@ const useStore = create<RFState>((set, get) => ({
           sourceHandle: connection.sourceHandle,
           targetHandle: connection.targetHandle,
           type: "graph-edge",
-          data: { label: "", weight: 1 },
+          data: { label: "", weight: 0 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             color: "#342e37",
           },
         },
         get().edges
-        
-        
+
+
       ),
-      
+
     });
   },
-  
+
 }));
 
 

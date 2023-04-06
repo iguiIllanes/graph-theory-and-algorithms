@@ -524,9 +524,16 @@ const Flow = () => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
-      if (!(response.nodes[0].data.earlyTime === undefined) || !(response.nodes[0].data.earlyTime === null)) {
-        setJohnsonRef(true);
+      let showJohnson = false;
+      for (let i = 0; i < response.nodes.length; i++) {
+        console.log(response.nodes[i].data.earlyTime);
+        if (response.nodes[i].data.earlyTime != null) {
+          showJohnson = true;
+          break;
+        }
       }
+
+      setJohnsonRef(showJohnson);
       return response;
     });
   };

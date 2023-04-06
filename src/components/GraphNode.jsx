@@ -56,7 +56,7 @@ export default memo(({ id, handleId, data, isConnectable }) => {
       ) ? (
         <div className="customNode">{data.label}</div>
       ) :
-        <div class="customJohnsonNode">
+        <div className="customJohnsonNode">
           {data.label}
           <hr />
           {data.earlyTime} | {data.lateTime}
