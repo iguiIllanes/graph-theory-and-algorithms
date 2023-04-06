@@ -20,7 +20,7 @@ import {
 type RFState = {
   deletePersona: Boolean;
   adjacencyMatrix: number[][];
-  assignationMatrix:number[][];
+  assignationMatrix: number[][];
   totalCost: string;
   posMatrix: number[][];
   nodes: Node[];
@@ -42,7 +42,6 @@ const useStore = create<RFState>((set, get) => ({
   setAdjacencyMatrix: (adjacencyMatrix: number[][]) =>
     set({ adjacencyMatrix: adjacencyMatrix }),
 
-
   //Assignation
 
   assignationMatrix: [],
@@ -52,14 +51,12 @@ const useStore = create<RFState>((set, get) => ({
   //Pos matrix
 
   posMatrix: [],
-  setPosMatrix: (posMatrix: number[][]) =>
-    set({ posMatrix: posMatrix }),
+  setPosMatrix: (posMatrix: number[][]) => set({ posMatrix: posMatrix }),
 
   // total cost
-  
-  totalCost: '',
-  setTotalCost: (totalCost: string) =>
-    set({ totalCost: totalCost }),
+
+  totalCost: "",
+  setTotalCost: (totalCost: string) => set({ totalCost: totalCost }),
 
   // nodes
   // BIG WARNING: lsp server marks this as error, it works fine though
@@ -112,8 +109,7 @@ const useStore = create<RFState>((set, get) => ({
         if (parseInt(edge.target) > parseInt(nodeId)) {
           edge.target = (parseInt(edge.target) - 1).toString();
         }
-      }
-      );
+      });
       newNodes.forEach((node: Node, index: number) => {
         node.id = `${index}`;
       });
@@ -129,65 +125,73 @@ const useStore = create<RFState>((set, get) => ({
     });
   },
 
-  // edges
+  /*
+   * Edges state variable.
+   */
   edges: [],
-  setWeight: (edgeId: String) =>
-    set((state) => {
-      const weight = prompt("Introduzca el peso de la arista:");
-      // validate weight
-      if (weight.length === 0 || typeof weight === "undefined") {
-        alert("El peso no puede estar vacío");
-        return state.edges;
-      } else {
-        const newEdges = state.edges.map((edge) => {
-          if (edge.id === edgeId) {
-            return {
-              ...edge,
-              data: { ...edge.data, weight: weight },
-            };
-          } else {
-            return edge;
-          }
-        });
-        return {
-          edges: newEdges,
-        };
+
+  /*
+   * Modifies weight of an edge.
+   * @param edgeId: String id of the edge to modify.
+   * @returns The state of the edges with the modified edge on its corresponding edgeId.
+   */
+  setWeight: (edgeId: String) => {
+    const weight = prompt("Introduzca el peso de la arista:"); // prompt user for weight
+    if (weight !== null && weight.length === 0) {
+      alert("El peso no puede estar vacío");
+      return;
+    }
+
+    const newEdges = get().edges.map((edge: Edge) => {
+      // iterate over edges and update weight if edgeId matches
+      if (edge.id === edgeId) {
+        edge.data.weight = weight;
       }
-      console.log("weight", weight);
-    }),
+      return edge;
+    });
+    set({ edges: newEdges });
+  },
+
+  /*
+   * Sets the edges of the graph.
+   * @param edgeId: Edge[] id of the edge to delete.
+   * @returns The state of the edges with the deleted edge.
+   */
   setEdges: (edges: Edge[]) => set({ edges: edges }),
+
+  /*
+   * Updates the edges when changed.
+   * @param changes: EdgeChange[] changes to apply to the edges.
+   * @returns The state of the edges with the changes applied.
+   */
   onEdgesChange: (changes: EdgeChange[]) => {
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });
   },
+
+  /*
+   * Adds an edge to the graph.
+   * @param connection: Connection connection to add.
+   * @returns The state of the edges with the new edge added.
+   */
   onConnect: (connection: Connection) => {
     set({
       edges: addEdge(
         {
+          ...connection,
           id: `${connection.source}-${connection.target}`,
-          source: connection.source,
-          target: connection.target,
-          sourceHandle: connection.sourceHandle,
-          targetHandle: connection.targetHandle,
           type: "graph-edge",
+          data: { label: "", weight: 0 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             color: "#342e37",
           },
         },
         get().edges
-        
-        
       ),
-      
     });
   },
-  
 }));
-
-
-// Nodes assign
-
 
 export default useStore;
