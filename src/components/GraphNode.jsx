@@ -20,11 +20,10 @@ export default memo(({ id, handleId, data, isConnectable }) => {
 
   const handleNodeClick = () => {
     if (deletePersona) {
-      console.log("DELETE PERSONA ACTIVATED");
-      console.log("ID: " + id);
       deleteNode(id);
     }
   };
+  // console.log(data.earlyTime);
 
   return (
     <div className="node-container" onClick={handleNodeClick}>
@@ -55,14 +54,13 @@ export default memo(({ id, handleId, data, isConnectable }) => {
         (data.earlyTime === null && data.lateTime === null)
       ) ? (
         <div className="customNode">{data.label}</div>
-      ) :
-        <div className="customJohnsonNode">
+      ) : (
+        <div class="customJohnsonNode">
           {data.label}
           <hr />
           {data.earlyTime} | {data.lateTime}
         </div>
-
-      }
+      )}
 
       <Handle
         id={`${handleId}-top`}

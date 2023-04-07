@@ -14,9 +14,6 @@ import {
   MarkerType,
 } from "reactflow";
 
-// import initialNodes from './nodes';
-// import initialEdges from './edges';
-
 type RFState = {
   deletePersona: Boolean;
   adjacencyMatrix: number[][];
@@ -30,154 +27,203 @@ type RFState = {
   onConnect: OnConnect;
 };
 
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get) => ({
-  // Personas
+  /*
+   * Enables the user to eliminate nodes and edges.
+   */
   deletePersona: false,
+
+  /*
+   * Switches the deletePersona.
+   * @returns new state of deletePersona.
+   */
   toggleDeletePersona: () =>
     set((state) => ({ deletePersona: !state.deletePersona })),
 
-  // adjacency matrix
+  /*
+   * Adjacency matrix state variable.
+   */
   adjacencyMatrix: [],
+
+  /*
+   * Sets adjacencyMatrix state variable to the given matrix.
+   * @param matrix: number[][] the matrix to set.
+   * @returns new state of adjacencyMatrix.
+   */
   setAdjacencyMatrix: (adjacencyMatrix: number[][]) =>
     set({ adjacencyMatrix: adjacencyMatrix }),
 
-
-  //Assignation
-
+  /*
+   * Assignation matrix state variable.
+   */
   assignationMatrix: [],
+
+  /*
+   * Sets assignationMatrix state variable to the given matrix.
+   * @param matrix: number[][] the matrix to set.
+   * @returns new state of assignationMatrix.
+   */
   setAssignationMatrix: (assignationMatrix: number[][]) =>
     set({ assignationMatrix: assignationMatrix }),
 
   //Pos matrix
-
+  // TODO: Change to a more descriptive name and document code
   posMatrix: [],
-  setPosMatrix: (posMatrix: number[][]) =>
-    set({ posMatrix: posMatrix }),
+  setPosMatrix: (posMatrix: number[][]) => set({ posMatrix: posMatrix }),
 
   // total cost
+  // TODO: Change to a more descriptive name and document code
+  totalCost: "",
+  setTotalCost: (totalCost: string) => set({ totalCost: totalCost }),
 
-  totalCost: '',
-  setTotalCost: (totalCost: string) =>
-    set({ totalCost: totalCost }),
-
-  // nodes
-  // BIG WARNING: lsp server marks this as error, it works fine though
+  /*
+   * Nodes state variable.
+   */
   nodes: [],
-  addNode: () =>
-    set((state) => {
-      // ask user for label and validate
-      const label = prompt("Introduzca la etiqueta del nodo:");
-      if (label.length === 0 || typeof label === "undefined") {
-        alert("La etiqueta no puede estar vacía");
-        return state.nodes;
+
+  /*
+   * Adds a node to the nodes state variable.
+   * @returns new state of nodes.
+   */
+  addNode: () => {
+    const nodes = get().nodes;
+
+    const label = prompt("Introduzca la etiqueta del nodo:");
+    if (label !== null && label.length === 0) {
+      alert("La etiqueta no puede estar vacía");
+      return;
+    }
+
+    const nodeExists = nodes.find((node) => node.data.label === label);
+    if (nodeExists) {
+      alert("Ya existe un nodo con esa etiqueta, intenta con otra.");
+      return;
+    }
+
+    const newNode = {
+      id: nodes.length.toString(),
+      handleId: nodes.length.toString(),
+      type: "graph-node-start",
+      data: { label: label },
+      position: { x: screenWidth / 2, y: screenHeight / 2 },
+    };
+    set({ nodes: [...nodes, newNode] });
+  },
+
+  /*
+   * Deletes a node from the nodes state variable.
+   * @param nodeId: String the id of the node to delete.
+   * @returns new state of nodes without the deleted node.
+   */
+  deleteNode: (nodeId: string) => {
+    const remainingNodes = get().nodes.filter((node) => node.id !== nodeId); // gets all nodes except the one to delete
+
+    const remainingEdges: Edge[] = [];
+
+    // pushes all edges that don't have the node to delete as source or target to remainingEdges
+    get().edges.forEach((edge) => {
+      if (edge.source !== nodeId && edge.target !== nodeId) {
+        remainingEdges.push(edge);
+      }
+    });
+
+    // updates the source and target of the remaining edges
+    remainingEdges.forEach((edge: Edge) => {
+      if (parseInt(edge.source) > parseInt(nodeId)) {
+        edge.source = (parseInt(edge.source) - 1).toString();
       }
 
-      const nodeExists = state.nodes.find((n) => n.data.label === label);
-      if (typeof nodeExists === "undefined") {
-        // add node to nodes array
-        const newNode = {
-          id: `${state.nodes.length}`,
-          handleId: `${state.nodes.length}`,
-          type: "graph-node-start",
-          data: { label: label },
-          position: { x: 210, y: 400 },
-        };
-        console.log("newNode", newNode);
-        return {
-          nodes: [...state.nodes, newNode],
-        };
-      } else {
-        alert("Ya existe un nodo con ese nombre, intenta con otro.");
-        return state.nodes;
+      if (parseInt(edge.target) > parseInt(nodeId)) {
+        edge.target = (parseInt(edge.target) - 1).toString();
       }
-    }),
-  deleteNode: (nodeId: string) =>
-    set((state) => {
-      const newNodes = state.nodes.filter((n) => n.id !== nodeId);
+    });
 
-      const newEdges: Edge[] = [];
-      state.edges.forEach((edge: Edge) => {
-        // TODO: wtf? there must be a better way to do this
-        if (edge.source === nodeId || edge.target === nodeId) {
-          // do nothing
-        } else {
-          newEdges.push(edge);
-        }
-      });
-      newEdges.forEach((edge: Edge, index: number) => {
-        if (parseInt(edge.source) > parseInt(nodeId)) {
-          edge.source = (parseInt(edge.source) - 1).toString();
-        }
-        if (parseInt(edge.target) > parseInt(nodeId)) {
-          edge.target = (parseInt(edge.target) - 1).toString();
-        }
-      }
-      );
-      newNodes.forEach((node: Node, index: number) => {
-        node.id = `${index}`;
-      });
-      return {
-        nodes: newNodes,
-        edges: newEdges,
-      };
-    }),
+    // updates the id of the remaining nodes
+    remainingNodes.forEach((node: Node, index: number) => {
+      node.id = index.toString();
+    });
+
+    set({ nodes: remainingNodes, edges: remainingEdges });
+  },
+
+  /*
+   * Sets nodes state variable to the given nodes.
+   * @param nodes: Node[] the nodes to set.
+   * @returns new state of nodes.
+   */
   setNodes: (nodes: Node[]) => set({ nodes: nodes }),
+
+  /*
+   * Updates the nodes when a change is made.
+   * @param nodeChanges: NodeChange[] the changes to apply.
+   * @returns new state of nodes.
+   */
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
   },
 
-  // edges
+  /*
+   * Edges state variable.
+   */
   edges: [],
-  setWeight: (edgeId: String) =>
-    set((state) => {
-      const weight = prompt("Introduzca el peso de la arista:");
-      // validate weight
-      if (weight.length === 0 || typeof weight === "undefined") {
-        alert("El peso no puede estar vacío");
-        return state.edges;
-      } else if (isNaN(parseInt(weight))) {
-        alert("El peso debe ser un número");
-        return state.edges;
-      } else if (parseInt(weight) < 0) {
-        alert("El peso debe ser un número positivo");
-        return state.edges;
+
+  /*
+   * Modifies weight of an edge.
+   * @param edgeId: String id of the edge to modify.
+   * @returns The state of the edges with the modified edge on its corresponding edgeId.
+   */
+  setWeight: (edgeId: String) => {
+    const weight = prompt("Introduzca el peso de la arista:"); // prompt user for weight
+    if (weight !== null && weight.length === 0) {
+      alert("El peso no puede estar vacío");
+      return;
+    }
+
+    const newEdges = get().edges.map((edge: Edge) => {
+      // iterate over edges and update weight if edgeId matches
+      if (edge.id === edgeId) {
+        edge.data.weight = weight;
       }
-      else {
-        const newEdges = state.edges.map((edge) => {
-          if (edge.id === edgeId) {
-            return {
-              ...edge,
-              data: { ...edge.data, weight: weight },
-            };
-          } else {
-            return edge;
-          }
-        });
-        return {
-          edges: newEdges,
-        };
-      }
-      console.log("weight", weight);
-    }),
+      return edge;
+    });
+    set({ edges: newEdges });
+  },
+
+  /*
+   * Sets the edges of the graph.
+   * @param edgeId: Edge[] id of the edge to delete.
+   * @returns The state of the edges with the deleted edge.
+   */
   setEdges: (edges: Edge[]) => set({ edges: edges }),
+
+  /*
+   * Updates the edges when changed.
+   * @param changes: EdgeChange[] changes to apply to the edges.
+   * @returns The state of the edges with the changes applied.
+   */
   onEdgesChange: (changes: EdgeChange[]) => {
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });
   },
 
+  /*
+   * Adds an edge to the graph.
+   * @param connection: Connection connection to add.
+   * @returns The state of the edges with the new edge added.
+   */
   onConnect: (connection: Connection) => {
     set({
       edges: addEdge(
         {
+          ...connection,
           id: `${connection.source}-${connection.target}`,
-          source: connection.source,
-          target: connection.target,
-          sourceHandle: connection.sourceHandle,
-          targetHandle: connection.targetHandle,
           type: "graph-edge",
           data: { label: "", weight: 0 },
           markerEnd: {
@@ -186,17 +232,9 @@ const useStore = create<RFState>((set, get) => ({
           },
         },
         get().edges
-
-
       ),
-
     });
   },
-
 }));
-
-
-// Nodes assign
-
 
 export default useStore;
