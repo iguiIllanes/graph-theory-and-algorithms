@@ -199,7 +199,7 @@ const TestSort = () => {
       </div>
 
       <div className="row">
-        <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1651064131557/DwUHiegcH.gif?auto=format,compress&gif-q=60&format=webm" alt="Shell Sort" width="200" height="200" />
+        <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1651064131557/DwUHiegcH.gif" alt="Shell Sort" width="200" height="200" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Merge-sort-example-300px.gif" alt="Merge Sort" width="200" height="200" />
       </div> 
     
