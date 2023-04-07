@@ -42,7 +42,7 @@ export function mergeSort(arr) {
   const t1 = performance.now();
   const runtime = t1 - t0;
 
-  return { sortedArray, numSteps, runtime: runtime.toFixed(10) };
+  return { sortedArray, numSteps, runtime: runtime.toFixed(0) };
 }
 
 
@@ -78,7 +78,7 @@ export function shellSort(arr) {
   return {
     sortedArray: arr,
     numOperations: contador,
-    runtime: runtime.toFixed(10),
+    runtime: runtime.toFixed(0),
   };
 }
 
@@ -122,7 +122,7 @@ export function insertionSort(arr) {
   return {
     sortedArray: arr,
     numOperations: contador,
-    runtime: runtime.toFixed(10),
+    runtime: runtime.toFixed(0),
   };
 }
 
@@ -155,7 +155,7 @@ export function selectionSort(arr) {
   return {
     sortedArray: arr,
     numOperations: contador,
-    runtime: runtime.toFixed(10),
+    runtime: runtime.toFixed(0),
   }
 };
 
