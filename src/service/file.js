@@ -35,7 +35,38 @@ const upload = (event) => {
   });
 };
 
+const downloadApi = (nodes, edges, filename) => {
+  // const url = "http://localhost:8080/api/v1/download";
+  const url = "http://164.90.144.35:8080/api/v1/download";
+  const data = {
+    nodes: nodes,
+    edges: edges,
+  };
+  filename = filename.replace(".json", "");
+  const body = {
+    fileName: filename,
+    flowContent: data,
+  }
+  const json = JSON.stringify(body);
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "text/plain",
+    },
+    body: json,
+  })
+    .then(response => response.text())
+
+    .then((data) => {
+      console.log(data);
+      window.open(`${url}/${data}?fileName=${filename}`, "_blank");
+    })
+};
+
 export default {
   download: download,
   upload: upload,
+  downloadApi: downloadApi,
 };
