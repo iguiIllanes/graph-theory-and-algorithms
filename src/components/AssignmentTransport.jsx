@@ -131,6 +131,7 @@ const AssignmentTransport = () => {
     // We can download the matrix by clicking on the button, this depends on matrixFile service
     const handleFileDownload = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
+        if (fileName === null) return;
         console.log(fileName);
         fileService.downloadMatrixApi((chooseAlgorithm ? "transport" : "assignment"), numRows, numColumns, inputMatrix, `${fileName}.json`);
     }

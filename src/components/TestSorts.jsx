@@ -4,6 +4,8 @@ import { generateRandomArray, arrayToString } from "../algorithms/sorts";
 import "../styles/Sorts.css";
 import Modal from "./Modal";
 import ArrayCuadraditos from "./ArrayGraph";
+import fileService from "../service/arrayFile";
+
 const TestSort = () => {
   const [algorithm, setAlgorithm] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -31,10 +33,10 @@ const TestSort = () => {
     console.log(array);
 
   };
-  const autoResize = (e) => {
-    e.target.style.height = "auto";
-    e.target.style.height = e.target.scrollHeight + "px";
-  }
+  // const autoResize = (e) => {
+  //   e.target.style.height = "auto";
+  //   e.target.style.height = e.target.scrollHeight + "px";
+  // }
 
 
 
@@ -55,10 +57,14 @@ const TestSort = () => {
     setArray(randomArray);
     setText(arrayToString(randomArray));
     setDisabled(true);
-    const textarea = document.getElementById("textarea");
-    autoResize.call(textarea, { target: textarea });
+    // const textarea = document.getElementById("textarea");
+    // autoResize.call(textarea, { target: textarea });
   };
   const handleInsertionSort = () => {
+    if (array.length === 0) {
+      alert("El arreglo está vacío");
+      return;
+    }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = insertionSort(copyArrayAux);
     setSortedArray([...sortedArrayAux.sortedArray]); // Copiar el arreglo ordenado en un nuevo arreglo
@@ -72,6 +78,10 @@ const TestSort = () => {
   };
 
   const handleSelectionSort = () => {
+    if (array.length === 0) {
+      alert("El arreglo está vacío");
+      return;
+    }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
 
     const sortedArrayAux = selectionSort(copyArrayAux);
@@ -88,6 +98,10 @@ const TestSort = () => {
   };
 
   const handleShellSort = () => {
+    if (array.length === 0) {
+      alert("El arreglo está vacío");
+      return;
+    }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = shellSort(copyArrayAux);
     console.log("Arreglo ordenado - Shell", sortedArrayAux.sortedArray);
@@ -101,6 +115,10 @@ const TestSort = () => {
   };
 
   const handleMergeSort = () => {
+    if (array.length === 0) {
+      alert("El arreglo está vacío");
+      return;
+    }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = mergeSort(copyArrayAux);
     console.log("Arreglo ordenado - Merge", sortedArrayAux.sortedArray);
@@ -113,27 +131,63 @@ const TestSort = () => {
     setAlgorithm("Merge Sort");
   };
 
+  const handleFileDownload = () => {
+    if (array.length === 0) {
+      alert("El arreglo está vacío");
+      return;
+    }
+    const fileName = prompt("Introduzca el nombre del archivo");
+    if (fileName === null) return;
+    console.log(fileName);
+    fileService.downloadArrayApi(array, `${fileName}.json`);
+  };
+
+  const handleFileUpload = async (event) => {
+    await fileService.uploadArray(event).then((response) => {
+      console.log(response);
+      setIsRandom(true);
+      setArray(response.array);
+      setText(arrayToString(response.array));
+      setDisabled(true);
+      // const textarea = document.getElementById("textarea");
+      // autoResize.call(textarea, { target: textarea });
+    });
+  };
+
   return (
     <div>
-      <h2>Algoritmos de Ordenamiento</h2>
+      <h1>Algoritmos de Ordenamiento</h1>
+      <br />
 
       <div>
+        <input
+          id="file-input"
+          type="file"
+          onChange={handleFileUpload}
+          style={{ display: "none" }}
+        />
 
         <textarea
-          className="custom-textarea"
           id="textarea"
           rows="1"
           value={isRandom ? array : text}
           onChange={handleTextChange}
-          onInput={autoResize}
-          style={{ height: "auto", overflow: "hidden" }}
+          // onInput={autoResize}
+          // style={{ height: "auto", overflow: "hidden" }}
           disabled={readOnly}
         />
       </div>
       <div className="row-intial">
-        <button className="buttonSort" onClick={handleRandomArray} disabled={Disabled}>Random</button>
-        <button className="buttonSort" onClick={handleClear}>Clear</button>
+        <button className="buttonSort" onClick={handleRandomArray} disabled={Disabled}>Arreglo Aleatorio</button>
+        <button className="buttonSort" onClick={handleClear}>Limpiar</button>
+        <button className="buttonSort" onClick={handleFileDownload}> Descargar Arreglo</button>
+
+        <button className="buttonSort" onClick={() => document.getElementById("file-input").click()}>Cargar Arreglo</button>
+        <br />
+        <button className="buttonSort" onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
+        >Manual de Usuario</button>
       </div>
+
       <div className="row">
         <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif" alt="Insertion Sort" width="200" height="200" />
         <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--T5-4vODQ--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://i0.wp.com/algorithms.tutorialhorizon.com/files/2019/01/Selection-Sort-Gif.gif%3Fzoom%3D1.25%26fit%3D300%252C214%26ssl%3D1" alt="Selection Sort" width="200" height="200" />
