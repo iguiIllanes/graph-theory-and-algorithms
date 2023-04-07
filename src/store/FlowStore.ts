@@ -14,9 +14,6 @@ import {
   MarkerType,
 } from "reactflow";
 
-// import initialNodes from './nodes';
-// import initialEdges from './edges';
-
 type RFState = {
   deletePersona: Boolean;
   adjacencyMatrix: number[][];
@@ -29,6 +26,9 @@ type RFState = {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
 };
+
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get) => ({
@@ -109,7 +109,7 @@ const useStore = create<RFState>((set, get) => ({
       handleId: nodes.length.toString(),
       type: "graph-node-start",
       data: { label: label },
-      position: { x: 250, y: 0 },
+      position: { x: screenWidth / 2, y: screenHeight / 2 },
     };
     set({ nodes: [...nodes, newNode] });
   },
@@ -126,10 +126,7 @@ const useStore = create<RFState>((set, get) => ({
 
     // pushes all edges that don't have the node to delete as source or target to remainingEdges
     get().edges.forEach((edge) => {
-      // TODO: wtf? there's a better way to do this
-      if (edge.source === nodeId || edge.target === nodeId) {
-        // literally does nothing
-      } else {
+      if (edge.source !== nodeId && edge.target !== nodeId) {
         remainingEdges.push(edge);
       }
     });
