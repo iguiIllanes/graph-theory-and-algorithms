@@ -1,13 +1,13 @@
 export function generarListaAleatoria(n) {
-   var lista = [];
-   for (var i = 0; i < n; i++) {
-     lista.push(Math.floor(Math.random() * 100450));
-   }
-   return lista;
- }
+  var lista = [];
+  for (var i = 0; i < n; i++) {
+    lista.push(Math.floor(Math.random() * 100450));
+  }
+  return lista;
+}
 
 
- export function mergeSort(arr) {
+export function mergeSort(arr) {
   let numSteps = 0;
 
   function merge(left, right) {
@@ -40,13 +40,14 @@ export function generarListaAleatoria(n) {
   const t0 = performance.now();
   const sortedArray = mergeSortHelper(arr);
   const t1 = performance.now();
+  const runtime = t1 - t0;
 
-  return {sortedArray, numSteps, runtime: t1 - t0};
+  return { sortedArray, numSteps, runtime: runtime.toFixed(10) };
 }
 
 
 
- export function shellSort(arr) {
+export function shellSort(arr) {
   const n = arr.length;
   let gap = Math.floor(n / 2);
   let contador = 0;
@@ -77,58 +78,57 @@ export function generarListaAleatoria(n) {
   return {
     sortedArray: arr,
     numOperations: contador,
-    runtime: runtime
+    runtime: runtime.toFixed(10),
   };
 }
 
- 
+
 //  export function insertionSort(arr) {
 //    for (let i = 1; i < arr.length; i++) {
 //      const key = arr[i];
 //      let j = i - 1;
- 
+
 //      while (j >= 0 && arr[j] > key) {
 //        arr[j + 1] = arr[j];
 //        j--;
 //      }
- 
+
 //      arr[j + 1] = key;
 //    }
- 
+
 //    return arr;
 //  }
 export function insertionSort(arr) {
-   let contador = 0;
-   const start = performance.now();
- 
-   for (let i = 1; i < arr.length; i++) {
-     const key = arr[i];
-     let j = i - 1;
- 
-     while (j >= 0 && arr[j] > key) {
-       arr[j + 1] = arr[j];
-       j--;
-       contador++; // incrementar el contador por cada comparación realizada
-     }
- 
-     arr[j + 1] = key;
-   }
- 
-   const end = performance.now();
-   const runtime = end - start;
- 
-  
- 
-   return {
-     sortedArray: arr,
-     numOperations: contador,
-     runtime: runtime.toFixed(10),
-   };
- }
- 
- 
- 
- export function selectionSort(arr) {
+  let contador = 0;
+  let start = performance.now();
+
+  for (let i = 1; i < arr.length; i++) {
+    const key = arr[i];
+    let j = i - 1;
+
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j--;
+      contador++; // incrementar el contador por cada comparación realizada
+    }
+
+    arr[j + 1] = key;
+  }
+
+  const end = performance.now();
+  const runtime = end - start;
+
+
+  return {
+    sortedArray: arr,
+    numOperations: contador,
+    runtime: runtime.toFixed(10),
+  };
+}
+
+
+
+export function selectionSort(arr) {
   let contador = 0;
   const start = performance.now();
   for (let i = 0; i < arr.length - 1; i++) {
@@ -156,6 +156,6 @@ export function insertionSort(arr) {
     sortedArray: arr,
     numOperations: contador,
     runtime: runtime.toFixed(10),
-}};
+  }
+};
 
- 
