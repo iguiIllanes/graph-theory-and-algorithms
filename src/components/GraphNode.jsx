@@ -50,10 +50,12 @@ export default memo(({ id, handleId, data, isConnectable }) => {
         }}
         isConnectable={isConnectable}
       />
-      {data.earlyTime === undefined && data.lateTime === undefined ? (
+      {((data.earlyTime === undefined && data.lateTime === undefined) ||
+        (data.earlyTime === null && data.lateTime === null)
+      ) ? (
         <div className="customNode">{data.label}</div>
-      ) : (
-        <div class="customJohnsonNode">
+      ) :
+        <div className="customJohnsonNode">
           {data.label}
           <hr />
           {data.earlyTime} | {data.lateTime}

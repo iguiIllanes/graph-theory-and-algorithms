@@ -524,6 +524,16 @@ const Flow = () => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
+      let showJohnson = false;
+      for (let i = 0; i < response.nodes.length; i++) {
+        console.log(response.nodes[i].data.earlyTime);
+        if (response.nodes[i].data.earlyTime != null) {
+          showJohnson = true;
+          break;
+        }
+      }
+
+      setJohnsonRef(showJohnson);
       return response;
     });
   };
@@ -532,11 +542,13 @@ const Flow = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
     console.log(fileName);
-    fileService.download(nodes, edges, `${fileName}.json`);
+    // fileService.download(nodes, edges, `${fileName}.json`);
+    fileService.downloadApi(nodes, edges, `${fileName}.json`);
+
   }
 
 
-  const handleJohson = () => {
+  const handleJohnson = () => {
     setJohnsonRef(true);
     if (nodes.length === 0 || edges.length === 0) {
       prompt("No hay nodos o aristas");
@@ -641,15 +653,6 @@ const Flow = () => {
           }}
         />
         <Controls>
-          <ControlButton onClick={() => window.location.reload(true)}>
-            <img
-              src={RemoveAllIcon}
-              alt="Remove All"
-              style={{
-                width: "20px",
-              }}
-            />
-          </ControlButton>
           <ControlButton onClick={addNode}>
             <img
               src={CreateNodeIcon}
@@ -702,7 +705,7 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleJohson}>
+          <ControlButton onClick={handleJohnson}>
             <img
               src={JonsonIcon}
               alt="A"
@@ -732,9 +735,17 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-
+          <ControlButton onClick={() => window.location.reload(true)}>
+            <img
+              src={RemoveAllIcon}
+              alt="Remove All"
+              style={{
+                width: "20px",
+              }}
+            />
+          </ControlButton>
           <ControlButton
-            onClick={() => window.open("/manual.pdf")}
+            onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
             style={{ color: "#000" }}
           >
             ?

@@ -1,10 +1,7 @@
-// Description: This file contains the functions to download and upload a matrix file for the tranport and assignment problem.
-const downloadMatrix = (algorithm, numRows, numColumns, matrix, filename) => {
+// Description: This file contains the functions to download and upload an array file for the sorting problem
+const downloadArray = (array, filename) => {
     const data = {
-        algorithm: algorithm,
-        numRows: numRows,
-        numColumns: numColumns,
-        matrix: matrix,
+        array: array,
     };
     const json = JSON.stringify(data);
     const blob = new Blob([json], { type: "application/json" });
@@ -17,7 +14,7 @@ const downloadMatrix = (algorithm, numRows, numColumns, matrix, filename) => {
     document.body.removeChild(link);
 };
 
-const uploadMatrix = (file) => {
+const uploadArray = (event) => {
     return new Promise((resolve, reject) => {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -26,10 +23,7 @@ const uploadMatrix = (file) => {
             const data = JSON.parse(reader.result);
             // console.log("upload", data);
             resolve({
-                algorithm: data.algorithm,
-                numRows: data.numRows,
-                numColumns: data.numColumns,
-                matrix: data.matrix,
+                array: data.array,
             });
         };
         reader.onerror = () => {
@@ -38,19 +32,16 @@ const uploadMatrix = (file) => {
     });
 }
 
-const downloadMatrixApi = (algorithm, numRows, numColumns, matrix, filename) => {
+const downloadArrayApi = (array, filename) => {
     // const url = "http://localhost:8080/api/v1/download";
     const url = "http://164.90.144.35:8080/api/v1/download";
     const data = {
-        algorithm: algorithm,
-        numRows: numRows,
-        numColumns: numColumns,
-        matrix: matrix,
+        array: array,
     };
     filename = filename.replace(".json", "");
     const body = {
         fileName: filename,
-        matrixContent: data,
+        arrayContent: data,
     }
     const json = JSON.stringify(body);
 
@@ -70,7 +61,7 @@ const downloadMatrixApi = (algorithm, numRows, numColumns, matrix, filename) => 
         })
 };
 export default {
-    downloadMatrix,
-    uploadMatrix,
-    downloadMatrixApi
+    downloadArray,
+    uploadArray,
+    downloadArrayApi
 };
