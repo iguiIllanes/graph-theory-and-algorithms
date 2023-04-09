@@ -183,7 +183,7 @@ const Flow = () => {
     console.log("MATRIZ A ANALIZAR", AAB);
   };
 
- 
+
   //minimos de cada columna
   function minColumns(matrix) {
     const minCol = [];
@@ -349,19 +349,30 @@ const Flow = () => {
   };
 
   const handleJohnson = () => {
-    setJohnsonRef(true);
     if (nodes.length === 0 || edges.length === 0) {
-      prompt("No hay nodos o aristas");
+      alert("No hay nodos o aristas");
       return;
     }
+    setJohnsonRef(true);
+
     // matrix with zeros
     const matrix = new Array(nodes.length)
       .fill(0)
       .map(() => new Array(nodes.length).fill(0));
 
-    // fill the matrix with the weights
-    edges.forEach((edge) => {
-      matrix[edge.source][edge.target] =
+    // Sort nodes by their x position in ascending order
+    const sortedNodes = nodes.sort((a, b) => a.position.x - b.position.x);
+    // Sort edges based on source node's x position in ascending order
+    const sortedEdges = edges.sort((a, b) => {
+      const sourceNodeA = nodes.find(node => node.id === a.source);
+      const sourceNodeB = nodes.find(node => node.id === b.source);
+      return sourceNodeA.position.x - sourceNodeB.position.x;
+    });
+
+    sortedEdges.forEach((edge) => {
+      const sourceIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.source));
+      const targetIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.target));
+      matrix[sourceIndex][targetIndex] =
         typeof edge.data.weight === "undefined"
           ? 1
           : parseInt(edge.data.weight);
@@ -372,22 +383,24 @@ const Flow = () => {
 
     ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
     // set edges labels and
-    const newEdges = edges.map((edge) => {
+    const newEdges = sortedEdges.map((edge) => {
+      const sourceIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.source));
+      const targetIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.target));
       return {
         ...edge,
         data: {
           ...edge.data,
-          label: `h = ${slacks[edge.source][edge.target]}`,
+          label: `h = ${slacks[sourceIndex][targetIndex]}`,
         },
         markerEnd: {
           ...edge.markerEnd,
-          color: slacks[edge.source][edge.target] === 0 ? "green" : "#342e37",
+          color: slacks[sourceIndex][targetIndex] === 0 ? "green" : "#342e37",
         },
       };
     });
     setEdges(newEdges);
 
-    const newNodes = nodes.map((node, index) => {
+    const newNodes = sortedNodes.map((node, index) => {
       return {
         ...node,
         data: {
@@ -400,13 +413,20 @@ const Flow = () => {
     setNodes(newNodes);
   };
 
+  const handleClear = () => {
+    setNodes([]);
+    setEdges([]);
+    setJohnsonRef(false);
+  }
+
   return (
     <div style={{ //give 80% height 
       height: "100vh"
-     }}>
+    }}>
       {showMatrix ? (
         <div >
           <Modal
+            title={`Matriz de Adyacencia`}
             content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
             show={showModal}
             onClose={handleCloseModal}
@@ -416,7 +436,7 @@ const Flow = () => {
         <></>
       )}
 
-      
+
 
       <input
         id="file-input"
@@ -510,7 +530,7 @@ const Flow = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={() => window.location.reload(true)}>
+          <ControlButton onClick={handleClear}>
             <img
               src={RemoveAllIcon}
               alt="Remove All"
