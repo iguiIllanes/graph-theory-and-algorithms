@@ -1,15 +1,15 @@
-const data = {
-    "algorithm": "transport-min",
-    "numRows": 3,
-    "numColumns": 4,
-    "matrix": [
-        ["", "1", "2", "3", "4", ""],
-        ["a", "3", "2", "8", "9", "6"],
-        ["b", "7", "3", "2", "6", "5"],
-        ["c", "7", "3", "3", "3", "3"],
-        ["", "2", "6", "5", "1", ""]
-    ]
-};
+// const data = {
+//     "algorithm": "transport-min",
+//     "numRows": 3,
+//     "numColumns": 4,
+//     "matrix": [
+//         ["", "1", "2", "3", "4", ""],
+//         ["a", "3", "2", "8", "9", "6"],
+//         ["b", "7", "3", "2", "6", "5"],
+//         ["c", "7", "3", "3", "3", "3"],
+//         ["", "2", "6", "5", "1", ""]
+//     ]
+// };
 
 // const data = {
 //     "algorithm": "transport-min",
@@ -120,6 +120,7 @@ export const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) =
             // j++;
         }
     }
+
     // Let's check if the solution is optimal
     let isOptimal = false;
     let optimalSol;
@@ -183,6 +184,9 @@ export const transportAlgorithm = ({ algorithm, numRows, numColumns, matrix }) =
                 break;
             }
         }
+    }
+    if (copyAllocationMatrix === undefined) {
+        copyAllocationMatrix = allocationMatrix.map(row => row.map(cell => cell));
     }
     // Print the allocation matrix
     // console.table(copyAllocationMatrix);
@@ -396,8 +400,8 @@ function validation(numRows, numColumns, matrix) {
         if (val === null || val === "") throw new Error("El vector de demanda debe contener solo números");
     });
     // Check if the sum of the supply array is equal to the sum of the demand array
-    console.log(supply);
-    console.log(demand);
+    // console.log(supply);
+    // console.log(demand);
     const sumSupply = supply.reduce((acc, val) => acc + val, 0);
     const sumDemand = demand.reduce((acc, val) => acc + val, 0);
     if (sumSupply !== sumDemand) throw new Error("La suma de los elementos del vector de disponibilidad debe ser igual a la suma de los elementos del vector de demanda");

@@ -112,7 +112,7 @@ const NorthWest = () => {
     const handleFileDownload = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         if (fileName === null) return;
-        console.log(fileName);
+        // console.log(fileName);
         fileService.downloadMatrixApi("transport", numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
@@ -126,8 +126,8 @@ const NorthWest = () => {
         }
         try {
             const { allocationMatrix, totalCost } = transportAlgorithm(data);
-            console.table(allocationMatrix);
-            console.log(totalCost);
+            // console.table(allocationMatrix);
+            // console.log(totalCost);
             setAllocationMatrix(allocationMatrix);
             setTotalCost(totalCost);
             setShowModal(true);
@@ -146,8 +146,8 @@ const NorthWest = () => {
         }
         try {
             const { allocationMatrix, totalCost } = transportAlgorithm(data);
-            console.table(allocationMatrix);
-            console.log(totalCost);
+            // console.table(allocationMatrix);
+            // console.log(totalCost);
             setAllocationMatrix(allocationMatrix);
             setTotalCost(totalCost);
             setShowModal(true);

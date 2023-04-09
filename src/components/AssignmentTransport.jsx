@@ -115,7 +115,7 @@ const AssignmentTransport = () => {
     const handleFileDownload = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         if (fileName === null) return;
-        console.log(fileName);
+        // console.log(fileName);
         fileService.downloadMatrixApi("assignment", numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
@@ -130,8 +130,8 @@ const AssignmentTransport = () => {
         try {
 
             const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-            console.table(assignmentMatrix);
-            console.log(totalCost);
+            // console.table(assignmentMatrix);
+            // console.log(totalCost);
             setAssignmentMatrix(assignmentMatrix);
             setTotalCost(totalCost);
             setShowModal(true);
@@ -151,8 +151,8 @@ const AssignmentTransport = () => {
         try {
 
             const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-            console.table(assignmentMatrix);
-            console.log(totalCost);
+            // console.table(assignmentMatrix);
+            // console.log(totalCost);
             setAssignmentMatrix(assignmentMatrix);
             setTotalCost(totalCost);
             setShowModal(true);
