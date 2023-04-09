@@ -156,7 +156,12 @@ const TestSort = () => {
 
   return (
     <div>
-      <h1>Algoritmos de Ordenamiento</h1>
+      <h1
+       style={{
+        textAlign: "center",
+      }}
+      >
+        Algoritmos de Ordenamiento</h1>
       <br />
 
       <div>

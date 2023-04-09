@@ -9,8 +9,8 @@ import { IconContext } from 'react-icons';
   *Generate the Navbar component.
   * @param {object} props - The props passed to the component.
   * @param {object} props.sidebar - The sidebar state.  
-  * @param {function} props.setSidebar - The sidebar state setter.
-  * @param {object} props.SidebarData - The sidebar data.
+  *  props.setSidebar - The sidebar state setter.
+  * @returns {object} - The Navbar component.
 */
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
+      <IconContext.Provider value={{ color: '#000' }}>
         <div className='navbar'>
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} />

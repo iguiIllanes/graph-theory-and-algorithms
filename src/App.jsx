@@ -9,6 +9,7 @@ import AssignmentTransport from './components/AssignmentTransport';
 import Navbar from "./components/Sidebar";
 import TestSort from "./components/TestSorts";
 import AssignmentScreen from "./components/AssignmentScreen";
+import NorthWest from "./components/NorthWestScreen";
 
 /*
  * Generate the App component.
@@ -32,6 +33,7 @@ const App = () => {
         <Route path='/Jhonson' element={<Flow/>} ></Route> 
         <Route path='/AsignacionM' element={<AssignmentTransport/>} ></Route>
         <Route path='/AsignacionN' element={<AssignmentScreen/>} ></Route>
+        <Route path='/Northwest' element={<NorthWest/>} ></Route>
         <Route path='/TestSort' element={<TestSort/>} ></Route>
       </Routes>
     </Router>

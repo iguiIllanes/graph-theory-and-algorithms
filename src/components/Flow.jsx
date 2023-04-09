@@ -402,7 +402,7 @@ const Flow = () => {
 
   return (
     <div style={{ //give 80% height 
-      height: "85vh"
+      height: "100vh"
      }}>
       {showMatrix ? (
         <div >
