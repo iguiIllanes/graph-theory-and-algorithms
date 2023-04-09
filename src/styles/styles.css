@@ -1,7 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&display=swap");
 
-.App {
+html,
+body {
   font-family: "Oswald", sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  height: 100vh;
+}
+
+.selector {
+  width: 20vw;
+
+  border-right: 5px solid #333;
+
+  display: flex;
+
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: #f5f5f5;
+}
+
+.App {
+  display: flex;
   text-align: center;
   height: 100vh;
   width: 100vw;
@@ -35,47 +65,10 @@ th {
   background-color: #eee;
 }
 
-/* .react-flow__node-graph-node-start {
-  --primary-color: #0041d0;
-  background-color: white;
-} */
-/* .react-flow__node-graph-node-start .label-wrapper {
-  left: -75%;
-  bottom: 125%;
-} */
-
 .react-flow__node-graph-node-end {
   --primary-color: #ff0072;
 }
 
-/* .react-flow__node-graph-node-start .label-wrapper,
-.react-flow__node-graph-node-end .label-wrapper {
-  position: absolute;
-  width: 10rem;
-} */
-
-[class^="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-top,
-[class^="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-bottom,
-[class*="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-top,
-[class*="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-bottom {
-  width: 1.8rem;
-  left: 50%;
-
-  transform: translateX(-50%);
-}
-
-/* [class^="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-top,
-[class*="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-top {
-  top: -0.25rem;
-}  */
-/* [class^="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-bottom,
-[class*="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-bottom {
-  bottom: -0.25rem;
-} */
 .edgebutton:hover {
   box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
 }
@@ -102,26 +95,6 @@ th {
   min-height: 40px;
 }
 
-[class^="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-left,
-[class^="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-right,
-[class*="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-left,
-[class*="react-flow__node-graph-node"] .react-flow__handle.react-flow__handle-right {
-  height: 1.8rem;
-  top: 50%;
-}
-
-/* [class^="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-left,
-[class*="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-left {
-  left: -0.25rem;
-} */
-/* [class^="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-right,
-[class*="react-flow__node-graph-node"]
-  .react-flow__handle.react-flow__handle-right {
-  right: -0.25rem;
-} */
 .capa1 {
   z-index: 1;
 }
@@ -132,34 +105,4 @@ th {
 
 .capa3 {
   z-index: 3;
-}
-
-.toggle1 {
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  z-index: 100;
-  background: #fff;
-  padding: 10px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
-}
-
-.toggle2 {
-  position: absolute;
-  top: 60px;
-  left: 20px;
-  z-index: 100;
-  background: #fff;
-  padding: 10px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
-}
-
-.toggle3 {
-  position: absolute;
-  top: 110px;
-  left: 20px;
-  z-index: 100;
-  background: #fff;
-  padding: 10px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
 }

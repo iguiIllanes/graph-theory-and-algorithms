@@ -3,10 +3,10 @@ import "./styles/styles.css";
 
 import "reactflow/dist/style.css";
 // TODO: Remove the imports when routing is implemented
-import React, { useState } from 'react';
-import TestSorts from './components/TestSorts';
-import Sorts from './components/Sorts';
-import AssignmentTransport from './components/AssignmentTransport';
+import React, { useState } from "react";
+import TestSorts from "./components/TestSorts";
+import AssignmentTransport from "./components/AssignmentTransport";
+import Button from "./components/Button";
 
 const App = () => {
   // TODO: Remove the state when routing is implemented
@@ -24,12 +24,35 @@ const App = () => {
     setSelectScreen(2);
   };
 
+  /*
+   * Selects the screen to be displayed
+   * DEPENDS ON: selectScreen state
+   * @retuns {JSX} The screen to be displayed
+   */
+  const handleSelectScreen = () => {
+    switch (selectScreen) {
+      case 0:
+        return <Flow />;
+      case 1:
+        return <TestSorts />;
+      case 2:
+        return <AssignmentTransport />;
+      default:
+        return <Flow />;
+    }
+  };
+
   return (
-    <div className="App">
-      <button onClick={handleGraph} className="toggle1"> Grafos / Johnson </button>
-      <button onClick={handleAssignmentTransport} className="toggle2"> Algoritmos de Asignacion/Transporte </button>
-      <button onClick={handleSorts} className="toggle3"> Algoritmos de Ordenamiento </button>
-      {selectScreen === 0 ? <Flow /> : selectScreen === 1 ? <TestSorts /> : <AssignmentTransport />}
+    <div className="app-container">
+      <div className="selector">
+        <h1>Lista de algoritmos</h1>
+        <Button onClick={handleGraph}> Grafos / Johnson </Button>
+        <Button onClick={handleAssignmentTransport}>
+          Algoritmos de Asignacion/Transporte
+        </Button>
+        <Button onClick={handleSorts}> Algoritmos de Ordenamiento </Button>
+      </div>
+      <div className="App">{handleSelectScreen()}</div>
     </div>
   );
 };
