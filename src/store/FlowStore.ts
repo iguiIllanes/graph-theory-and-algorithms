@@ -103,6 +103,7 @@ const useStore = create<RFState>((set, get) => ({
       alert("Ya existe un nodo con esa etiqueta, intenta con otra.");
       return;
     }
+
     // Initial position of the new node, relative to the last node
     const lastNode = nodes[nodes.length - 1];
     const lastNodeX = lastNode ? lastNode.position.x : 0;
@@ -125,34 +126,9 @@ const useStore = create<RFState>((set, get) => ({
    * @returns new state of nodes without the deleted node.
    */
   deleteNode: (nodeId: string) => {
-    const remainingNodes = get().nodes.filter((node) => node.id !== nodeId); // gets all nodes except the one to delete
-
-    const remainingEdges: Edge[] = [];
-
-    // pushes all edges that don't have the node to delete as source or target to remainingEdges
-    get().edges.forEach((edge) => {
-      if (edge.source !== nodeId && edge.target !== nodeId) {
-        remainingEdges.push(edge);
-      }
-    });
-
-    // updates the source and target of the remaining edges
-    remainingEdges.forEach((edge: Edge) => {
-      if (parseInt(edge.source) > parseInt(nodeId)) {
-        edge.source = (parseInt(edge.source) - 1).toString();
-      }
-
-      if (parseInt(edge.target) > parseInt(nodeId)) {
-        edge.target = (parseInt(edge.target) - 1).toString();
-      }
-    });
-
-    // updates the id of the remaining nodes
-    remainingNodes.forEach((node: Node, index: number) => {
-      node.id = index.toString();
-    });
-
-    set({ nodes: remainingNodes, edges: remainingEdges });
+    const newNodes = get().nodes.filter(node => node.id !== nodeId);
+    const newEdges = get().edges.filter(edge => edge.source !== nodeId && edge.target !== nodeId);
+    set({ nodes: newNodes, edges: newEdges });
   },
 
   /*
