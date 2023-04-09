@@ -356,16 +356,13 @@ const AssignmentScreen = () => {
       //   console.log("edge", edge);
       // }}
       >
+        
         <MiniMap
-          nodeStrokeColor={(n) => {
-            if (n.type === "input") return "#0f41d0";
-            if (n.type === "selectorNode") return bgColor;
-            if (n.type === "output") return "#ff0072";
-          }}
-          nodeColor={(n) => {
-            if (n.type === "selectorNode") return bgColor;
-            return "#fff";
-          }}
+          nodeColor="#5e90e1"
+          nodeStrokeWidth={3}
+          nodeComponent={MiniMapNode}
+          zoomable
+          pannable
         />
         <Controls>
           <ControlButton onClick={() => window.location.reload(true)}>
