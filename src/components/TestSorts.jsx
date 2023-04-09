@@ -155,7 +155,7 @@ const TestSort = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <h1>Algoritmos de Ordenamiento</h1>
       <br />
 

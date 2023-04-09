@@ -3,11 +3,11 @@ import '../styles/Optimal.css'
 
 const AssignationMatrix = ({ nodes, matrix, matrixpos, totalCost }) => {
   const rowCount = matrix.length;
-  const headerNodes = nodes.filter((node) => node.id > rowCount-1);
+  const headerNodes = nodes.filter((node) => node.id > rowCount - 1);
 
   return (
     <div>
-      <table>
+      <table style={{ width: "100%" }}>
         <thead>
           <tr>
             <th></th>

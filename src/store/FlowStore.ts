@@ -103,14 +103,19 @@ const useStore = create<RFState>((set, get) => ({
       alert("Ya existe un nodo con esa etiqueta, intenta con otra.");
       return;
     }
+    // Initial position of the new node, relative to the last node
+    const lastNode = nodes[nodes.length - 1];
+    const lastNodeX = lastNode ? lastNode.position.x : 0;
+    const lastNodeY = lastNode ? lastNode.position.y : screenHeight / 2;
 
     const newNode = {
       id: nodes.length.toString(),
       handleId: nodes.length.toString(),
       type: "graph-node-start",
       data: { label: label },
-      position: { x: screenWidth / 2, y: screenHeight / 2 },
+      position: { x: lastNodeX + 200, y: lastNodeY },
     };
+
     set({ nodes: [...nodes, newNode] });
   },
 

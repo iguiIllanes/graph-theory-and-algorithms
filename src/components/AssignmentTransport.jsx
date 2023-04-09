@@ -206,135 +206,133 @@ const AssignmentTransport = () => {
 
     return (
         <>
-            {(showModal) ? (
-                (chooseAlgorithm) ? (
-                    <div>
-                        <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
-                            show={showModal} onClose={() => setShowModal(false)}>
-                        </Modal>
-                    </div>
-                ) : (
-                    <div>
-                        <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
-                            show={showModal} onClose={() => setShowModal(false)}>
-                        </Modal>
-                    </div>
-                )
-            ) :
-                (<></>
-                )}
-            <input
-                id="file-input"
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-            />
-
-            <h1>
-                {!chooseAlgorithm ? "Algoritmo de Asignación" : "Algoritmo de Transporte"}
-            </h1>
-
-            <br />
-
-            <div className="matrix">
-                <div className="matrix-header">
-                    <div className="matrix-header-cell"></div>
-                    {Array.from({ length: numColumns }, (_, i) => (
-                        // Save the value of the input in the array to (first row)
-                        <div className="matrix-header-cell" key={i}>
-                            <input type="text" value={inputMatrix[0][i + 1]} onChange={(e) => {
-                                const value = e.target.value;
-                                setInputMatrix((prev) => {
-                                    const newMatrix = [...prev];
-                                    newMatrix[0][i + 1] = value;
-                                    return newMatrix;
-                                });
-                            }} />
+            <div style={{ width: "100%" }}>
+                {(showModal) ? (
+                    (chooseAlgorithm) ? (
+                        <div>
+                            <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
+                                show={showModal} onClose={() => setShowModal(false)}>
+                            </Modal>
                         </div>
-                    ))}
-                    {
-                        chooseAlgorithm ?
-                            <div className="matrix-header-cell">
-                                <p style={{ fontSize: 15 }}>
-                                    DISPONIBILIDAD
-                                </p>
-                            </div> : null
-                    }
-                </div>
-                {Array.from({ length: numRows }, (_, i) => (
-                    <div className="matrix-row" key={i}>
-                        <div className="matrix-header-cell" style={{ backgroundColor: "#ccc" }}>
-                            <input type="text" value={inputMatrix[i + 1][0]} onChange={(e) => {
-                                const value = e.target.value;
-                                setInputMatrix((prev) => {
-                                    const newMatrix = [...prev];
-                                    newMatrix[i + 1][0] = value;
-                                    return newMatrix;
-                                });
-                            }}
-                            />
+                    ) : (
+                        <div>
+                            <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
+                                show={showModal} onClose={() => setShowModal(false)}>
+                            </Modal>
                         </div>
-                        {Array.from({ length: numColumns }, (_, j) => (
-                            <div className="matrix-cell" key={j}>
-                                <input type="text" value={inputMatrix[i + 1][j + 1]} onChange={(e) => {
+                    )
+                ) :
+                    (<></>
+                    )}
+                <input
+                    id="file-input"
+                    type="file"
+                    onChange={handleFileUpload}
+                    style={{ display: "none" }}
+                />
+
+                <h1>
+                    {!chooseAlgorithm ? "Algoritmo de Asignación" : "Algoritmo de Transporte"}
+                </h1>
+
+                <br />
+
+                <div className="matrix">
+                    <div className="matrix-header">
+                        <div className="matrix-header-cell"></div>
+                        {Array.from({ length: numColumns }, (_, i) => (
+                            // Save the value of the input in the array to (first row)
+                            <div className="matrix-header-cell" key={i}>
+                                <input type="text" value={inputMatrix[0][i + 1]} onChange={(e) => {
                                     const value = e.target.value;
                                     setInputMatrix((prev) => {
                                         const newMatrix = [...prev];
-                                        newMatrix[i + 1][j + 1] = value;
+                                        newMatrix[0][i + 1] = value;
+                                        return newMatrix;
+                                    });
+                                }} />
+                            </div>
+                        ))}
+                        {
+                            chooseAlgorithm ?
+                                <div className="matrix-header-cell">
+                                    <p style={{ fontSize: 15 }}>
+                                        DISPONIBILIDAD
+                                    </p>
+                                </div> : null
+                        }
+                    </div>
+                    {Array.from({ length: numRows }, (_, i) => (
+                        <div className="matrix-row" key={i}>
+                            <div className="matrix-header-cell" style={{ backgroundColor: "#ccc" }}>
+                                <input type="text" value={inputMatrix[i + 1][0]} onChange={(e) => {
+                                    const value = e.target.value;
+                                    setInputMatrix((prev) => {
+                                        const newMatrix = [...prev];
+                                        newMatrix[i + 1][0] = value;
                                         return newMatrix;
                                     });
                                 }}
                                 />
                             </div>
-                        ))}
-                        {
-                            chooseAlgorithm ?
-                                <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
-                                    <input type="text" value={inputMatrix[i + 1][numColumns + 1]} onChange={(e) => {
+                            {Array.from({ length: numColumns }, (_, j) => (
+                                <div className="matrix-cell" key={j}>
+                                    <input type="text" value={inputMatrix[i + 1][j + 1]} onChange={(e) => {
                                         const value = e.target.value;
                                         setInputMatrix((prev) => {
                                             const newMatrix = [...prev];
-                                            newMatrix[i + 1][numColumns + 1] = value;
-                                            return newMatrix;
-                                        });
-                                    }}
-                                    />
-                                </div> : null
-                        }
-                    </div>
-                ))}
-                {
-                    chooseAlgorithm ?
-
-                        <div className="matrix-row">
-                            <div className="matrix-header-cell" style={{ backgroundColor: "#ccc", fontWeight: "bold" }}>
-                                <p style={{ fontSize: 15 }}>
-                                    DEMANDA
-                                </p>
-                            </div>
-                            {Array.from({ length: numColumns }, (_, i) => (
-                                <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
-                                    <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
-                                        const value = e.target.value;
-                                        setInputMatrix((prev) => {
-                                            const newMatrix = [...prev];
-                                            newMatrix[numRows + 1][i + 1] = value;
+                                            newMatrix[i + 1][j + 1] = value;
                                             return newMatrix;
                                         });
                                     }}
                                     />
                                 </div>
                             ))}
-                            <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
-                            </div>
+                            {
+                                chooseAlgorithm ?
+                                    <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
+                                        <input type="text" value={inputMatrix[i + 1][numColumns + 1]} onChange={(e) => {
+                                            const value = e.target.value;
+                                            setInputMatrix((prev) => {
+                                                const newMatrix = [...prev];
+                                                newMatrix[i + 1][numColumns + 1] = value;
+                                                return newMatrix;
+                                            });
+                                        }}
+                                        />
+                                    </div> : null
+                            }
                         </div>
-                        : null
-                }
-            </div>
+                    ))}
+                    {
+                        chooseAlgorithm ?
 
+                            <div className="matrix-row">
+                                <div className="matrix-header-cell" style={{ backgroundColor: "#ccc", fontWeight: "bold" }}>
+                                    <p style={{ fontSize: 15 }}>
+                                        DEMANDA
+                                    </p>
+                                </div>
+                                {Array.from({ length: numColumns }, (_, i) => (
+                                    <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
+                                        <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
+                                            const value = e.target.value;
+                                            setInputMatrix((prev) => {
+                                                const newMatrix = [...prev];
+                                                newMatrix[numRows + 1][i + 1] = value;
+                                                return newMatrix;
+                                            });
+                                        }}
+                                        />
+                                    </div>
+                                ))}
+                                <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
+                                </div>
+                            </div>
+                            : null
+                    }
+                </div>
 
-
-            {(!showModal) ? (
                 <div className="controls-bottom-left">
                     <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleAlgorithm}>ALG</button>
                     <button className="controls-botton" onClick={handleNumRows}>#F</button>
@@ -377,10 +375,8 @@ const AssignmentTransport = () => {
                     >?</button>
 
                 </div >
-            ) :
-                (<></>
-                )}
 
+            </div>
         </>
     );
 };
