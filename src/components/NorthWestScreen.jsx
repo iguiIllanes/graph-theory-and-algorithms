@@ -30,7 +30,7 @@ const NorthWest = () => {
     const [showModal, setShowModal] = useState(false);
 
 
-   //We can change the number of rows by clicking on the button
+    //We can change the number of rows by clicking on the button
     const handleNumRows = () => {
         let newNumRows = prompt("Ingrese el numero de filas");
         if (newNumRows === null || newNumRows === "") {
@@ -100,7 +100,7 @@ const NorthWest = () => {
     const handleFileUpload = async (event) => {
         await fileService.uploadMatrix(event).then((response) => {
             // console.log(response);
-          
+
             setNumRows(response.numRows);
             setNumColumns(response.numColumns);
             setInputMatrix(response.matrix);
@@ -113,7 +113,7 @@ const NorthWest = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         if (fileName === null) return;
         console.log(fileName);
-        fileService.downloadMatrixApi(transport , numRows, numColumns, inputMatrix, `${fileName}.json`);
+        fileService.downloadMatrixApi("transport", numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
     // Maximize the matrix
@@ -125,13 +125,13 @@ const NorthWest = () => {
             matrix: inputMatrix
         }
         try {
-                const {allocationMatrix, totalCost } = transportAlgorithm(data);
-                console.table(allocationMatrix);
-                console.log(totalCost);
-                setAllocationMatrix(allocationMatrix);
-                setTotalCost(totalCost);
-                setShowModal(true);
-                setMinMax(true);
+            const { allocationMatrix, totalCost } = transportAlgorithm(data);
+            console.table(allocationMatrix);
+            console.log(totalCost);
+            setAllocationMatrix(allocationMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(true);
         } catch (error) {
             alert(error);
         }
@@ -145,15 +145,15 @@ const NorthWest = () => {
             matrix: inputMatrix
         }
         try {
-                const { allocationMatrix, totalCost } = transportAlgorithm(data);
-                console.table(allocationMatrix);
-                console.log(totalCost);
-                setAllocationMatrix(allocationMatrix);
-                setTotalCost(totalCost);
-                setShowModal(true);
-                setMinMax(false);
+            const { allocationMatrix, totalCost } = transportAlgorithm(data);
+            console.table(allocationMatrix);
+            console.log(totalCost);
+            setAllocationMatrix(allocationMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(false);
         } catch (error) {
-            alert(error );
+            alert(error);
         }
     }
 
@@ -167,11 +167,11 @@ const NorthWest = () => {
     return (
         <>
             {(showModal) ? (
-                    <div>
-                        <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
-                            show={showModal} onClose={() => setShowModal(false)}>
-                        </Modal>
-                    </div>
+                <div>
+                    <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
+                        show={showModal} onClose={() => setShowModal(false)}>
+                    </Modal>
+                </div>
             ) :
                 (<></>
                 )}
@@ -183,11 +183,11 @@ const NorthWest = () => {
             />
 
             <h1
-             style={{
-                textAlign: "center",
-              }}
-              >
-                  Algoritmo de Transporte
+                style={{
+                    textAlign: "center",
+                }}
+            >
+                Algoritmo de Transporte
             </h1>
 
             <br />
@@ -208,12 +208,12 @@ const NorthWest = () => {
                             }} />
                         </div>
                     ))}
-                            <div className="matrix-header-cell">
-                                <p style={{ fontSize: 15 }}>
-                                    DISPONIBILIDAD
-                                </p>
-                            </div> 
-        
+                    <div className="matrix-header-cell">
+                        <p style={{ fontSize: 15 }}>
+                            DISPONIBILIDAD
+                        </p>
+                    </div>
+
                 </div>
                 {Array.from({ length: numRows }, (_, i) => (
                     <div className="matrix-row" key={i}>
@@ -242,92 +242,87 @@ const NorthWest = () => {
                             </div>
                         ))}
                         <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
-                             <input type="text" value={inputMatrix[i + 1][numColumns + 1]} onChange={(e) => {
-                                 const value = e.target.value;
-                                 setInputMatrix((prev) => {
+                            <input type="text" value={inputMatrix[i + 1][numColumns + 1]} onChange={(e) => {
+                                const value = e.target.value;
+                                setInputMatrix((prev) => {
                                     const newMatrix = [...prev];
                                     newMatrix[i + 1][numColumns + 1] = value;
                                     return newMatrix;
-                                     });
+                                });
                             }}
                             />
                         </div>
-                        
+
                     </div>
                 ))}
-                 <div className="matrix-row">
-                            <div className="matrix-header-cell" style={{ backgroundColor: "#ccc", fontWeight: "bold" }}>
-                                <p style={{ fontSize: 15 }}>
-                                    DEMANDA
-                                </p>
-                            </div>
-                            {Array.from({ length: numColumns }, (_, i) => (
-                                <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
-                                    <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
-                                        const value = e.target.value;
-                                        setInputMatrix((prev) => {
-                                            const newMatrix = [...prev];
-                                            newMatrix[numRows + 1][i + 1] = value;
-                                            return newMatrix;
-                                        });
-                                    }}
-                                    />
-                                </div>
-                            ))}
-                            <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
-                            </div>
+                <div className="matrix-row">
+                    <div className="matrix-header-cell" style={{ backgroundColor: "#ccc", fontWeight: "bold" }}>
+                        <p style={{ fontSize: 15 }}>
+                            DEMANDA
+                        </p>
+                    </div>
+                    {Array.from({ length: numColumns }, (_, i) => (
+                        <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
+                            <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
+                                const value = e.target.value;
+                                setInputMatrix((prev) => {
+                                    const newMatrix = [...prev];
+                                    newMatrix[numRows + 1][i + 1] = value;
+                                    return newMatrix;
+                                });
+                            }}
+                            />
+                        </div>
+                    ))}
+                    <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
+                    </div>
                 </div>
-                        
-                
+
+
             </div>
 
+            <div className="controls-bottom-left">
+                <button className="controls-botton" onClick={handleNumRows}>#F</button>
+                <button className="controls-botton" onClick={handleNumColumns}>#C</button>
+                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
+                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
+                <button className="controls-botton"
+                    onClick={handleFileDownload}
+                >
+                    <img
+                        src={DownloadIcon}
+                        alt="A"
+                        style={{
+                            width: "20px",
+                        }}
+                    />
+                </button>
+                <button className="controls-botton"
+                    onClick={() => document.getElementById("file-input").click()}
+                >
+                    <img
+                        src={UploadIcon}
+                        alt="A"
+                        style={{
+                            width: "20px",
+                        }}
+                    />
+                </button>
+                <button className="controls-botton" onClick={handleClear}>
+                    <img
+                        src={RemoveAllIcon}
+                        alt="Remove All"
+                        style={{
+                            width: "20px",
+                        }}
+                    /></button>
+                <button className="controls-botton"
+                    onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
+                    style={{ color: "#000" }}
+                >?</button>
 
+            </div >
 
-            {(!showModal) ? (
-                <div className="controls-bottom-left">
-                    <button className="controls-botton" onClick={handleNumRows}>#F</button>
-                    <button className="controls-botton" onClick={handleNumColumns}>#C</button>
-                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
-                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
-                    <button className="controls-botton"
-                        onClick={handleFileDownload}
-                    >
-                        <img
-                            src={DownloadIcon}
-                            alt="A"
-                            style={{
-                                width: "20px",
-                            }}
-                        />
-                    </button>
-                    <button className="controls-botton"
-                        onClick={() => document.getElementById("file-input").click()}
-                    >
-                        <img
-                            src={UploadIcon}
-                            alt="A"
-                            style={{
-                                width: "20px",
-                            }}
-                        />
-                    </button>
-                    <button className="controls-botton" onClick={handleClear}>
-                        <img
-                            src={RemoveAllIcon}
-                            alt="Remove All"
-                            style={{
-                                width: "20px",
-                            }}
-                        /></button>
-                    <button className="controls-botton"
-                        onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
-                        style={{ color: "#000" }}
-                    >?</button>
-
-                </div >
-            ) :
-                (<></>
-                )}
 
         </>
     );

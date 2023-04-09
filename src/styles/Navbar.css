@@ -8,13 +8,14 @@
 }
 
 .menu-bars {
+  /* margin-left: 2rem; */
   font-size: 2rem;
   background: none;
 }
 
 .nav-menu {
   background-color: #7c7c7c;
-  width: 50vh;
+  /* width: 50vh; */
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -27,7 +28,6 @@
 
 .nav-menu.active {
   left: 0;
-  padding: 0 10px;
   transition: 350ms;
 }
 
@@ -50,6 +50,7 @@
   align-items: center;
   padding: 0 16px;
   border-radius: 4px;
+  margin-right: 20px;
 }
 
 .nav-text a:hover {
@@ -57,7 +58,6 @@
 }
 
 .nav-menu-items {
-  margin: 0;
   width: 100%;
 }
 

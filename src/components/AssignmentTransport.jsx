@@ -32,7 +32,7 @@ const AssignmentTransport = () => {
 
 
     // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
-   
+
 
     // We can change the number of rows by clicking on the button
     const handleNumRows = () => {
@@ -116,7 +116,7 @@ const AssignmentTransport = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         if (fileName === null) return;
         console.log(fileName);
-        fileService.downloadMatrixApi(assignment, numRows, numColumns, inputMatrix, `${fileName}.json`);
+        fileService.downloadMatrixApi("assignment", numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
     // Maximize the matrix
@@ -128,14 +128,14 @@ const AssignmentTransport = () => {
             matrix: inputMatrix
         }
         try {
-           
-                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-                console.table(assignmentMatrix);
-                console.log(totalCost);
-                setAssignmentMatrix(assignmentMatrix);
-                setTotalCost(totalCost);
-                setShowModal(true);
-                setMinMax(true);
+
+            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+            console.table(assignmentMatrix);
+            console.log(totalCost);
+            setAssignmentMatrix(assignmentMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(true);
         } catch (error) {
             alert(error);
         }
@@ -149,14 +149,14 @@ const AssignmentTransport = () => {
             matrix: inputMatrix
         }
         try {
-            
-                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-                console.table(assignmentMatrix);
-                console.log(totalCost);
-                setAssignmentMatrix(assignmentMatrix);
-                setTotalCost(totalCost);
-                setShowModal(true);
-                setMinMax(false);
+
+            const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
+            console.table(assignmentMatrix);
+            console.log(totalCost);
+            setAssignmentMatrix(assignmentMatrix);
+            setTotalCost(totalCost);
+            setShowModal(true);
+            setMinMax(false);
         } catch (error) {
             alert(error);
         }
@@ -172,12 +172,11 @@ const AssignmentTransport = () => {
     return (
         <>
             {(showModal) ? (
-                
-                    <div>
-                        <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
-                            show={showModal} onClose={() => setShowModal(false)}>
-                        </Modal>
-                    </div>
+                <div>
+                    <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
+                        show={showModal} onClose={() => setShowModal(false)}>
+                    </Modal>
+                </div>
             ) :
                 (<></>
                 )}
@@ -191,9 +190,9 @@ const AssignmentTransport = () => {
             <h1 //centrear el titulo
                 style={{
                     textAlign: "center",
-                  }}
+                }}
             >
-                Algoritmo de Transporte
+                Algoritmo de Asignación
             </h1>
 
             <br />
@@ -214,7 +213,7 @@ const AssignmentTransport = () => {
                             }} />
                         </div>
                     ))}
-                  
+
                 </div>
                 {Array.from({ length: numRows }, (_, i) => (
                     <div className="matrix-row" key={i}>
@@ -242,60 +241,55 @@ const AssignmentTransport = () => {
                                 />
                             </div>
                         ))}
-                        
+
                     </div>
                 ))}
-                
+
             </div>
 
 
 
-            {(!showModal) ? (
-                <div className="controls-bottom-left">
-                    <button className="controls-botton" onClick={handleNumRows}>#F</button>
-                    <button className="controls-botton" onClick={handleNumColumns}>#C</button>
-                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
-                    <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
-                    <button className="controls-botton"
-                        onClick={handleFileDownload}
-                    >
-                        <img
-                            src={DownloadIcon}
-                            alt="A"
-                            style={{
-                                width: "20px",
-                            }}
-                        />
-                    </button>
-                    <button className="controls-botton"
-                        onClick={() => document.getElementById("file-input").click()}
-                    >
-                        <img
-                            src={UploadIcon}
-                            alt="A"
-                            style={{
-                                width: "20px",
-                            }}
-                        />
-                    </button>
-                    <button className="controls-botton" onClick={handleClear}>
-                        <img
-                            src={RemoveAllIcon}
-                            alt="Remove All"
-                            style={{
-                                width: "20px",
-                            }}
-                        /></button>
-                    <button className="controls-botton"
-                        onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
-                        style={{ color: "#000" }}
-                    >?</button>
 
-                </div >
-            ) :
-                (<></>
-                )}
-
+            <div className="controls-bottom-left">
+                <button className="controls-botton" onClick={handleNumRows}>#F</button>
+                <button className="controls-botton" onClick={handleNumColumns}>#C</button>
+                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMax}>MAX</button>
+                <button className="controls-botton" style={{ fontSize: 10 }} onClick={handleMin}>MIN</button>
+                <button className="controls-botton"
+                    onClick={handleFileDownload}
+                >
+                    <img
+                        src={DownloadIcon}
+                        alt="A"
+                        style={{
+                            width: "20px",
+                        }}
+                    />
+                </button>
+                <button className="controls-botton"
+                    onClick={() => document.getElementById("file-input").click()}
+                >
+                    <img
+                        src={UploadIcon}
+                        alt="A"
+                        style={{
+                            width: "20px",
+                        }}
+                    />
+                </button>
+                <button className="controls-botton" onClick={handleClear}>
+                    <img
+                        src={RemoveAllIcon}
+                        alt="Remove All"
+                        style={{
+                            width: "20px",
+                        }}
+                    /></button>
+                <button className="controls-botton"
+                    onClick={() => window.open("https://docs.google.com/document/u/0/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1", "_blank")}
+                    style={{ color: "#000" }}
+                >?</button>
+            </div >
         </>
     );
 };
