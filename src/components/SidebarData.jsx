@@ -1,8 +1,10 @@
-import React from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import * as IoIcons from 'react-icons/io';
-
+/*
+ *This file contains the data for the sidebar
+ * @param {object} SidebarData - The sidebar data.
+ * @param {string} SidebarData.title - The title of the sidebar item.
+ * @param {string} SidebarData.path - The path of the sidebar item.
+ * @param {string} SidebarData.cName - The class name of the sidebar item.
+*/
 export const SidebarData = [
   {
     title: 'Jhonson',

@@ -21,6 +21,7 @@ import AdjacencyMatrix from "./AdjacencyMatrix";
 import AssignationMatrix from "./AssignationMatrix";
 import AssignationIconMax from "/icons/maxIcon.png";
 import AssignationIconMin from "/icons/minIcon.png";
+import MiniMapNode from "./MiniMapNode";
 
 import fileService from "../service/file";
 
@@ -158,34 +159,23 @@ const AssignmentScreen = () => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
-    console.log("matrix", matrix);
     matrix = matrix.map(innerArr => innerArr.map(Number));
     // convertir la matrix sin conexiones 
     let matrixFinal = removeZeros(matrix);
-    console.log("matrixFinal", matrixFinal);
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assign(matrixFinal);
-    console.log("Costo optimizado", totalCost);
     let mat2 = matrixFinal;
     let x = assignWithMunkres(mat2, true);
     let y = extractValues(mat2, x);
-    console.log("Posiciones", x);
-
 
     setTotalCost(totalCost1);
-    console.log(totalCost);
-    console.log("Posiciones", x);
-    //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
-    console.log('PosicionesCeros', ceros);
     setPosMatrix(ceros);
     setShowModalAssignation(!showModalAssignation);
     setAssignationMatrix(mat2);
     setTitleAssignation('Minimización');
-
     setShowAssignationMin(!showAssignationMin);
-    console.log("showAssignationMin 1", showAssignationMin);
   }
 
   const handleAssignationMax = () => {
@@ -211,35 +201,26 @@ const AssignmentScreen = () => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
-    console.log("matrix", matrix);
     matrix = matrix.map(innerArr => innerArr.map(Number));
     // convertir la matrix sin conexiones 
     let matrixFinal = removeZeros(matrix);
-    console.log("matrixFinal", matrixFinal);
 
 
 
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assignMax(matrixFinal);
-    console.log("Costo optimizado", totalCost1);
     let mat2 = [...matrixFinal];
     let x = assignWithMunkres(mat2, false);
     let y = extractValues(mat2, x);
-    console.log("Costo", totalCost1, "Posiciones", y);
-    console.log("Posiciones", x);
-
     setTotalCost(totalCost1);
-    console.log("Posiciones", x);
     //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
-    console.log('PosicionesCeros', ceros);
     setPosMatrix(ceros);
     setAssignationMatrix(mat2);
 
     setShowAssignationMax(!showAssignationMax);
     setShowModalAssignation(!showModalAssignation);
-    console.log("showAssignationMax", showAssignationMax);
     setTitleAssignation("Máximizar");
     //setShowModalOptions(!showModalOptions);
 

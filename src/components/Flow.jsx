@@ -23,18 +23,11 @@ import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
 import AdjacencyMatrix from "./AdjacencyMatrix";
-import AssignationMatrix from "./AssignationMatrix";
-import AssignationIconMax from "/icons/maxIcon.png";
-import AssignationIconMin from "/icons/minIcon.png";
 
 import fileService from "./../service/file";
 
 import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
-
-import assign from "../helpers/assignation.js";
-import assignWithMunkres from "../helpers/assingMatrix.js";
-import assignMax from "../helpers/assignationMax.js";
 
 import Modal from "./Modal";
 import { johnsonAlgorithm } from "../algorithms/johnson";
