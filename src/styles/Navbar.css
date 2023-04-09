@@ -8,14 +8,14 @@
 }
 
 .menu-bars {
-  margin-left: 2rem;
+  /* margin-left: 2rem; */
   font-size: 2rem;
   background: none;
 }
 
 .nav-menu {
   background-color: #7c7c7c;
-  width: 50vh;
+  /* width: 50vh; */
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -50,6 +50,7 @@
   align-items: center;
   padding: 0 16px;
   border-radius: 4px;
+  margin-right: 20px;
 }
 
 .nav-text a:hover {

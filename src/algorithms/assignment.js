@@ -1,15 +1,15 @@
-const data = {
-    "algorithm": "assignment-min",
-    "numRows": 3,
-    "numColumns": 3,
-    "matrix": [
-        ["", "1", "2", "3", ""],
-        ["a", "7", "3", "2", ""],
-        ["b", "2", "4", "6", ""],
-        ["c", "2", "7", "4", ""],
-        ["", "", "", "", "", ""]
-    ]
-};
+// const data = {
+//     "algorithm": "assignment-min",
+//     "numRows": 3,
+//     "numColumns": 3,
+//     "matrix": [
+//         ["", "1", "2", "3", ""],
+//         ["a", "7", "3", "2", ""],
+//         ["b", "2", "4", "6", ""],
+//         ["c", "2", "7", "4", ""],
+//         ["", "", "", "", "", ""]
+//     ]
+// };
 
 // const data = {
 //     "algorithm": "assignment-max",

@@ -227,7 +227,7 @@ const AssignmentScreen = () => {
     //mostrar matriz
   }
 
-  
+
   function assignInitial(matrix) {
     let assignments = [];
     let rows = matrix.length;
@@ -288,15 +288,20 @@ const AssignmentScreen = () => {
     fileService.download(nodes, edges, `${fileName}.json`);
   }
 
+  const handleClear = () => {
+    setNodes([]);
+    setEdges([]);
+    setJohnsonRef(false);
+  }
 
-  
+
   return (
     <div style={{ //give 80% height 
       height: "100vh"
-     }}>
+    }}>
       {showMatrix ? (
         <div>
-          <Modal content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
+          <Modal title={`Matriz de Adyacencia`} content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
             show={showModal} onClose={handleCloseModal} >
           </Modal>
         </div>
@@ -337,7 +342,7 @@ const AssignmentScreen = () => {
       //   console.log("edge", edge);
       // }}
       >
-        
+
         <MiniMap
           nodeColor="#5e90e1"
           nodeStrokeWidth={3}
@@ -346,7 +351,7 @@ const AssignmentScreen = () => {
           pannable
         />
         <Controls>
-          <ControlButton onClick={() => window.location.reload(true)}>
+          <ControlButton onClick={handleClear}>
             <img
               src={RemoveAllIcon}
               alt="Remove All"
