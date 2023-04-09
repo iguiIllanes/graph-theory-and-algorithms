@@ -9,9 +9,8 @@ import RemoveAllIcon from "/icons/removeAll.png";
 
 import "../styles/AssignmentTransport.css";
 import TransportationMatrix from './TransportationMatrix';
-import AssignmentMatrix from './AssignmentMatrix';
 
-const AssignmentTransport = () => {
+const NorthWest = () => {
     // Number of rows and columns of the matrix
     const [numRows, setNumRows] = useState(2);
     // Number of rows and columns of the matrix
@@ -31,10 +30,7 @@ const AssignmentTransport = () => {
     const [showModal, setShowModal] = useState(false);
 
 
-    // We can change the algorithm by clicking on the button, in case of transport it will show the supply and demand
-   
-
-    // We can change the number of rows by clicking on the button
+   //We can change the number of rows by clicking on the button
     const handleNumRows = () => {
         let newNumRows = prompt("Ingrese el numero de filas");
         if (newNumRows === null || newNumRows === "") {
@@ -104,6 +100,7 @@ const AssignmentTransport = () => {
     const handleFileUpload = async (event) => {
         await fileService.uploadMatrix(event).then((response) => {
             // console.log(response);
+          
             setNumRows(response.numRows);
             setNumColumns(response.numColumns);
             setInputMatrix(response.matrix);
@@ -116,23 +113,22 @@ const AssignmentTransport = () => {
         const fileName = prompt("Introduzca el nombre del archivo");
         if (fileName === null) return;
         console.log(fileName);
-        fileService.downloadMatrixApi(assignment, numRows, numColumns, inputMatrix, `${fileName}.json`);
+        fileService.downloadMatrixApi(transport , numRows, numColumns, inputMatrix, `${fileName}.json`);
     }
 
     // Maximize the matrix
     const handleMax = () => {
         const data = {
-            algorithm: "assignment-max",
+            algorithm: "transport-max",
             numRows: numRows,
             numColumns: numColumns,
             matrix: inputMatrix
         }
         try {
-           
-                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-                console.table(assignmentMatrix);
+                const {allocationMatrix, totalCost } = transportAlgorithm(data);
+                console.table(allocationMatrix);
                 console.log(totalCost);
-                setAssignmentMatrix(assignmentMatrix);
+                setAllocationMatrix(allocationMatrix);
                 setTotalCost(totalCost);
                 setShowModal(true);
                 setMinMax(true);
@@ -143,22 +139,21 @@ const AssignmentTransport = () => {
     // Minimize the matrix
     const handleMin = () => {
         const data = {
-            algorithm: "assignment-min",
+            algorithm: "transport-min",
             numRows: numRows,
             numColumns: numColumns,
             matrix: inputMatrix
         }
         try {
-            
-                const { assignmentMatrix, totalCost } = assignmentAlgorithm(data);
-                console.table(assignmentMatrix);
+                const { allocationMatrix, totalCost } = transportAlgorithm(data);
+                console.table(allocationMatrix);
                 console.log(totalCost);
-                setAssignmentMatrix(assignmentMatrix);
+                setAllocationMatrix(allocationMatrix);
                 setTotalCost(totalCost);
                 setShowModal(true);
                 setMinMax(false);
         } catch (error) {
-            alert(error);
+            alert(error );
         }
     }
 
@@ -172,9 +167,8 @@ const AssignmentTransport = () => {
     return (
         <>
             {(showModal) ? (
-                
                     <div>
-                        <Modal content={<AssignmentMatrix inputMatrix={inputMatrix} assignmentMatrix={assignmentMatrix} totalCost={totalCost} minMax={minMax} />}
+                        <Modal content={<TransportationMatrix inputMatrix={inputMatrix} allocationMatrix={allocationMatrix} totalCost={totalCost} minMax={minMax} />}
                             show={showModal} onClose={() => setShowModal(false)}>
                         </Modal>
                     </div>
@@ -188,12 +182,12 @@ const AssignmentTransport = () => {
                 style={{ display: "none" }}
             />
 
-            <h1 //centrear el titulo
-                style={{
-                    textAlign: "center",
-                  }}
-            >
-                Algoritmo de Transporte
+            <h1
+             style={{
+                textAlign: "center",
+              }}
+              >
+                  Algoritmo de Transporte
             </h1>
 
             <br />
@@ -214,7 +208,12 @@ const AssignmentTransport = () => {
                             }} />
                         </div>
                     ))}
-                  
+                            <div className="matrix-header-cell">
+                                <p style={{ fontSize: 15 }}>
+                                    DISPONIBILIDAD
+                                </p>
+                            </div> 
+        
                 </div>
                 {Array.from({ length: numRows }, (_, i) => (
                     <div className="matrix-row" key={i}>
@@ -242,9 +241,43 @@ const AssignmentTransport = () => {
                                 />
                             </div>
                         ))}
+                        <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
+                             <input type="text" value={inputMatrix[i + 1][numColumns + 1]} onChange={(e) => {
+                                 const value = e.target.value;
+                                 setInputMatrix((prev) => {
+                                    const newMatrix = [...prev];
+                                    newMatrix[i + 1][numColumns + 1] = value;
+                                    return newMatrix;
+                                     });
+                            }}
+                            />
+                        </div>
                         
                     </div>
                 ))}
+                 <div className="matrix-row">
+                            <div className="matrix-header-cell" style={{ backgroundColor: "#ccc", fontWeight: "bold" }}>
+                                <p style={{ fontSize: 15 }}>
+                                    DEMANDA
+                                </p>
+                            </div>
+                            {Array.from({ length: numColumns }, (_, i) => (
+                                <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }} key={i}>
+                                    <input type="text" value={inputMatrix[numRows + 1][i + 1]} onChange={(e) => {
+                                        const value = e.target.value;
+                                        setInputMatrix((prev) => {
+                                            const newMatrix = [...prev];
+                                            newMatrix[numRows + 1][i + 1] = value;
+                                            return newMatrix;
+                                        });
+                                    }}
+                                    />
+                                </div>
+                            ))}
+                            <div className="matrix-cell" style={{ backgroundColor: "#f2f2f2" }}>
+                            </div>
+                </div>
+                        
                 
             </div>
 
@@ -300,4 +333,4 @@ const AssignmentTransport = () => {
     );
 };
 
-export default AssignmentTransport;
+export default NorthWest;

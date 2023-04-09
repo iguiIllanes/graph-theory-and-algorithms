@@ -1,36 +1,43 @@
 import Flow from "./components/Flow";
 import "./styles/styles.css";
-
+import './styles/Navbar.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "reactflow/dist/style.css";
 // TODO: Remove the imports when routing is implemented
 import React, { useState } from 'react';
-import TestSorts from './components/TestSorts';
-import Sorts from './components/Sorts';
 import AssignmentTransport from './components/AssignmentTransport';
+import Navbar from "./components/Sidebar";
+import TestSort from "./components/TestSorts";
+import AssignmentScreen from "./components/AssignmentScreen";
+import NorthWest from "./components/NorthWestScreen";
 
+/*
+ * Generate the App component.
+ * @param {object} props - The props passed to the component.
+ * @param {object} props.sidebar - The sidebar state.
+ * @param {function} props.setSidebar - The sidebar state setter.
+ * @param {object} props.SidebarData - The sidebar data.
+ * @param {object} props.Flow - The Flow component.
+ * @param {object} props.AssignmentScreen - The AssignmentScreen component.
+ * @param {object} props.AssignmentTransport - The AssignmentTransport component.
+ * @param {object} props.TestSort - The TestSort component.
+ */
 const App = () => {
-  // TODO: Remove the state when routing is implemented
-  const [selectScreen, setSelectScreen] = useState(0);
-
-  const handleGraph = () => {
-    setSelectScreen(0);
-  };
-
-  const handleSorts = () => {
-    setSelectScreen(1);
-  };
-
-  const handleAssignmentTransport = () => {
-    setSelectScreen(2);
-  };
 
   return (
-    <div className="App">
-      <button onClick={handleGraph} className="toggle1"> Grafos / Johnson </button>
-      <button onClick={handleAssignmentTransport} className="toggle2"> Algoritmos de Asignacion/Transporte </button>
-      <button onClick={handleSorts} className="toggle3"> Algoritmos de Ordenamiento </button>
-      {selectScreen === 0 ? <Flow /> : selectScreen === 1 ? <TestSorts /> : <AssignmentTransport />}
-    </div>
+    <>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Flow/>} ></Route> 
+        <Route path='/Jhonson' element={<Flow/>} ></Route> 
+        <Route path='/AsignacionM' element={<AssignmentTransport/>} ></Route>
+        <Route path='/AsignacionN' element={<AssignmentScreen/>} ></Route>
+        <Route path='/Northwest' element={<NorthWest/>} ></Route>
+        <Route path='/TestSort' element={<TestSort/>} ></Route>
+      </Routes>
+    </Router>
+  </>
   );
 };
 
