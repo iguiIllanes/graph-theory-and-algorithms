@@ -123,6 +123,20 @@ th {
   .react-flow__handle.react-flow__handle-right {
   right: -0.25rem;
 } */
+
+.buttonScreen{
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 100;
+  background: #7c7c7c;
+  padding: 10px;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
+}
+.buttonScreen:hover{
+  background: #1a83ff;
+  color: #fff;
+}
 .capa1 {
   z-index: 1;
 }
