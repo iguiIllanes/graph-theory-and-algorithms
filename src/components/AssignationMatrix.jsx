@@ -1,5 +1,7 @@
 import React from "react";
-import '../styles/Optimal.css'
+import PropTypes from "prop-types";
+
+import "../styles/Optimal.css";
 
 const AssignationMatrix = ({ nodes, matrix, matrixpos, totalCost }) => {
   const rowCount = matrix.length;
@@ -23,8 +25,10 @@ const AssignationMatrix = ({ nodes, matrix, matrixpos, totalCost }) => {
                 {nodes[rowIndex].data.label}
               </td>
               {row.map((cell, cellIndex) => {
-                const i = matrixpos.findIndex(coords => coords[0] === rowIndex && coords[1] === cellIndex);
-                const className = `weights ${i !== -1 ? 'red' : ''}`;
+                const i = matrixpos.findIndex(
+                  (coords) => coords[0] === rowIndex && coords[1] === cellIndex
+                );
+                const className = `weights ${i !== -1 ? "red" : ""}`;
                 return (
                   <td className={className} key={cellIndex}>
                     {cell}
@@ -40,6 +44,13 @@ const AssignationMatrix = ({ nodes, matrix, matrixpos, totalCost }) => {
       </div>
     </div>
   );
+};
+
+AssignationMatrix.propTypes = {
+  nodes: PropTypes.array.isRequired,
+  matrix: PropTypes.array.isRequired,
+  matrixpos: PropTypes.array.isRequired,
+  totalCost: PropTypes.number.isRequired,
 };
 
 export default AssignationMatrix;

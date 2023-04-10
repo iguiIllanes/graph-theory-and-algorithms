@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import PropTypes from "prop-types";
 
 import { Handle } from "reactflow";
 
@@ -15,7 +16,8 @@ const selector = (state) => ({
   deleteNode: state.deleteNode,
 });
 
-export default memo(({ id, handleId, data, isConnectable }) => {
+// eslint-disable-next-line react/display-name
+const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
   const { deletePersona, deleteNode } = useStore(selector, shallow);
 
   const handleNodeClick = () => {
@@ -23,7 +25,6 @@ export default memo(({ id, handleId, data, isConnectable }) => {
       deleteNode(id);
     }
   };
-  // console.log(data.earlyTime);
 
   return (
     <div className="node-container" onClick={handleNodeClick}>
@@ -50,9 +51,8 @@ export default memo(({ id, handleId, data, isConnectable }) => {
         }}
         isConnectable={isConnectable}
       />
-      {((data.earlyTime === undefined && data.lateTime === undefined) ||
-        (data.earlyTime === null && data.lateTime === null)
-      ) ? (
+      {(data.earlyTime === undefined && data.lateTime === undefined) ||
+      (data.earlyTime === null && data.lateTime === null) ? (
         <div className="customNode">{data.label}</div>
       ) : (
         <div className="customJohnsonNode">
@@ -87,3 +87,16 @@ export default memo(({ id, handleId, data, isConnectable }) => {
     </div>
   );
 });
+
+CustomNode.propTypes = {
+  id: PropTypes.string.isRequired,
+  handleId: PropTypes.string, //FIXME: isRequired
+  data: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    earlyTime: PropTypes.number,
+    lateTime: PropTypes.number,
+  }).isRequired,
+  isConnectable: PropTypes.bool.isRequired,
+};
+
+export default CustomNode;

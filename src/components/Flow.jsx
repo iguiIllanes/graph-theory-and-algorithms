@@ -1,14 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-  MarkerType,
-  ControlButton,
-} from "reactflow";
+import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
 import RemoveAllIcon from "/icons/removeAll.png";
 import CreateNodeIcon from "/icons/createNode.png";
@@ -85,12 +77,6 @@ const Flow = () => {
     toggleDeletePersona,
     adjacencyMatrix,
     setAdjacencyMatrix,
-    assignationMatrix,
-    setAssignationMatrix,
-    posMatrix,
-    setPosMatrix,
-    totalCost,
-    setTotalCost,
     nodes,
     addNode,
     setNodes,
@@ -99,7 +85,6 @@ const Flow = () => {
     onNodesChange,
     onEdgesChange,
     onConnect,
-    setWeight,
   } = useFlowStore(selector, shallow);
   // // adjacency matrix
   // const adjMatrix = useFlowStore((state) => state.adjMatrix);
@@ -107,10 +92,6 @@ const Flow = () => {
   //
   const [showMatrix, setShowMatrix] = useState(false);
   const [JohnsonRef, setJohnsonRef] = useState(false);
-
-  //const [showMatrix2, setShowMatrix2] = useState(false);
-  const [showAssignationMin, setShowAssignationMin] = useState(false);
-  const [showAssignationMax, setShowAssignationMax] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   //Matriz de adyancecia
@@ -182,7 +163,6 @@ const Flow = () => {
     let AAB = restarMatrices(comparacion, betaPrime);
     console.log("MATRIZ A ANALIZAR", AAB);
   };
-
 
   //minimos de cada columna
   function minColumns(matrix) {
@@ -275,52 +255,6 @@ const Flow = () => {
     return resultado;
   }
 
-  // encontrar 0 que dan solucion
-
-  function assignInitial(matrix) {
-    let assignments = [];
-    let rows = matrix.length;
-    let cols = matrix[0].length;
-
-    let assignedRows = new Set();
-    let assignedCols = new Set();
-
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        if (matrix[i][j] == 1 && !assignedRows.has(i) && !assignedCols.has(j)) {
-          let rowSum = matrix[i].reduce((acc, val) => acc + val, 0);
-          let colSum = 0;
-          for (let k = 0; k < rows; k++) {
-            colSum += matrix[k][j];
-          }
-          assignments.push([i, j]);
-          assignedRows.add(i);
-          assignedCols.add(j);
-        }
-      }
-    }
-
-    return assignments;
-  }
-
-  //extrae los valores de los 0
-  function extractValues(matrix, positions) {
-    let values = [];
-
-    for (let i = 0; i < positions.length; i++) {
-      let row = positions[i][0];
-      let col = positions[i][1];
-
-      let value = matrix[row][col];
-      values.push(value);
-    }
-
-    return values;
-  }
-
-
-
-
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
@@ -364,14 +298,18 @@ const Flow = () => {
     const sortedNodes = nodes.sort((a, b) => a.position.x - b.position.x);
     // Sort edges based on source node's x position in ascending order
     const sortedEdges = edges.sort((a, b) => {
-      const sourceNodeA = nodes.find(node => node.id === a.source);
-      const sourceNodeB = nodes.find(node => node.id === b.source);
+      const sourceNodeA = nodes.find((node) => node.id === a.source);
+      const sourceNodeB = nodes.find((node) => node.id === b.source);
       return sourceNodeA.position.x - sourceNodeB.position.x;
     });
 
     sortedEdges.forEach((edge) => {
-      const sourceIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.source));
-      const targetIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.target));
+      const sourceIndex = sortedNodes.indexOf(
+        nodes.find((node) => node.id === edge.source)
+      );
+      const targetIndex = sortedNodes.indexOf(
+        nodes.find((node) => node.id === edge.target)
+      );
       matrix[sourceIndex][targetIndex] =
         typeof edge.data.weight === "undefined"
           ? 1
@@ -384,8 +322,12 @@ const Flow = () => {
     ({ slacks, earlyTimes, lateTimes } = johnsonAlgorithm(matrix));
     // set edges labels and
     const newEdges = sortedEdges.map((edge) => {
-      const sourceIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.source));
-      const targetIndex = sortedNodes.indexOf(nodes.find(node => node.id === edge.target));
+      const sourceIndex = sortedNodes.indexOf(
+        nodes.find((node) => node.id === edge.source)
+      );
+      const targetIndex = sortedNodes.indexOf(
+        nodes.find((node) => node.id === edge.target)
+      );
       return {
         ...edge,
         data: {
@@ -396,6 +338,7 @@ const Flow = () => {
           ...edge.markerEnd,
           color: slacks[sourceIndex][targetIndex] === 0 ? "green" : "#342e37",
         },
+        animated: true,
       };
     });
     setEdges(newEdges);
@@ -417,14 +360,17 @@ const Flow = () => {
     setNodes([]);
     setEdges([]);
     setJohnsonRef(false);
-  }
+  };
 
   return (
-    <div style={{ //give 80% height 
-      height: "100vh"
-    }}>
+    <div
+      style={{
+        //give 80% height
+        height: "100vh",
+      }}
+    >
       {showMatrix ? (
-        <div >
+        <div>
           <Modal
             title={`Matriz de Adyacencia`}
             content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
@@ -435,8 +381,6 @@ const Flow = () => {
       ) : (
         <></>
       )}
-
-
 
       <input
         id="file-input"

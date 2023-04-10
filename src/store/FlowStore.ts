@@ -120,8 +120,10 @@ const useStore = create<RFState>((set, get) => ({
    * @returns new state of nodes without the deleted node.
    */
   deleteNode: (nodeId: string) => {
-    const newNodes = get().nodes.filter(node => node.id !== nodeId);
-    const newEdges = get().edges.filter(edge => edge.source !== nodeId && edge.target !== nodeId);
+    const newNodes = get().nodes.filter((node) => node.id !== nodeId);
+    const newEdges = get().edges.filter(
+      (edge) => edge.source !== nodeId && edge.target !== nodeId
+    );
     set({ nodes: newNodes, edges: newEdges });
   },
 

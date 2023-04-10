@@ -6,7 +6,6 @@ export function generarListaAleatoria(n) {
   return lista;
 }
 
-
 export function mergeSort(arr) {
   let numSteps = 0;
 
@@ -45,8 +44,6 @@ export function mergeSort(arr) {
   return { sortedArray, numSteps, runtime: runtime.toFixed(0) };
 }
 
-
-
 export function shellSort(arr) {
   const n = arr.length;
   let gap = Math.floor(n / 2);
@@ -74,14 +71,12 @@ export function shellSort(arr) {
   const end = performance.now();
   const runtime = end - start;
 
-
   return {
     sortedArray: arr,
     numOperations: contador,
     runtime: runtime.toFixed(0),
   };
 }
-
 
 //  export function insertionSort(arr) {
 //    for (let i = 1; i < arr.length; i++) {
@@ -118,15 +113,12 @@ export function insertionSort(arr) {
   const end = performance.now();
   const runtime = end - start;
 
-
   return {
     sortedArray: arr,
     numOperations: contador,
     runtime: runtime.toFixed(0),
   };
 }
-
-
 
 export function selectionSort(arr) {
   let contador = 0;
@@ -156,6 +148,5 @@ export function selectionSort(arr) {
     sortedArray: arr,
     numOperations: contador,
     runtime: runtime.toFixed(0),
-  }
-};
-
+  };
+}

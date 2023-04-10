@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import '../styles/Modal.css';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+import "../styles/Modal.css";
 
 const ModalWithOptions = ({ show, onClose, children }) => {
-  const [selectedOption, setSelectedOption] = useState('Maximizar');
-  const options = ['Maximizar', 'Minimizar'];
+  const [selectedOption, setSelectedOption] = useState("Maximizar");
+  const options = ["Maximizar", "Minimizar"];
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  const showHideClassName = show ? 'modal display-block' : 'modal display-none';
+  const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
     <div className={showHideClassName}>
@@ -34,6 +36,12 @@ const ModalWithOptions = ({ show, onClose, children }) => {
       </div>
     </div>
   );
+};
+
+ModalWithOptions.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default ModalWithOptions;
