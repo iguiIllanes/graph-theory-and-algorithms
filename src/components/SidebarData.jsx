@@ -18,12 +18,12 @@ export const SidebarData = [
     cName: "nav-text",
   },
   {
-    title: "Northwest",
+    title: "Trasporte",
     path: "/Northwest",
     cName: "nav-text",
   },
   {
-    title: "TestSort",
+    title: "Algoritmos de ordenamiento",
     path: "/TestSort",
     cName: "nav-text",
   },

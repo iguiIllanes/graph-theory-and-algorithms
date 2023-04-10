@@ -15,7 +15,7 @@ const AssignmentScreen = () => {
   return (
     <>
       <button className="buttonScreen" onClick={handleTogle}>
-        {selectScreen ? "Assignment Matrix" : "Assignment Graph"}
+        {selectScreen ? "Matriz de Asignación" : "Grafo de Asignación"}
       </button>
       {selectScreen ? <AssignmentGraph /> : <AssignmentTransport />}
     </>
