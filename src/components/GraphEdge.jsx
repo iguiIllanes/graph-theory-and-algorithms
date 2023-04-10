@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  getBezierPath,
-  EdgeLabelRenderer,
-  getStraightPath,
-  ControlButton,
-} from "reactflow";
-import editIcon from "/icons/editar.png";
+import PropTypes from "prop-types";
+
+import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
 
 import useStore from "./../store/FlowStore";
 
@@ -109,6 +105,21 @@ const GraphEdge = ({
       </foreignObject>
     </>
   );
+};
+
+GraphEdge.propTypes = {
+  id: PropTypes.string.isRequired,
+  source: PropTypes.string.isRequired,
+  target: PropTypes.string.isRequired,
+  sourceX: PropTypes.number.isRequired,
+  sourceY: PropTypes.number.isRequired,
+  targetX: PropTypes.number.isRequired,
+  targetY: PropTypes.number.isRequired,
+  sourcePosition: PropTypes.string.isRequired,
+  targetPosition: PropTypes.string.isRequired,
+  style: PropTypes.object,
+  data: PropTypes.object,
+  markerEnd: PropTypes.string,
 };
 
 export default GraphEdge;

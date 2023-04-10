@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
-import '../styles/Navbar.css';
-import { IconContext } from 'react-icons';
+import React, { useState } from "react";
+// import FaIcons from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
+import { AiOutlineClose } from "react-icons/ai";
+// import AiIcons from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { SidebarData } from "./SidebarData";
+import "../styles/Navbar.css";
+import { IconContext } from "react-icons";
 /*
-  *Generate the Navbar component.
-  * @param {object} props - The props passed to the component.
-  * @param {object} props.sidebar - The sidebar state.  
-  *  props.setSidebar - The sidebar state setter.
-  * @returns {object} - The Navbar component.
-*/
+ *Generate the Navbar component.
+ * @returns {object} - The Navbar component.
+ */
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
 
@@ -19,17 +18,17 @@ const Navbar = () => {
 
   return (
     <>
-      <IconContext.Provider value={{ color: '#000' }}>
-        <div className='navbar' >
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar} />
+      <IconContext.Provider value={{ color: "#000" }}>
+        <div className="navbar">
+          <Link to="#" className="menu-bars">
+            <FaBars onClick={showSidebar} />
           </Link>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
+        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+          <ul className="nav-menu-items" onClick={showSidebar}>
+            <li className="navbar-toggle">
+              <Link to="#" className="menu-bars">
+                <AiOutlineClose />
               </Link>
             </li>
             {SidebarData.map((item, index) => (

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const AdjacencyMatrix = ({ nodes, matrix }) => {
   return (
@@ -29,6 +30,11 @@ const AdjacencyMatrix = ({ nodes, matrix }) => {
       </table>
     </div>
   );
+};
+
+AdjacencyMatrix.propTypes = {
+  nodes: PropTypes.array.isRequired,
+  matrix: PropTypes.array.isRequired,
 };
 
 export default AdjacencyMatrix;

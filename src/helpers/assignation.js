@@ -3,6 +3,7 @@ import { Munkres } from "munkres-js";
 /*
   Función para asignar las tareas
   @param {Array} matrix - Matriz de costos
+  @returns {Object} - Objeto con la matriz de asignación y el costo total
 */
 
 function assign(matrix) {
@@ -13,7 +14,7 @@ function assign(matrix) {
   const max = Math.max(...matrixCopy.flat()) + 1;
   for (let i = 0; i < matrixCopy.length; i++) {
     for (let j = 0; j < matrixCopy[i].length; j++) {
-      matrixCopy[i][j] = (matrixCopy[i][j] - max);
+      matrixCopy[i][j] = matrixCopy[i][j] - max;
     }
   }
 
@@ -28,7 +29,7 @@ function assign(matrix) {
   for (let i = 0; i < indexes.length; i++) {
     const row = indexes[i][0];
     const col = indexes[i][1];
-    totalCost += matrixCopy[row][col]+max;
+    totalCost += matrixCopy[row][col] + max;
   }
 
   return totalCost;

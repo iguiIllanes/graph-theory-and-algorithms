@@ -1,14 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-  MarkerType,
-  ControlButton,
-} from "reactflow";
+import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
 import RemoveAllIcon from "/icons/removeAll.png";
 import CreateNodeIcon from "/icons/createNode.png";
@@ -34,7 +26,6 @@ import assignMax from "../helpers/assignationMax.js";
 
 import Modal from "./Modal";
 
-
 const bgColor = "#fff";
 
 const nodeTypes = {
@@ -42,55 +33,56 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  "graph-edge": GraphEdge
+  "graph-edge": GraphEdge,
 };
 /* Set state modal */
 //const [isModalOpen, setIsModalOpen] = useState(false);
 
+// const selector = (state) => ({
+//   // Persona
+//   deletePersona: state.deletePersona,
+//   toggleDeletePersona: state.toggleDeletePersona,
+//
+//   // adjacency matrix
+//   adjacencyMatrix: state.adjacencyMatrix,
+//   setAdjacencyMatrix: state.setAdjacencyMatrix,
+//
+//   //assignation matrix
+//   assignationMatrix: state.assignationMatrix,
+//   setAssignationMatrix: state.setAssignationMatrix,
+//
+//   //Positions matrix
+//   posMatrix: state.posMatrix,
+//   setPosMatrix: state.setPosMatrix,
+//
+//   //costo total
+//   totalCost: state.totalCost,
+//   setTotalCost: state.setTotalCost,
+//
+//   // nodes
+//   nodes: state.nodes,
+//   addNode: state.addNode,
+//   setNodes: state.setNodes,
+//   onNodesChange: state.onNodesChange,
+//   setWeight: state.setWeight,
+//
+//   // edges
+//   edges: state.edges,
+//   setEdges: state.setEdges,
+//   onEdgesChange: state.onEdgesChange,
+//   onConnect: state.onConnect,
+// });
 
+// WARNING: Use above selector if this doesn't work
 const selector = (state) => ({
-  // Persona
-  deletePersona: state.deletePersona,
-  toggleDeletePersona: state.toggleDeletePersona,
-
-  // adjacency matrix
-  adjacencyMatrix: state.adjacencyMatrix,
-  setAdjacencyMatrix: state.setAdjacencyMatrix,
-
-  //assignation matrix
-  assignationMatrix: state.assignationMatrix,
-  setAssignationMatrix: state.setAssignationMatrix,
-
-  //Positions matrix
-  posMatrix: state.posMatrix,
-  setPosMatrix: state.setPosMatrix,
-
-  //costo total
-  totalCost: state.totalCost,
-  setTotalCost: state.setTotalCost,
-
-  // nodes
-  nodes: state.nodes,
-  addNode: state.addNode,
-  setNodes: state.setNodes,
-  onNodesChange: state.onNodesChange,
-  setWeight: state.setWeight,
-
-  // edges
-  edges: state.edges,
-  setEdges: state.setEdges,
-  onEdgesChange: state.onEdgesChange,
-  onConnect: state.onConnect,
+  ...state,
 });
-
-
 
 const AssignmentScreen = () => {
   const {
     deletePersona,
     toggleDeletePersona,
     adjacencyMatrix,
-    setAdjacencyMatrix,
     assignationMatrix,
     setAssignationMatrix,
     posMatrix,
@@ -105,7 +97,6 @@ const AssignmentScreen = () => {
     onNodesChange,
     onEdgesChange,
     onConnect,
-    setWeight,
   } = useFlowStore(selector, shallow);
   // // adjacency matrix
   // const adjMatrix = useFlowStore((state) => state.adjMatrix);
@@ -124,8 +115,7 @@ const AssignmentScreen = () => {
   const [showModalMax, setShowModalMax] = useState(false);*/
 
   const [showModalAssignation, setShowModalAssignation] = useState(false);
-  const [titleAssignation, setTitleAssignation] = useState('');
-
+  const [titleAssignation, setTitleAssignation] = useState("");
 
   //Matriz de adyancecia
   const handleCloseModal = () => {
@@ -140,7 +130,9 @@ const AssignmentScreen = () => {
   };
   const handleAssignationMin_2 = () => {
     function removeZeros(matrix) {
-      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
+      const filteredMatrix = matrix.map((row) =>
+        row.filter((elem) => elem !== 0)
+      );
       for (let i = 0; i < filteredMatrix.length; i++) {
         if (filteredMatrix[i].length === 0) {
           filteredMatrix.splice(i, 1);
@@ -159,29 +151,30 @@ const AssignmentScreen = () => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
-    matrix = matrix.map(innerArr => innerArr.map(Number));
-    // convertir la matrix sin conexiones 
+    matrix = matrix.map((innerArr) => innerArr.map(Number));
+    // convertir la matrix sin conexiones
     let matrixFinal = removeZeros(matrix);
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assign(matrixFinal);
     let mat2 = matrixFinal;
     let x = assignWithMunkres(mat2, true);
-    let y = extractValues(mat2, x);
 
     setTotalCost(totalCost1);
     let ceros = assignInitial(x);
     setPosMatrix(ceros);
     setShowModalAssignation(!showModalAssignation);
     setAssignationMatrix(mat2);
-    setTitleAssignation('Minimización');
+    setTitleAssignation("Minimización");
     setShowAssignationMin(!showAssignationMin);
-  }
+  };
 
   const handleAssignationMax = () => {
     //TODO: quitar esta función de acá y ponerla en el helper
     function removeZeros(matrix) {
-      const filteredMatrix = matrix.map(row => row.filter(elem => elem !== 0));
+      const filteredMatrix = matrix.map((row) =>
+        row.filter((elem) => elem !== 0)
+      );
       for (let i = 0; i < filteredMatrix.length; i++) {
         if (filteredMatrix[i].length === 0) {
           filteredMatrix.splice(i, 1);
@@ -201,18 +194,15 @@ const AssignmentScreen = () => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
-    matrix = matrix.map(innerArr => innerArr.map(Number));
-    // convertir la matrix sin conexiones 
+    matrix = matrix.map((innerArr) => innerArr.map(Number));
+    // convertir la matrix sin conexiones
     let matrixFinal = removeZeros(matrix);
-
-
 
     //algoritmo de asignación
     //FIXME: no maximiza unu
     const totalCost1 = assignMax(matrixFinal);
     let mat2 = [...matrixFinal];
     let x = assignWithMunkres(mat2, false);
-    let y = extractValues(mat2, x);
     setTotalCost(totalCost1);
     //console.log("matrix",typeof(mat2));
     let ceros = assignInitial(x);
@@ -225,8 +215,7 @@ const AssignmentScreen = () => {
     //setShowModalOptions(!showModalOptions);
 
     //mostrar matriz
-  }
-
+  };
 
   function assignInitial(matrix) {
     let assignments = [];
@@ -239,36 +228,14 @@ const AssignmentScreen = () => {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         if (matrix[i][j] == 1 && !assignedRows.has(i) && !assignedCols.has(j)) {
-
-          let rowSum = matrix[i].reduce((acc, val) => acc + val, 0);
-          let colSum = 0;
-          for (let k = 0; k < rows; k++) {
-            colSum += matrix[k][j];
-          }
           assignments.push([i, j]);
           assignedRows.add(i);
           assignedCols.add(j);
-
         }
       }
     }
 
     return assignments;
-  }
-
-  //extrae los valores de los 0 
-  function extractValues(matrix, positions) {
-    let values = [];
-
-    for (let i = 0; i < positions.length; i++) {
-      let row = positions[i][0];
-      let col = positions[i][1];
-
-      let value = matrix[row][col];
-      values.push(value);
-    }
-
-    return values;
   }
 
   // TODO: add delete persona
@@ -286,33 +253,46 @@ const AssignmentScreen = () => {
     if (fileName === null) return;
     console.log(fileName);
     fileService.download(nodes, edges, `${fileName}.json`);
-  }
+  };
 
   const handleClear = () => {
     setNodes([]);
     setEdges([]);
-    setJohnsonRef(false);
-  }
-
+  };
 
   return (
-    <div style={{ //give 80% height 
-      height: "100vh"
-    }}>
+    <div
+      style={{
+        //give 80% height
+        height: "100vh",
+      }}
+    >
       {showMatrix ? (
         <div>
-          <Modal title={`Matriz de Adyacencia`} content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
-            show={showModal} onClose={handleCloseModal} >
-          </Modal>
+          <Modal
+            title={`Matriz de Adyacencia`}
+            content={<AdjacencyMatrix nodes={nodes} matrix={adjacencyMatrix} />}
+            show={showModal}
+            onClose={handleCloseModal}
+          ></Modal>
         </div>
-      ) :
-        (<></>
-        )}
+      ) : (
+        <></>
+      )}
 
       {showModalAssignation ? (
-        <Modal show={showModalAssignation} onClose={handleCloseModalAssignation}
+        <Modal
+          show={showModalAssignation}
+          onClose={handleCloseModalAssignation}
           title={`Asignacion de nodos ${titleAssignation}`}
-          content={<AssignationMatrix matrixpos={posMatrix} nodes={nodes} matrix={assignationMatrix} totalCost={totalCost} />}
+          content={
+            <AssignationMatrix
+              matrixpos={posMatrix}
+              nodes={nodes}
+              matrix={assignationMatrix}
+              totalCost={totalCost}
+            />
+          }
         ></Modal>
       ) : (
         <> </>
@@ -338,11 +318,10 @@ const AssignmentScreen = () => {
         connectionLineStyle={{ stroke: "#342e37", strokeWidth: 2 }}
         connectionMode="loose"
         proOptions={{ hideAttribution: true }}
-      // onEdgeClick={(event, edge) => {
-      //   console.log("edge", edge);
-      // }}
+        // onEdgeClick={(event, edge) => {
+        //   console.log("edge", edge);
+        // }}
       >
-
         <MiniMap
           nodeColor="#5e90e1"
           nodeStrokeWidth={3}
@@ -424,18 +403,19 @@ const AssignmentScreen = () => {
           </ControlButton>
 
           <ControlButton
-            onClick={() => window.open("/manual.pdf")}
+            onClick={() =>
+              window.open(
+                "https://docs.google.com/document/d/19a-S0iG242SVOKOlIre3ltMluHy514fI3p2VMhAvp9w/edit?pli=1"
+              )
+            }
             style={{ color: "#000" }}
           >
             ?
           </ControlButton>
         </Controls>
-
       </ReactFlow>
     </div>
   );
 };
 
 export default AssignmentScreen;
-//no se carga el merge
-

@@ -1,30 +1,30 @@
 /*
  *This file contains the data for the sidebar
- * @param {object} SidebarData - The sidebar data.
- * @param {string} SidebarData.title - The title of the sidebar item.
- * @param {string} SidebarData.path - The path of the sidebar item.
- * @param {string} SidebarData.cName - The class name of the sidebar item.
-*/
+ * {object} SidebarData - The sidebar data.
+ * {string} SidebarData.title - The title of the sidebar item.
+ * {string} SidebarData.path - The path of the sidebar item.
+ * {string} SidebarData.cName - The class name of the sidebar item.
+ */
 export const SidebarData = [
   {
-    title: 'Jhonson',
-    path: '/Jhonson',
-    cName: 'nav-text'
+    title: "Jhonson",
+    path: "/Jhonson",
+    cName: "nav-text",
   },
   {
-    title: 'Asignacion',
-    path: '/Asignacion',
-    
-    cName: 'nav-text'
+    title: "Asignacion",
+    path: "/Asignacion",
+
+    cName: "nav-text",
   },
   {
-    title: 'Northwest',
-    path: '/Northwest',
-    cName: 'nav-text'
+    title: "Trasporte",
+    path: "/Northwest",
+    cName: "nav-text",
   },
   {
-    title: 'TestSort',
-    path: '/TestSort',
-    cName: 'nav-text'
-  }
+    title: "Algoritmos de ordenamiento",
+    path: "/TestSort",
+    cName: "nav-text",
+  },
 ];
