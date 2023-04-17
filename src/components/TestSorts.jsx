@@ -136,7 +136,7 @@ const TestSort = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
     console.log(fileName);
-    fileService.downloadArrayApi(array, `${fileName}.json`);
+    fileService.downloadArray(array, `${fileName}.json`);
   };
 
   const handleFileUpload = async (event) => {

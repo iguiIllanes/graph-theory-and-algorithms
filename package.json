@@ -7,7 +7,8 @@
     "dev": "vite",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx,.vue src",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@capacitor/android": "^4.7.0",
@@ -38,6 +39,7 @@
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^5.0.0",
     "typescript": "^5.0.3",
     "vite": "^4.1.0"
   }
