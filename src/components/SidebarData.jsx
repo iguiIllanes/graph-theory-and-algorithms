@@ -27,4 +27,10 @@ export const SidebarData = [
     path: "/TestSort",
     cName: "nav-text",
   },
+
+  {
+    title: "Arboles Binarios",
+    path: "/binary-trees",
+    cName: "nav-text",
+  },
 ];
