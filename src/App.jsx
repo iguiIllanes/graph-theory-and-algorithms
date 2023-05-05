@@ -20,11 +20,11 @@ const App = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Flow />}></Route>
-          <Route path="/Jhonson" element={<Flow />}></Route>
-          <Route path="/Asignacion" element={<AssignmentScreen />}></Route>
-          <Route path="/Northwest" element={<NorthWest />}></Route>
-          <Route path="/TestSort" element={<TestSort />}></Route>
+          <Route path="/*" element={<Flow />}></Route>
+          <Route path="graph-theory-and-algorithms/jhonson" element={<Flow />}></Route>
+          <Route path="graph-theory-and-algorithms/asignacion" element={<AssignmentScreen />}></Route>
+          <Route path="graph-theory-and-algorithms/northwest" element={<NorthWest />}></Route>
+          <Route path="graph-theory-and-algorithms/sort" element={<TestSort />}></Route>
         </Routes>
       </Router>
     </>

@@ -8,23 +8,23 @@
 export const SidebarData = [
   {
     title: "Jhonson",
-    path: "/Jhonson",
+    path: "/graph-theory-and-algorithms/jhonson",
     cName: "nav-text",
   },
   {
     title: "Asignacion",
-    path: "/Asignacion",
+    path: "/graph-theory-and-algorithms/asignacion",
 
     cName: "nav-text",
   },
   {
     title: "Trasporte",
-    path: "/Northwest",
+    path: "/graph-theory-and-algorithms/northwest",
     cName: "nav-text",
   },
   {
     title: "Algoritmos de ordenamiento",
-    path: "/TestSort",
+    path: "/graph-theory-and-algorithms/sort",
     cName: "nav-text",
   },
 ];

@@ -279,7 +279,7 @@ const Flow = () => {
     if (fileName === null) return;
     console.log(fileName);
     // fileService.download(nodes, edges, `${fileName}.json`);
-    fileService.downloadApi(nodes, edges, `${fileName}.json`);
+    fileService.download(nodes, edges, `${fileName}.json`);
   };
 
   const handleJohnson = () => {

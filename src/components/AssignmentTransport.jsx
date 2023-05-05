@@ -118,7 +118,7 @@ const AssignmentTransport = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
     // console.log(fileName);
-    fileService.downloadMatrixApi(
+    fileService.downloadMatrix(
       "assignment",
       numRows,
       numColumns,
