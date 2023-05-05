@@ -9,6 +9,7 @@ import Navbar from "./components/Sidebar";
 import TestSort from "./components/TestSorts";
 import AssignmentScreen from "./components/AssignmentScreen";
 import NorthWest from "./components/NorthWestScreen";
+import Compet from "./components/Compet";
 
 /*
  * Generate the App component.
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="graph-theory-and-algorithms/asignacion" element={<AssignmentScreen />}></Route>
           <Route path="graph-theory-and-algorithms/northwest" element={<NorthWest />}></Route>
           <Route path="graph-theory-and-algorithms/sort" element={<TestSort />}></Route>
+          <Route path="graph-theory-and-algorithms/compet" element={<Compet />}></Route>
         </Routes>
       </Router>
     </>

@@ -52,8 +52,12 @@ const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
         isConnectable={isConnectable}
       />
       {(data.earlyTime === undefined && data.lateTime === undefined) ||
-      (data.earlyTime === null && data.lateTime === null) ? (
-        <div className="customNode">{data.label}</div>
+        (data.earlyTime === null && data.lateTime === null) ? (
+        (id === "centroid") ? (
+          <div className="customCentroidNode">{data.label}</div>
+        ) : (
+          <div className="customNode">{data.label}</div>
+        )
       ) : (
         <div className="customJohnsonNode">
           {data.label}

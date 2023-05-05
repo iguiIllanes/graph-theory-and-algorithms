@@ -27,4 +27,9 @@ export const SidebarData = [
     path: "/graph-theory-and-algorithms/sort",
     cName: "nav-text",
   },
+  {
+    title: "Compet",
+    path: "/graph-theory-and-algorithms/compet",
+    cName: "nav-text",
+  },
 ];

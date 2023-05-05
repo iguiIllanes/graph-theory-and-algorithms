@@ -71,7 +71,7 @@ export const assignmentAlgorithm = ({
     cost.forEach((row) => (row[i] -= min));
   });
   // We create a zero matrix, in order to create additional zeros for iterations
-  for (;;) {
+  for (; ;) {
     // We create an array to count the number of zeros
     let rowZeros = [];
     let colZeros = [];
