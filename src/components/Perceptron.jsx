@@ -3,10 +3,12 @@ import React, { useState } from "react";
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState(0);
+  const [editableColumn, setEditableColumn] = useState([]);
 
   const handleClear = () => {
     setTableData([]);
     setTableColumns(0);
+    setEditableColumn([]);
   };
 
   const handleTableCreate = () => {
@@ -23,6 +25,7 @@ const Perceptron = () => {
 
     setTableData(newData);
     setTableColumns(columns);
+    setEditableColumn(Array.from({ length: rows }, () => ""));
   };
 
   const generateCombinations = (rows, columns) => {
@@ -39,6 +42,12 @@ const Perceptron = () => {
       generateRow([...row, 1], columnIndex + 1);
       generateRow([...row, 0], columnIndex + 1);
     }
+  };
+
+  const handleEditableCellValueChange = (rowIndex, value) => {
+    const newEditableColumn = [...editableColumn];
+    newEditableColumn[rowIndex] = value;
+    setEditableColumn(newEditableColumn);
   };
 
   return (
@@ -70,6 +79,15 @@ const Perceptron = () => {
                 {row.map((cell, columnIndex) => (
                   <td key={columnIndex}>{cell}</td>
                 ))}
+                <td>
+                  <input
+                    type="text"
+                    value={editableColumn[rowIndex]}
+                    onChange={(e) =>
+                      handleEditableCellValueChange(rowIndex, e.target.value)
+                    }
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
