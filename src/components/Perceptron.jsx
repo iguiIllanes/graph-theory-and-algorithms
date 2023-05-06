@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "../styles/Sorts.css";
+import "../styles/Perceptron.css";
 
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
@@ -15,7 +17,7 @@ const Perceptron = () => {
   };
 
   const handleTableCreate = () => {
-    const columns = parseInt(prompt("Introduzca el número de columnas"));
+    const columns = parseInt(prompt("Introduzca el número de entradas"));
 
     if (isNaN(columns)) {
       alert("Ingrese un número válido para las columnas");
@@ -68,7 +70,25 @@ const Perceptron = () => {
       <br />
 
       <div className="row">
-        {/* Input fields */}
+
+          <div className="input-container">
+              <label htmlFor="input1">Umbral</label>
+              <input
+              id="input1"
+              className="perceptron-fields"
+              type="text"
+              
+              />
+          </div>
+
+          <div className="input-container">
+              <label htmlFor="input2">Razón</label>
+              <input
+              id="input2"
+              className="perceptron-fields"
+              type="text"
+              />
+          </div>
       </div>
 
       <div className="row-intial">
@@ -89,34 +109,37 @@ const Perceptron = () => {
 
       {/* Table */}
       {tableColumns > 0 && (
-        <table>
-          <thead>
-            <tr>
-              {Array.from({ length: tableColumns }, (_, index) => (
-                <th key={index}>x{index + 1}</th>
-              ))}
-              <th>Resultado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td key={columnIndex}>{cell}</td>
+        <div className="table-container">
+        
+          <table>
+            <thead>
+              <tr>
+                {Array.from({ length: tableColumns }, (_, index) => (
+                  <th key={index}>x{index + 1}</th>
                 ))}
-                <td>
-                  <input
-                    type="text"
-                    value={editableColumn[rowIndex]}
-                    onChange={(e) =>
-                      handleEditableCellValueChange(rowIndex, e.target.value)
-                    }
-                  />
-                </td>
+                <th>Resultado</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tableData.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((cell, columnIndex) => (
+                    <td key={columnIndex}>{cell}</td>
+                  ))}
+                  <td>
+                    <input
+                      type="text"
+                      value={editableColumn[rowIndex]}
+                      onChange={(e) =>
+                        handleEditableCellValueChange(rowIndex, e.target.value)
+                      }
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
