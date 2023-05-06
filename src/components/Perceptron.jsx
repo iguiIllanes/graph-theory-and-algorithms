@@ -5,6 +5,9 @@ const Perceptron = () => {
   const [tableColumns, setTableColumns] = useState(0);
   const [editableColumn, setEditableColumn] = useState([]);
 
+  const [resultValues, setResultValues] = useState([]);
+
+
   const handleClear = () => {
     setTableData([]);
     setTableColumns(0);
@@ -26,6 +29,10 @@ const Perceptron = () => {
     setTableData(newData);
     setTableColumns(columns);
     setEditableColumn(Array.from({ length: rows }, () => ""));
+    
+    setEditableColumn(Array.from({ length: rows }, () => ""));
+    setResultValues([]);
+
   };
 
   const generateCombinations = (rows, columns) => {
@@ -48,7 +55,12 @@ const Perceptron = () => {
     const newEditableColumn = [...editableColumn];
     newEditableColumn[rowIndex] = value;
     setEditableColumn(newEditableColumn);
+  
+    const newResultValues = [...resultValues];
+    newResultValues[rowIndex] = value;
+    setResultValues(newResultValues);
   };
+  
 
   return (
     <div>
@@ -67,12 +79,25 @@ const Perceptron = () => {
         <button className="buttonSort" onClick={handleTableCreate}>
           Crear Tabla
         </button>
+
+        <button className="buttonSort" onClick={() => console.log(resultValues)}>
+          Capturar Valores
+        </button>
+
         {/* Other buttons */}
       </div>
 
       {/* Table */}
       {tableColumns > 0 && (
         <table>
+          <thead>
+            <tr>
+              {Array.from({ length: tableColumns }, (_, index) => (
+                <th key={index}>x{index + 1}</th>
+              ))}
+              <th>Resultado</th>
+            </tr>
+          </thead>
           <tbody>
             {tableData.map((row, rowIndex) => (
               <tr key={rowIndex}>
