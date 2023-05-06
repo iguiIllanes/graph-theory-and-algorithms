@@ -124,7 +124,9 @@ const Perceptron = () => {
               {tableData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {row.map((cell, columnIndex) => (
-                    <td key={columnIndex}>{cell}</td>
+                    <td key={columnIndex} >
+                      {cell}
+                    </td>
                   ))}
                   <td>
                     <input
