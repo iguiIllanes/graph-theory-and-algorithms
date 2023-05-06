@@ -2,41 +2,43 @@ import React, { useState } from "react";
 
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
-  const [tableRows, setTableRows] = useState(0);
   const [tableColumns, setTableColumns] = useState(0);
 
-
   const handleClear = () => {
-    //setArray([]);
-    //setSortedArray([]);
     setTableData([]);
-    setTableRows(0);
     setTableColumns(0);
   };
 
-
-
   const handleTableCreate = () => {
-    const rows = parseInt(prompt("Introduzca el número de filas"));
     const columns = parseInt(prompt("Introduzca el número de columnas"));
 
-    if (isNaN(rows) || isNaN(columns)) {
-      alert("Ingrese números válidos para filas y columnas");
+    if (isNaN(columns)) {
+      alert("Ingrese un número válido para las columnas");
       return;
     }
 
-    const newData = Array.from({ length: rows }, () =>
-      Array.from({ length: columns }, () => "")
-    );
+    const rows = Math.pow(2, columns); // Calcular el número de filas
+
+    const newData = generateCombinations(rows, columns);
+
     setTableData(newData);
-    setTableRows(rows);
     setTableColumns(columns);
   };
 
-  const handleCellValueChange = (rowIndex, columnIndex, value) => {
-    const newData = [...tableData];
-    newData[rowIndex][columnIndex] = value;
-    setTableData(newData);
+  const generateCombinations = (rows, columns) => {
+    const combinations = [];
+    generateRow([], 0);
+    return combinations;
+
+    function generateRow(row, columnIndex) {
+      if (columnIndex === columns) {
+        combinations.push(row);
+        return;
+      }
+
+      generateRow([...row, 1], columnIndex + 1);
+      generateRow([...row, 0], columnIndex + 1);
+    }
   };
 
   return (
@@ -60,37 +62,21 @@ const Perceptron = () => {
       </div>
 
       {/* Table */}
-      {tableRows > 0 && tableColumns > 0 && (
+      {tableColumns > 0 && (
         <table>
           <tbody>
             {tableData.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((cell, columnIndex) => (
-                  <td key={columnIndex}>
-                    <input
-                      type="text"
-                      value={cell}
-                      onChange={(e) =>
-                        handleCellValueChange(
-                          rowIndex,
-                          columnIndex,
-                          e.target.value
-                        )
-                      }
-                      readOnly={columnIndex !== tableColumns - 1}
-                    />
-                  </td>
+                  <td key={columnIndex}>{cell}</td>
                 ))}
               </tr>
             ))}
           </tbody>
         </table>
       )}
-
-
     </div>
   );
 };
 
 export default Perceptron;
-``
