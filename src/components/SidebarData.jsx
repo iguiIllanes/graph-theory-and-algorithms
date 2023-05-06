@@ -27,4 +27,10 @@ export const SidebarData = [
     path: "/TestSort",
     cName: "nav-text",
   },
+  {
+    title: "Perceptron",
+    path: "/Perceptron",
+    cName: "nav-text",
+  },
+
 ];
