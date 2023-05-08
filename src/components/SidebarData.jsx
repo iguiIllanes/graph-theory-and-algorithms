@@ -27,4 +27,9 @@ export const SidebarData = [
     path: "/TestSort",
     cName: "nav-text",
   },
+  {
+    title: 'Dijkstra',
+    path: '/Dijkstra',
+    cName: 'nav-text'
+  }
 ];

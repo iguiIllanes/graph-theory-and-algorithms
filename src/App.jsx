@@ -9,6 +9,7 @@ import Navbar from "./components/Sidebar";
 import TestSort from "./components/TestSorts";
 import AssignmentScreen from "./components/AssignmentScreen";
 import NorthWest from "./components/NorthWestScreen";
+import Dijkstra from "./components/DijkstraScreen";
 
 /*
  * Generate the App component.
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/Asignacion" element={<AssignmentScreen />}></Route>
           <Route path="/Northwest" element={<NorthWest />}></Route>
           <Route path="/TestSort" element={<TestSort />}></Route>
+          <Route path='/Dijkstra' element={<Dijkstra />} ></Route>
         </Routes>
       </Router>
     </>
