@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import Modal from "./Modal";
 import "../styles/Sorts.css";
 import "../styles/Perceptron.css";
+import PerceptronSpinner from "./PerceptronSpinner";
 
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
@@ -9,6 +11,7 @@ const Perceptron = () => {
   //Para obtener en matriz las entradas
   const [tableValues, setTableValues] = useState([]);
 
+  const [showModal, setShowModal] = useState(false);
 
   const [resultValues, setResultValues] = useState([]);
   const [weights, setWeights] = useState([]);
@@ -102,7 +105,8 @@ const Perceptron = () => {
 
   const handleTrain = () => {
     console.log(weights);
-  
+    
+    setShowModal(true);
     // Utiliza los pesos sinápticos para realizar el entrenamiento
     // ...
   };
@@ -196,6 +200,12 @@ const Perceptron = () => {
           </table>
         </div>
       )}
+
+      {/* Modal */}
+      <Modal show={showModal} onClose={() => setShowModal(false)} content={<PerceptronSpinner></PerceptronSpinner>}>
+        </Modal>
+        
+                
     </div>
   );
 };
