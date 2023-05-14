@@ -270,52 +270,6 @@ const Dijkstra = () => {
     return resultado;
   }
 
-  // encontrar 0 que dan solucion
-
-  function assignInitial(matrix) {
-    let assignments = [];
-    let rows = matrix.length;
-    let cols = matrix[0].length;
-
-    let assignedRows = new Set();
-    let assignedCols = new Set();
-
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        if (matrix[i][j] == 1 && !assignedRows.has(i) && !assignedCols.has(j)) {
-          let rowSum = matrix[i].reduce((acc, val) => acc + val, 0);
-          let colSum = 0;
-          for (let k = 0; k < rows; k++) {
-            colSum += matrix[k][j];
-          }
-          assignments.push([i, j]);
-          assignedRows.add(i);
-          assignedCols.add(j);
-        }
-      }
-    }
-
-    return assignments;
-  }
-
-  //extrae los valores de los 0
-  function extractValues(matrix, positions) {
-    let values = [];
-
-    for (let i = 0; i < positions.length; i++) {
-      let row = positions[i][0];
-      let col = positions[i][1];
-
-      let value = matrix[row][col];
-      values.push(value);
-    }
-
-    return values;
-  }
-
-
-
-
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
@@ -372,30 +326,9 @@ const Dijkstra = () => {
     });
   
     // Aplicar el algoritmo de Dijkstra
-    const { distances, previousNodes } = dijkstraAlgorithm(matrix);
-  
+    const { distances, edges1 } = dijkstraAlgorithm(matrix);
+    console.log("Distancias:", distances);
     // Construir las aristas óptimas
-    const optimalEdges = [];
-    for (let i = 0; i < previousNodes.length; i++) {
-      if (previousNodes[i] !== null) {
-        const sourceIndex = previousNodes[i];
-        const targetIndex = i;
-        const sourceNode = sortedNodes[sourceIndex];
-        const targetNode = sortedNodes[targetIndex];
-        const edge = sortedEdges.find(edge =>
-          edge.source === sourceNode.id && edge.target === targetNode.id
-        );
-        if (edge) {
-          optimalEdges.push(edge);
-        }
-      }
-    }
-  
-    console.log("Aristas óptimas:", optimalEdges);
-  
-    // Actualizar el estado de las aristas si es necesario
-    setEdges(optimalEdges);
-  
     // Actualizar el estado de los nodos con las distancias óptimas
     const newNodes = sortedNodes.map((node, index) => {
       return {

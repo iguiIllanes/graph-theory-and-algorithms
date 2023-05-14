@@ -2,8 +2,7 @@ export const dijkstraAlgorithm = (adjacencyMatrix) => {
     const n = adjacencyMatrix.length; // número de nodos
     const distances = new Array(n).fill(Infinity); // distancias desde el nodo inicial
     const visited = new Array(n).fill(false); // nodos visitados
-    const previousNodes = new Array(n).fill(null); // nodos previos
-  
+    const matriz = new Array(n).fill(0).map(() => new Array(n).fill(0));
     distances[0] = 0; // distancia al nodo inicial es 0
   
     for (let i = 0; i < n - 1; i++) {
@@ -18,13 +17,13 @@ export const dijkstraAlgorithm = (adjacencyMatrix) => {
           const distance = distances[minDistanceNode] + adjacencyMatrix[minDistanceNode][j];
           if (distance < distances[j]) {
             distances[j] = distance;
-            previousNodes[j] = minDistanceNode; // guarda el nodo previo
+            matriz[minDistanceNode][j] = distance;
           }
         }
       }
     }
-  
-    return { distances, previousNodes };
+    console.log(matriz);
+    return { distances, matriz };
   };
   
   const findMinDistanceNode = (distances, visited) => {
@@ -36,6 +35,7 @@ export const dijkstraAlgorithm = (adjacencyMatrix) => {
         minDistance = distances[i];
         minDistanceNode = i;
       }
+  
     }
   
     return minDistanceNode;
