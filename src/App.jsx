@@ -12,6 +12,7 @@ import NorthWest from "./components/NorthWestScreen";
 import Compet from "./components/Compet";
 import Kruskal from "./components/Kruskal";
 import Dijkstra from "./components/DijkstraScreen";
+import BinaryTree from "./components/BinaryTree";
 
 /*
  * Generate the App component.
@@ -41,16 +42,20 @@ const App = () => {
             element={<TestSort />}
           ></Route>
           <Route
+            path="graph-theory-and-algorithms/binary-tree"
+            element={<BinaryTree />}
+          ></Route>
+          <Route
             path="graph-theory-and-algorithms/compet"
             element={<Compet />}
           ></Route>
           <Route
-            path="graph-theory-and-algorithms/kruskal"
-            element={<Kruskal />}
-          ></Route>
-          <Route
             path="graph-theory-and-algorithms/dijkstra"
             element={<Dijkstra />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/kruskal"
+            element={<Kruskal />}
           ></Route>
         </Routes>
       </Router>

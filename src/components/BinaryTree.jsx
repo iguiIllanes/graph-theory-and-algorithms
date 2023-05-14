@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
 import RemoveAllIcon from "/icons/removeAll.png";
-import CreateNodeIcon from "/icons/createNode.png";
-import RemoveNodeIcon from "/icons/removeNode.png";
-import CompetIcon from "/icons/compet.png";
+import TreeIcon from "/icons/tree.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import ModeIcon from "/icons/mode.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
 
-import fileService from "./../service/file";
+import fileService from "../service/file";
 
-import useFlowStore from "./../store/FlowStore";
+import useFlowStore from "../store/FlowStore";
 import { shallow } from "zustand/shallow";
-import { competAlgorithm } from "../algorithms/compet";
+import {
+  generateTreeFromList,
+  generateTreeFromOrders,
+  getOrdersFromTree,
+} from "../algorithms/binaryTree";
+import "../styles/BinaryTree.css";
 
 const bgColor = "#fff";
 
@@ -27,8 +31,6 @@ const nodeTypes = {
 const edgeTypes = {
   "graph-edge": GraphEdge,
 };
-/* Set state modal */
-//const [isModalOpen, setIsModalOpen] = useState(false);
 
 const selector = (state) => ({
   // Persona
@@ -65,12 +67,9 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 });
 
-const Compet = () => {
+const BinaryTree = () => {
   const {
-    deletePersona,
-    toggleDeletePersona,
     nodes,
-    addNode,
     setNodes,
     edges,
     setEdges,
@@ -78,6 +77,14 @@ const Compet = () => {
     onEdgesChange,
     onConnect,
   } = useFlowStore(selector, shallow);
+
+  const [listModeActive, setListModeActive] = useState(false);
+  const [list, setList] = useState([]);
+  const [listText, setListText] = useState("");
+  const [preOrder, setPreOrder] = useState([]);
+  const [preOrderText, setPreOrderText] = useState("");
+  const [postOrder, setPostOrder] = useState([]);
+  const [postOrderText, setPostOrderText] = useState("");
 
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
@@ -97,38 +104,50 @@ const Compet = () => {
   const handleClear = () => {
     setNodes([]);
     setEdges([]);
+    setList([]);
   };
 
-  const calculateCendroid = () => {
-    // check if there is a node with id "centroid"
-    const centroidNode = nodes.find((node) => node.id === "centroid");
-    // if there is a node with id "centroid" remove it
-    if (centroidNode) {
-      setNodes(nodes.filter((node) => node.id !== "centroid"));
-      return;
-    }
-
-    // get the coordinates of the nodes as an array of arrays
-    const coordinates = nodes.map((node) => [node.position.x, node.position.y]);
-    // calculate the centroid
-    const centroid = competAlgorithm(coordinates);
-    if (centroid === null) {
-      alert(
-        "No se puede calcular el centroide, los nodos no forman un poligono convexo"
-      );
-      return;
-    }
-    // create a new node with the centroid coordinates
-    const newCentroidNode = {
-      id: "centroid",
-      type: "graph-node-start",
-      position: { x: centroid[0], y: centroid[1] },
-      data: { label: " O ", weight: 0 },
-    };
-    // add the centroid node to the nodes array
-    setNodes([...nodes, newCentroidNode]);
-    // console.log(centroid);
+  const handleTextChange = (e) => {
+    setListText(e.target.value);
   };
+
+  const handleModeChange = () => {
+    setListModeActive(!listModeActive);
+  };
+
+  const showOrder = () => {
+    if (nodes.length === 0) {
+      alert("Porfavor genere un arbol primero");
+      return;
+    }
+  };
+
+  const showTreeFromList = () => {
+    if (listText === "" || listText === null) {
+      alert("Porfavor ingrese un valor valido");
+      return;
+    }
+    const arrayFromText = listText.split(",").map(Number); // Convertir texto a arreglo
+    // Verify that all values are numbers
+    if (arrayFromText.some(isNaN)) {
+      alert("Porfavor ingrese un valor valido");
+      return;
+    }
+    // Verify that there are not repeated values in the array
+    if (new Set(arrayFromText).size !== arrayFromText.length) {
+      alert("No se permiten valores repetidos");
+      return;
+    }
+    // Verify that there are no repeated values in the list
+    if (list.some((value) => arrayFromText.includes(value))) {
+      alert("No se permiten valores repetidos");
+      return;
+    }
+    setList([...list, ...arrayFromText]);
+    setListText("");
+    console.log([...list, ...arrayFromText]);
+  };
+  const showTreeFromOrders = () => {};
 
   return (
     <div
@@ -137,6 +156,20 @@ const Compet = () => {
         height: "100vh",
       }}
     >
+      {!listModeActive ? (
+        <div className="input-container">
+          <label>Ingrese uno o mas datos del arbol</label>
+          <input
+            type="text"
+            placeholder="Ej: 9, 2, 1, 16, 6, 11, 8, 4"
+            onChange={handleTextChange}
+            value={listText}
+          />
+          <button onClick={showTreeFromList}>Agregar - Generar arbol</button>
+        </div>
+      ) : (
+        <></>
+      )}
       <input
         id="file-input"
         type="file"
@@ -166,32 +199,18 @@ const Compet = () => {
           pannable
         />
         <Controls>
-          <ControlButton onClick={addNode}>
+          <ControlButton onClick={showOrder}>
             <img
-              src={CreateNodeIcon}
-              alt="A"
-              style={{
-                width: "20px",
-                hover: "pointer",
-              }}
-            />
-          </ControlButton>
-          <ControlButton
-            onClick={toggleDeletePersona}
-            style={{ backgroundColor: deletePersona ? "#ff0000" : "#fff" }}
-          >
-            <img
-              src={RemoveNodeIcon}
+              src={TreeIcon}
               alt="A"
               style={{
                 width: "20px",
               }}
             />
           </ControlButton>
-
-          <ControlButton onClick={calculateCendroid}>
+          <ControlButton onClick={handleModeChange}>
             <img
-              src={CompetIcon}
+              src={ModeIcon}
               alt="A"
               style={{
                 width: "20px",
@@ -244,4 +263,4 @@ const Compet = () => {
   );
 };
 
-export default Compet;
+export default BinaryTree;

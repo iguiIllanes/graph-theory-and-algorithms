@@ -30,6 +30,11 @@ const TestSort = () => {
   const handleTextChange = (e) => {
     setText(e.target.value);
     const arrayFromText = e.target.value.split(",").map(Number); // Convertir texto a arreglo
+    // Validar que el texto ingresado sea un arreglo de numeros
+    if (arrayFromText.some(isNaN)) {
+      alert("Porfavor ingrese un valor valido");
+      return;
+    }
     setArray(arrayFromText);
     console.log(array);
   };

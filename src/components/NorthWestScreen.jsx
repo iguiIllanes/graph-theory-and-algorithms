@@ -116,7 +116,6 @@ const NorthWest = () => {
   const handleFileDownload = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    // console.log(fileName);
     fileService.downloadMatrix(
       "transport",
       numRows,
