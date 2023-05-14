@@ -81,9 +81,7 @@ const BinaryTree = () => {
   const [listModeActive, setListModeActive] = useState(false);
   const [list, setList] = useState([]);
   const [listText, setListText] = useState("");
-  const [preOrder, setPreOrder] = useState([]);
   const [preOrderText, setPreOrderText] = useState("");
-  const [postOrder, setPostOrder] = useState([]);
   const [postOrderText, setPostOrderText] = useState("");
 
   // uses /service/file.js to upload the graph and set the nodes and edges
@@ -111,6 +109,14 @@ const BinaryTree = () => {
     setListText(e.target.value);
   };
 
+  const handlePreOrderTextChange = (e) => {
+    setPreOrderText(e.target.value);
+  };
+
+  const handlePostOrderTextChange = (e) => {
+    setPostOrderText(e.target.value);
+  };
+
   const handleModeChange = () => {
     setListModeActive(!listModeActive);
   };
@@ -123,11 +129,12 @@ const BinaryTree = () => {
   };
 
   const showTreeFromList = () => {
+    // Valiation
     if (listText === "" || listText === null) {
       alert("Porfavor ingrese un valor valido");
       return;
     }
-    const arrayFromText = listText.split(",").map(Number); // Convertir texto a arreglo
+    const arrayFromText = listText.split(",").map(Number);
     // Verify that all values are numbers
     if (arrayFromText.some(isNaN)) {
       alert("Porfavor ingrese un valor valido");
@@ -147,7 +154,60 @@ const BinaryTree = () => {
     setListText("");
     console.log([...list, ...arrayFromText]);
   };
-  const showTreeFromOrders = () => {};
+
+  const showTreeFromOrders = () => {
+    // Valiation
+    if (
+      preOrderText === "" ||
+      preOrderText === null ||
+      postOrderText === "" ||
+      postOrderText === null
+    ) {
+      alert("Porfavor ingrese valores validos");
+      return;
+    }
+    const preOrderArrayFromText = preOrderText.split(",").map(Number); // Convertir texto a arreglo
+    const postOrderArrayFromText = postOrderText.split(",").map(Number); // Convertir texto a arreglo
+
+    // Verify that all values are numbers
+    if (
+      preOrderArrayFromText.some(isNaN) ||
+      postOrderArrayFromText.some(isNaN)
+    ) {
+      alert("Porfavor ingrese valores validos");
+      return;
+    }
+    // Verify that there are not repeated values in the array
+    if (
+      new Set(preOrderArrayFromText).size !== preOrderArrayFromText.length ||
+      new Set(postOrderArrayFromText).size !== postOrderArrayFromText.length
+    ) {
+      alert("No se permiten valores repetidos en el mismo arreglo");
+      return;
+    }
+    // Verify that if both arrays ordered are the same
+    if (
+      !arraysEqual(
+        [...preOrderArrayFromText].sort(),
+        [...postOrderArrayFromText].sort()
+      )
+    ) {
+      alert("Los arreglos ingresados no son validos");
+      return;
+    }
+
+    console.log([...preOrderArrayFromText]);
+    console.log([...postOrderArrayFromText]);
+  };
+
+  // Verify if two arrays are equal
+  const arraysEqual = (a, b) => {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; ++i) if (a[i] !== b[i]) return false;
+    return true;
+  };
 
   return (
     <div
@@ -156,20 +216,37 @@ const BinaryTree = () => {
         height: "100vh",
       }}
     >
-      {!listModeActive ? (
-        <div className="input-container">
-          <label>Ingrese uno o mas datos del arbol</label>
-          <input
-            type="text"
-            placeholder="Ej: 9, 2, 1, 16, 6, 11, 8, 4"
-            onChange={handleTextChange}
-            value={listText}
-          />
-          <button onClick={showTreeFromList}>Agregar - Generar arbol</button>
-        </div>
-      ) : (
-        <></>
-      )}
+      <div
+        className="input-container"
+        style={{ display: listModeActive ? "none" : "block" }}
+      >
+        <label>Ingrese uno o mas datos del arbol</label>
+        <input
+          type="text"
+          placeholder="Ej: 9, 2, 1, 16, 6, 11, 8, 4"
+          onChange={handleTextChange}
+          value={listText}
+        />
+        <button onClick={showTreeFromList}>Agregar - Generar arbol</button>
+      </div>
+      <div
+        className="input-container"
+        style={{ display: !listModeActive ? "none" : "block" }}
+      >
+        <label>Ingrese el recorrido en pre-orden</label>
+        <input
+          type="text"
+          placeholder="9, 2, 1, 6, 4, 8, 16, 11"
+          onChange={handlePreOrderTextChange}
+        />
+        <label>Ingrese el recorrido en post-orden</label>
+        <input
+          type="text"
+          placeholder="1, 4, 8, 6, 2, 11, 16, 9"
+          onChange={handlePostOrderTextChange}
+        />
+        <button onClick={showTreeFromOrders}>Generar arbol</button>
+      </div>
       <input
         id="file-input"
         type="file"
