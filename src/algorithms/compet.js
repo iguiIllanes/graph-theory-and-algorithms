@@ -8,12 +8,18 @@ export const competAlgorithm = (coordinates) => {
 };
 
 function sortClockwise(coordinates) {
-  const centerX = coordinates.reduce((sum, p) => sum + p[0], 0) / coordinates.length;
-  const centerY = coordinates.reduce((sum, p) => sum + p[1], 0) / coordinates.length;
+  const centerX =
+    coordinates.reduce((sum, p) => sum + p[0], 0) / coordinates.length;
+  const centerY =
+    coordinates.reduce((sum, p) => sum + p[1], 0) / coordinates.length;
   // Calculate the angle between each point and the center point
-  const angles = coordinates.map(p => Math.atan2(p[1] - centerY, p[0] - centerX));
+  const angles = coordinates.map((p) =>
+    Math.atan2(p[1] - centerY, p[0] - centerX)
+  );
   // Sort the points based on their angle relative to the center point
-  return coordinates.sort((a, b) => angles[coordinates.indexOf(a)] - angles[coordinates.indexOf(b)]);
+  return coordinates.sort(
+    (a, b) => angles[coordinates.indexOf(a)] - angles[coordinates.indexOf(b)]
+  );
 }
 
 function isConvex(coordinates) {
@@ -38,8 +44,6 @@ function isConvex(coordinates) {
   }
   return true;
 }
-
-
 
 function getCentroid(coordinates) {
   let cx = 0;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
@@ -11,7 +11,8 @@ import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
 import fileService from "./../service/file";
-
+import Modal from "./Modal";
+import Paths from "./Paths";
 import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 import { dijkstraAlgorithm } from "./../algorithms/dijkstra";
@@ -25,8 +26,6 @@ const nodeTypes = {
 const edgeTypes = {
   "graph-edge": GraphEdge,
 };
-/* Set state modal */
-//const [isModalOpen, setIsModalOpen] = useState(false);
 
 const selector = (state) => ({
   // Persona
@@ -77,6 +76,11 @@ const Dijkstra = () => {
     onConnect,
   } = useFlowStore(selector, shallow);
 
+  const [showModal, setShowModal] = useState(false);
+  const [paths, setPaths] = useState([]);
+  const [costs, setCosts] = useState([]);
+  const [labels, setLabels] = useState([]);
+
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
@@ -103,8 +107,8 @@ const Dijkstra = () => {
       return;
     }
     const matrix = new Array(nodes.length)
-    .fill(0)
-    .map(() => new Array(nodes.length).fill(0));
+      .fill(0)
+      .map(() => new Array(nodes.length).fill(0));
     edges.forEach((edge) => {
       const sourceIndex = nodes.indexOf(
         nodes.find((node) => node.id === edge.source)
@@ -123,7 +127,9 @@ const Dijkstra = () => {
   const inputSourceNode = () => {
     const sourceNode = prompt("Ingrese el nodo de origen");
     if (sourceNode === null) return;
-    const sourceNodeIndex = nodes.findIndex((node) => node.data.label === sourceNode);
+    const sourceNodeIndex = nodes.findIndex(
+      (node) => node.data.label === sourceNode
+    );
     if (sourceNodeIndex === -1) {
       alert("El nodo no existe");
       return;
@@ -137,29 +143,42 @@ const Dijkstra = () => {
 
   const handleMin = () => {
     handleDijkstra("min");
-  };  
+  };
 
   const handleDijkstra = (mode) => {
     const adjacencyMatrix = adjacencymatrix();
     const sourceNode = inputSourceNode();
     if (sourceNode === undefined) return;
-    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, mode);
-    console.table(costs);
-    console.table(idPaths);
+    const { costs, idPaths } = dijkstraAlgorithm(
+      adjacencyMatrix,
+      sourceNode,
+      mode
+    );
+    // console.table(costs);
+    // console.table(idPaths);
 
     const newNodes = nodes.map((node, index) => {
       return {
         ...node,
         data: {
           ...node.data,
-          cost: costs[index],
+          cost: (costs[index] === Infinity ? "∞" : costs[index]).toString(),
         },
       };
     });
     setNodes(newNodes);
+    setCosts(costs);
+    setLabels(newNodes.map((node) => node.data.label));
+    setShowModal(true);
 
-    console.log(JSON.stringify(newNodes));
-  }
+    const newPaths = idPaths.map((path) => {
+      return path.map((node) => {
+        return nodes[node].data.label;
+      });
+    });
+
+    setPaths(newPaths);
+  };
 
   return (
     <div
@@ -168,7 +187,18 @@ const Dijkstra = () => {
         height: "100vh",
       }}
     >
-
+      {showModal ? (
+        <div>
+          <Modal
+            content={<Paths paths={paths} costs={costs} labels={labels} />}
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            title="Rutas Recorridas"
+          ></Modal>
+        </div>
+      ) : (
+        <></>
+      )}
       <input
         id="file-input"
         type="file"
@@ -220,13 +250,12 @@ const Dijkstra = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleMax } style={{fontSize: 10}}>
-            MAX 
+          <ControlButton onClick={handleMax} style={{ fontSize: 10 }}>
+            MAX
           </ControlButton>
-          <ControlButton onClick={handleMin } style={{fontSize: 10}}>
+          <ControlButton onClick={handleMin} style={{ fontSize: 10 }}>
             MIN
           </ControlButton>
-
 
           <ControlButton onClick={handleFileDownload}>
             <img
@@ -270,7 +299,6 @@ const Dijkstra = () => {
           </ControlButton>
         </Controls>
       </ReactFlow>
-
     </div>
   );
 };

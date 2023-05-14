@@ -26,8 +26,20 @@ const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
     }
   };
 
-  const iscustomNode = (data.earlyTime === undefined && data.lateTime === undefined && data.cost === undefined && data.weight === undefined) || (data.earlyTime === null && data.lateTime === null && data.cost === null && data.weight === null);
-  const isJhonsonNode = data.earlyTime !== undefined && data.earlyTime !== null && data.lateTime !== undefined && data.lateTime !== null;
+  const iscustomNode =
+    (data.earlyTime === undefined &&
+      data.lateTime === undefined &&
+      data.cost === undefined &&
+      data.weight === undefined) ||
+    (data.earlyTime === null &&
+      data.lateTime === null &&
+      data.cost === null &&
+      data.weight === null);
+  const isJhonsonNode =
+    data.earlyTime !== undefined &&
+    data.earlyTime !== null &&
+    data.lateTime !== undefined &&
+    data.lateTime !== null;
   const isCentroidNode = data.weight !== undefined && data.weight !== null;
   const isDijkstraNode = data.cost !== undefined && data.cost !== null;
 
@@ -57,25 +69,32 @@ const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
         isConnectable={isConnectable}
       />
 
-    {iscustomNode ? ( 
-      <div className="customNode">{data.label}</div>
-    ) : isJhonsonNode ? (
-      <div className="customJohnsonNode">
-        {data.label}
-        <hr />
-        {data.earlyTime} | {data.lateTime}
-      </div>
-    ) : isCentroidNode ? (
-      <div className="customCentroidNode"> {data.label} </div>
-    ) : isDijkstraNode ? (
-      <div className="customDijkstraNode">
-        {data.label}
-        <br />
-        {`[${data.cost}]`}
-      </div>
-    ) : (
-      <div className="customNode">{data.label}</div>
-    )}
+      {iscustomNode ? (
+        <div className="customNode">{data.label}</div>
+      ) : isJhonsonNode ? (
+        <div className="customJohnsonNode">
+          {data.label}
+          <hr />
+          {data.earlyTime} | {data.lateTime}
+        </div>
+      ) : isCentroidNode ? (
+        <div className="customCentroidNode"> {data.label} </div>
+      ) : isDijkstraNode ? (
+        <div
+          className="customDijkstraNode"
+          style={
+            data.cost == 0
+              ? { backgroundColor: "salmon" }
+              : { backgroundColor: "#3c91e6" }
+          }
+        >
+          {data.label}
+          <br />
+          {`[${data.cost}]`}
+        </div>
+      ) : (
+        <div className="customNode">{data.label}</div>
+      )}
       <Handle
         id={`${handleId}-top`}
         type="source"

@@ -115,7 +115,9 @@ const Compet = () => {
     // calculate the centroid
     const centroid = competAlgorithm(coordinates);
     if (centroid === null) {
-      alert("No se puede calcular el centroide, los nodos no forman un poligono convexo");
+      alert(
+        "No se puede calcular el centroide, los nodos no forman un poligono convexo"
+      );
       return;
     }
     // create a new node with the centroid coordinates
@@ -123,12 +125,12 @@ const Compet = () => {
       id: "centroid",
       type: "graph-node-start",
       position: { x: centroid[0], y: centroid[1] },
-      data: { label: " O ", weight: 0},
+      data: { label: " O ", weight: 0 },
     };
     // add the centroid node to the nodes array
     setNodes([...nodes, newCentroidNode]);
     // console.log(centroid);
-  }
+  };
 
   return (
     <div
@@ -137,7 +139,6 @@ const Compet = () => {
         height: "100vh",
       }}
     >
-
       <input
         id="file-input"
         type="file"
@@ -190,9 +191,7 @@ const Compet = () => {
             />
           </ControlButton>
 
-          <ControlButton
-            onClick={calculateCendroid}
-          >
+          <ControlButton onClick={calculateCendroid}>
             <img
               src={CompetIcon}
               alt="A"
@@ -243,7 +242,6 @@ const Compet = () => {
           </ControlButton>
         </Controls>
       </ReactFlow>
-
     </div>
   );
 };

@@ -1,4 +1,4 @@
-export const dijkstraAlgorithm = (adjacencyMatrix, startNode, mode = 'min') => {
+export const dijkstraAlgorithm = (adjacencyMatrix, startNode, mode = "min") => {
   const n = adjacencyMatrix.length;
   const dist = new Array(n).fill(Infinity);
   const visited = new Array(n).fill(false);
@@ -17,7 +17,7 @@ export const dijkstraAlgorithm = (adjacencyMatrix, startNode, mode = 'min') => {
     visited[u] = true;
     for (let v = 0; v < n; v++) {
       if (adjacencyMatrix[u][v] !== 0) {
-        const alt = dist[u] + adjacencyMatrix[u][v] * (mode === 'min' ? 1 : -1);
+        const alt = dist[u] + adjacencyMatrix[u][v] * (mode === "min" ? 1 : -1);
         if (alt < dist[v]) {
           dist[v] = alt;
           idPaths[v] = idPaths[u].concat(v); // Update the ID path for node v
@@ -25,7 +25,10 @@ export const dijkstraAlgorithm = (adjacencyMatrix, startNode, mode = 'min') => {
       }
     }
   }
-  const costs = (mode === 'min' ? dist : dist.map((x) => (x === 0 ? 0 : -x)));
+  const costs =
+    mode === "min"
+      ? dist
+      : dist.map((x) => (x === Infinity || x === 0 ? x : -x));
 
   // console.table(costs);
   // console.table(idPaths);
