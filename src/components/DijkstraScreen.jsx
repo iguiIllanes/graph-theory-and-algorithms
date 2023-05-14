@@ -7,6 +7,7 @@ import CreateNodeIcon from "/icons/createNode.png";
 import RemoveNodeIcon from "/icons/removeNode.png";
 import DownloadIcon from "/icons/download.png";
 import UploadIcon from "/icons/upload.png";
+import DijkstraIcon from "/icons/dijkstra.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
@@ -137,9 +138,9 @@ const Dijkstra = () => {
     return sourceNodeIndex;
   };
 
-  const handleMax = () => {
-    handleDijkstra("max");
-  };
+  // const handleMax = () => {
+  //   handleDijkstra("max");
+  // };
 
   const handleMin = () => {
     handleDijkstra("min");
@@ -250,13 +251,21 @@ const Dijkstra = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleMax} style={{ fontSize: 10 }}>
+          {/* <ControlButton onClick={handleMax} style={{ fontSize: 10 }}>
             MAX
           </ControlButton>
           <ControlButton onClick={handleMin} style={{ fontSize: 10 }}>
             MIN
+          </ControlButton> */}
+          <ControlButton onClick={handleMin}>
+            <img
+              src={DijkstraIcon}
+              alt="A"
+              style={{
+                width: "20px",
+              }}
+            />
           </ControlButton>
-
           <ControlButton onClick={handleFileDownload}>
             <img
               src={DownloadIcon}
