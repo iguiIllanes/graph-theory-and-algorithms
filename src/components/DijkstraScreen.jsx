@@ -132,20 +132,34 @@ const Dijkstra = () => {
   };
 
   const handleMax = () => {
-    const adjacencyMatrix = adjacencymatrix();
-    const sourceNode = inputSourceNode();
-    console.log(sourceNode);
-    if (sourceNode === undefined) return;
-    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "max");
+    handleDijkstra("max");
   };
 
   const handleMin = () => {
+    handleDijkstra("min");
+  };  
+
+  const handleDijkstra = (mode) => {
     const adjacencyMatrix = adjacencymatrix();
     const sourceNode = inputSourceNode();
     if (sourceNode === undefined) return;
-    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "min");
+    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, mode);
+    console.table(costs);
+    console.table(idPaths);
 
-  };  
+    const newNodes = nodes.map((node, index) => {
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          cost: costs[index],
+        },
+      };
+    });
+    setNodes(newNodes);
+
+    console.log(JSON.stringify(newNodes));
+  }
 
   return (
     <div

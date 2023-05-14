@@ -123,7 +123,7 @@ const Compet = () => {
       id: "centroid",
       type: "graph-node-start",
       position: { x: centroid[0], y: centroid[1] },
-      data: { label: " O " },
+      data: { label: " O ", weight: 0},
     };
     // add the centroid node to the nodes array
     setNodes([...nodes, newCentroidNode]);

@@ -50,6 +50,20 @@
   font-weight: 400;
 }
 
+.customDijkstraNode {
+  position: relative;
+  background-color: #3c91e6;
+  border-radius: 100%;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  margin: 3px 3px 3px;
+  color: #fff;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+}
+
 hr {
   border: 0;
   height: 0;
