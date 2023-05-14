@@ -163,7 +163,7 @@ const BinaryTree = () => {
     // console.log([...list, ...arrayFromText]);
     // console.log([...list, ...arrayFromText]);
     const rootCoordinates = [window.innerWidth / 2, 100];
-    const binaryTree = generateTreeFromList(
+    const { binaryTree } = generateTreeFromList(
       [...list, ...arrayFromText],
       rootCoordinates
     );
@@ -175,9 +175,15 @@ const BinaryTree = () => {
       position: { x: binaryTree.x, y: binaryTree.y },
     }));
 
+    const root = binaryTree[0];
     const newEdges = binaryTree.map((binaryTree) => ({
       source: `${binaryTree.parent}`,
-      sourceHandle: "undefined-top",
+      sourceHandle:
+        root.label === binaryTree.parent
+          ? root.x < binaryTree.x
+            ? "undefined-right"
+            : "undefined-left"
+          : "undefined-top",
       target: `${binaryTree.label}`,
       targetHandle: "undefined-top",
       id: `${binaryTree.parent}-${binaryTree.label}`,
@@ -238,7 +244,7 @@ const BinaryTree = () => {
     );
     setList([...list]);
     const rootCoordinates = [window.innerWidth / 2, 100];
-    const binaryTree = generateTreeFromList(list, rootCoordinates);
+    const { binaryTree } = generateTreeFromList(list, rootCoordinates);
     const newNodes = binaryTree.map((binaryTree) => ({
       type: "graph-node-start",
       id: `${binaryTree.label}`,
@@ -247,9 +253,15 @@ const BinaryTree = () => {
       position: { x: binaryTree.x, y: binaryTree.y },
     }));
 
+    const root = binaryTree[0];
     const newEdges = binaryTree.map((binaryTree) => ({
       source: `${binaryTree.parent}`,
-      sourceHandle: "undefined-top",
+      sourceHandle:
+        root.label === binaryTree.parent
+          ? root.x < binaryTree.x
+            ? "undefined-right"
+            : "undefined-left"
+          : "undefined-top",
       target: `${binaryTree.label}`,
       targetHandle: "undefined-top",
       id: `${binaryTree.parent}-${binaryTree.label}`,

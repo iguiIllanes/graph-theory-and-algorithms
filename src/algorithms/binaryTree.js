@@ -21,7 +21,8 @@ export const generateTreeFromList = (list, rootCoordinates) => {
         if (currentNode.left === null) {
           currentNode.left = {
             coordinates: [
-              currentNode.coordinates[0] - 100,
+              currentNode.coordinates[0] -
+                (currentNode.label == root.label ? 200 : 100),
               currentNode.coordinates[1] + 100,
             ],
             label: node,
@@ -40,7 +41,8 @@ export const generateTreeFromList = (list, rootCoordinates) => {
         if (currentNode.right === null) {
           currentNode.right = {
             coordinates: [
-              currentNode.coordinates[0] + 100,
+              currentNode.coordinates[0] +
+                (currentNode.label == root.label ? 200 : 100),
               currentNode.coordinates[1] + 100,
             ],
             label: node,
@@ -67,7 +69,7 @@ export const generateTreeFromList = (list, rootCoordinates) => {
       parent: parent[i],
     });
   }
-  // Si se solapan en el eje x y el eje y, se desplaza el nodo a la derecha
+  // if there are two overlapping nodes, move the second node to the right
   for (let i = 0; i < binaryTree.length; i++) {
     for (let j = i + 1; j < binaryTree.length; j++) {
       if (
@@ -79,8 +81,8 @@ export const generateTreeFromList = (list, rootCoordinates) => {
     }
   }
   // console.table(binaryTree);
-
-  return binaryTree;
+  // console.log(root);
+  return { root, binaryTree };
 };
 
 export const generateListFromOrders = (preOrder, inOrder) => {
@@ -105,21 +107,54 @@ export const getOrdersFromList = (list) => {
     return { preOrder, inOrder, postOrder };
   }
 
-  const root = list[0];
-  const rootIndex = list.indexOf(root);
-
-  const leftSubList = list.slice(1, rootIndex);
-  const rightSubList = list.slice(rootIndex + 1);
-
-  const leftOrders = getOrdersFromList(leftSubList);
-  preOrder.push(root, ...leftOrders.preOrder);
-  inOrder.push(...leftOrders.inOrder, root);
-  postOrder.push(...leftOrders.postOrder);
-
-  const rightOrders = getOrdersFromList(rightSubList);
-  preOrder.push(...rightOrders.preOrder);
-  inOrder.push(...rightOrders.inOrder);
-  postOrder.push(...rightOrders.postOrder, root);
+  const { root } = generateTreeFromList(list, [0, 0]);
+  // Pre order start from root
+  const preOrderStack = [root];
+  while (preOrderStack.length > 0) {
+    const node = preOrderStack.pop();
+    preOrder.push(node.label);
+    if (node.right !== null) {
+      preOrderStack.push(node.right);
+    }
+    if (node.left !== null) {
+      preOrderStack.push(node.left);
+    }
+  }
+  // In order is the ascending order of the list
+  inOrder.push(...list);
+  inOrder.sort((a, b) => a - b);
+  // Post order is the reverse of pre order
+  postOrder.push(...constructPostorder(inOrder, preOrder));
 
   return { preOrder, inOrder, postOrder };
 };
+
+function constructPostorder(inorder, preorder) {
+  if (inorder.length === 0 || preorder.length === 0) {
+    return [];
+  }
+
+  const rootValue = preorder[0];
+  const rootIndex = inorder.indexOf(rootValue);
+
+  const leftSubtreeInorder = inorder.slice(0, rootIndex);
+  const rightSubtreeInorder = inorder.slice(rootIndex + 1);
+
+  const leftSubtreePreorder = preorder.slice(1, rootIndex + 1);
+  const rightSubtreePreorder = preorder.slice(rootIndex + 1);
+
+  const leftSubtreePostorder = constructPostorder(
+    leftSubtreeInorder,
+    leftSubtreePreorder
+  );
+  const rightSubtreePostorder = constructPostorder(
+    rightSubtreeInorder,
+    rightSubtreePreorder
+  );
+
+  const postorder = leftSubtreePostorder.concat(
+    rightSubtreePostorder,
+    rootValue
+  );
+  return postorder;
+}
