@@ -17,7 +17,7 @@ import useFlowStore from "../store/FlowStore";
 import { shallow } from "zustand/shallow";
 import {
   generateTreeFromList,
-  generateTreeFromOrders,
+  generateListFromOrders,
   getOrdersFromTree,
 } from "../algorithms/binaryTree";
 import "../styles/BinaryTree.css";
@@ -121,6 +121,7 @@ const BinaryTree = () => {
   };
 
   const handleModeChange = () => {
+    handleClear();
     setListModeActive(!listModeActive);
   };
 
@@ -229,7 +230,36 @@ const BinaryTree = () => {
         return;
       }
     }
+    const list = generateListFromOrders(
+      preOrderArrayFromText,
+      postOrderArrayFromText
+    );
+    const rootCoordinates = [window.innerWidth / 2, 100];
+    const binaryTree = generateTreeFromList(list, rootCoordinates);
+    console.log(binaryTree);
+    const newNodes = binaryTree.map((binaryTree) => ({
+      type: "graph-node-start",
+      id: `${binaryTree.label}`,
+      handleId: `${binaryTree.label}`,
+      data: { label: ` ${binaryTree.label} ` },
+      position: { x: binaryTree.x, y: binaryTree.y },
+    }));
 
+    const newEdges = binaryTree.map((binaryTree) => ({
+      source: `${binaryTree.parent}`,
+      sourceHandle: "undefined-top",
+      target: `${binaryTree.label}`,
+      targetHandle: "undefined-top",
+      id: `${binaryTree.parent}-${binaryTree.label}`,
+      type: "graph-edge",
+      markerEnd: {
+        type: "arrowclosed",
+        color: "#342e37",
+      },
+    }));
+    console.log(newEdges);
+    setNodes([...newNodes]);
+    setEdges([...newEdges]);
     console.log([...preOrderArrayFromText]);
     console.log([...postOrderArrayFromText]);
   };

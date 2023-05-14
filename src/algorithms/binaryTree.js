@@ -83,6 +83,17 @@ export const generateTreeFromList = (list, rootCoordinates) => {
   return binaryTree;
 };
 
-export const generateTreeFromOrders = (preOrder, inOrder) => {};
+export const generateListFromOrders = (preOrder, inOrder) => {
+  const list = [];
+  const preOrderQueue = [...preOrder];
+  const inOrderQueue = [...inOrder];
+  while (preOrderQueue.length > 0) {
+    const node = preOrderQueue.shift();
+    if (inOrderQueue.includes(node)) {
+      list.push(node);
+    }
+  }
+  return list;
+};
 
 export const getOrdersFromTree = (tree) => {};
