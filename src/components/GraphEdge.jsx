@@ -87,7 +87,6 @@ const GraphEdge = ({
       };
     }
   }
-
   return (
     <>
       <path
@@ -128,6 +127,12 @@ const GraphEdge = ({
           <button
             className="edgebutton"
             onClick={() => (deletePersona ? deleteEdge(id) : setWeight(id))}
+            style={{
+              display:
+                location.pathname === "/graph-theory-and-algorithms/binary-tree"
+                  ? "none"
+                  : "block",
+            }}
           >
             {data.weight}
           </button>
