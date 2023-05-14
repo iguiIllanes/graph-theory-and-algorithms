@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
 
 import useStore from "./../store/FlowStore";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const selector = (state) => ({
   // Persona
@@ -35,7 +35,7 @@ const GraphEdge = ({
 }) => {
   const setWeight = useStore((state) => state.setWeight);
   const { deletePersona, deleteEdge } = useStore(selector);
-  
+
   let edgePath, controlX, controlY, labelX, labelY;
   if (source == target) {
     // Use getBezierPath to get a curved path
@@ -72,9 +72,9 @@ const GraphEdge = ({
         };
       }
     }
-    // Custom color for edges in kruskal algorithm 
-    if (location.pathname === "/graph-theory-and-algorithms/kruskal") { 
-      if (data.label === " "){
+    // Custom color for edges in kruskal algorithm
+    if (location.pathname === "/graph-theory-and-algorithms/kruskal") {
+      if (data.label === " ") {
         style = {
           ...style,
           stroke: "green",
@@ -86,7 +86,6 @@ const GraphEdge = ({
         color: "transparent",
       };
     }
-    
   }
 
   return (
@@ -126,7 +125,10 @@ const GraphEdge = ({
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
         <div>
-          <button className="edgebutton" onClick={() => ((deletePersona) ? deleteEdge(id) : setWeight(id))}>
+          <button
+            className="edgebutton"
+            onClick={() => (deletePersona ? deleteEdge(id) : setWeight(id))}
+          >
             {data.weight}
           </button>
         </div>

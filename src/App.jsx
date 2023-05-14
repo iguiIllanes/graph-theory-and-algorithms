@@ -24,13 +24,34 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/*" element={<Flow />}></Route>
-          <Route path="graph-theory-and-algorithms/jhonson" element={<Flow />}></Route>
-          <Route path="graph-theory-and-algorithms/asignacion" element={<AssignmentScreen />}></Route>
-          <Route path="graph-theory-and-algorithms/northwest" element={<NorthWest />}></Route>
-          <Route path="graph-theory-and-algorithms/sort" element={<TestSort />}></Route>
-          <Route path="graph-theory-and-algorithms/compet" element={<Compet />}></Route>
-          <Route path="graph-theory-and-algorithms/kruskal" element={<Kruskal />}></Route>
-          <Route path='graph-theory-and-algorithms/dijkstra' element={<Dijkstra />} ></Route>
+          <Route
+            path="graph-theory-and-algorithms/jhonson"
+            element={<Flow />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/asignacion"
+            element={<AssignmentScreen />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/northwest"
+            element={<NorthWest />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/sort"
+            element={<TestSort />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/compet"
+            element={<Compet />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/kruskal"
+            element={<Kruskal />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/dijkstra"
+            element={<Dijkstra />}
+          ></Route>
         </Routes>
       </Router>
     </>

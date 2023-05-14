@@ -33,13 +33,13 @@ export const SidebarData = [
     cName: "nav-text",
   },
   {
-    title: 'Dijkstra',
-    path: '/graph-theory-and-algorithms/dijkstra',
-    cName: 'nav-text'
+    title: "Dijkstra",
+    path: "/graph-theory-and-algorithms/dijkstra",
+    cName: "nav-text",
   },
   {
     title: "Kruskal",
     path: "/graph-theory-and-algorithms/kruskal",
     cName: "nav-text",
-  }
+  },
 ];

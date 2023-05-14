@@ -115,8 +115,8 @@ const Kruskal = () => {
     }
     setKruskalRef(true);
     const matrix = new Array(nodes.length)
-    .fill(0)
-    .map(() => new Array(nodes.length).fill(0));
+      .fill(0)
+      .map(() => new Array(nodes.length).fill(0));
     edges.forEach((edge) => {
       matrix[edge.source][edge.target] = parseInt(edge.data.weight);
       matrix[edge.target][edge.source] = parseInt(edge.data.weight);
@@ -135,12 +135,13 @@ const Kruskal = () => {
       const targetIndex = nodes.indexOf(
         nodes.find((node) => node.id === edge.target)
       );
-      
+
       const edgeInKruskal = kruskal.find(
         (kruskalEdge) =>
-          (kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex || kruskalEdge[0] === targetIndex && kruskalEdge[1] === sourceIndex 
-          ) && kruskalEdge[2] === parseInt(edge.data.weight)
-
+          ((kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex) ||
+            (kruskalEdge[0] === targetIndex &&
+              kruskalEdge[1] === sourceIndex)) &&
+          kruskalEdge[2] === parseInt(edge.data.weight)
       );
       return {
         ...edge,
@@ -170,12 +171,13 @@ const Kruskal = () => {
       const targetIndex = nodes.indexOf(
         nodes.find((node) => node.id === edge.target)
       );
-      
+
       const edgeInKruskal = kruskal.find(
         (kruskalEdge) =>
-          (kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex || kruskalEdge[0] === targetIndex && kruskalEdge[1] === sourceIndex 
-          ) && kruskalEdge[2] === parseInt(edge.data.weight)
-
+          ((kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex) ||
+            (kruskalEdge[0] === targetIndex &&
+              kruskalEdge[1] === sourceIndex)) &&
+          kruskalEdge[2] === parseInt(edge.data.weight)
       );
       return {
         ...edge,
@@ -193,7 +195,7 @@ const Kruskal = () => {
     setEdges(newEdges);
     const totalCost = kruskal.reduce((acc, curr) => acc + curr[2], 0);
     alert(`El costo total es: ${totalCost}`);
-  };  
+  };
 
   return (
     <div
@@ -202,7 +204,6 @@ const Kruskal = () => {
         height: "100vh",
       }}
     >
-
       <input
         id="file-input"
         type="file"
@@ -254,13 +255,12 @@ const Kruskal = () => {
               }}
             />
           </ControlButton>
-          <ControlButton onClick={handleMax } style={{fontSize: 10}}>
-            MAX 
+          <ControlButton onClick={handleMax} style={{ fontSize: 10 }}>
+            MAX
           </ControlButton>
-          <ControlButton onClick={handleMin } style={{fontSize: 10}}>
+          <ControlButton onClick={handleMin} style={{ fontSize: 10 }}>
             MIN
           </ControlButton>
-
 
           <ControlButton onClick={handleFileDownload}>
             <img
@@ -318,16 +318,15 @@ const Kruskal = () => {
             Arista en el árbol de expansión:
           </h5>
           <div
-  style={{
-    border: "none",
-    borderBottom: "5px dashed var(--dashed-line-color, green)",
-    width: "120px",
-    display: "inline-block",
-    marginRight: "10px",
-    boxSizing: "border-box",
-  }}
-></div>
-          
+            style={{
+              border: "none",
+              borderBottom: "5px dashed var(--dashed-line-color, green)",
+              width: "120px",
+              display: "inline-block",
+              marginRight: "10px",
+              boxSizing: "border-box",
+            }}
+          ></div>
         </div>
       ) : (
         <></>

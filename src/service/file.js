@@ -46,23 +46,23 @@ const downloadApi = (nodes, edges, filename) => {
   const body = {
     fileName: filename,
     flowContent: data,
-  }
+  };
   const json = JSON.stringify(body);
 
   fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "text/plain",
+      Accept: "text/plain",
     },
     body: json,
   })
-    .then(response => response.text())
+    .then((response) => response.text())
 
     .then((data) => {
       console.log(data);
       window.open(`${url}/${data}?fileName=${filename}`, "_blank");
-    })
+    });
 };
 
 export default {
