@@ -11,6 +11,7 @@ import AssignmentScreen from "./components/AssignmentScreen";
 import NorthWest from "./components/NorthWestScreen";
 import Compet from "./components/Compet";
 import Kruskal from "./components/Kruskal";
+import Dijkstra from "./components/DijkstraScreen";
 
 /*
  * Generate the App component.
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="graph-theory-and-algorithms/sort" element={<TestSort />}></Route>
           <Route path="graph-theory-and-algorithms/compet" element={<Compet />}></Route>
           <Route path="graph-theory-and-algorithms/kruskal" element={<Kruskal />}></Route>
+          <Route path='graph-theory-and-algorithms/dijkstra' element={<Dijkstra />} ></Route>
         </Routes>
       </Router>
     </>
