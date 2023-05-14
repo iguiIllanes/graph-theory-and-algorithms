@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
 
 import useStore from "./../store/FlowStore";
+import { useLocation } from 'react-router-dom';
 
 const foreignObjectSize = 40;
 const GraphEdge = ({
@@ -52,13 +53,31 @@ const GraphEdge = ({
       targetY,
       targetPosition,
     });
-    // Change color when using johnson algorithm
-    if (data.label !== "") {
-      style = {
-        ...style,
-        stroke: data.label === "h = 0" ? "green" : "#342e37",
+    // Custom color for edges in jhonson algorithm
+    const location = useLocation();
+    if (location.pathname === "/graph-theory-and-algorithms/johnson") {
+      if (data.label !== "") {
+        style = {
+          ...style,
+          stroke: data.label === "h = 0" ? "green" : "#342e37",
+        };
+      }
+    }
+    // Custom color for edges in kruskal algorithm 
+    if (location.pathname === "/graph-theory-and-algorithms/kruskal") { 
+      if (data.label === " "){
+        style = {
+          ...style,
+          stroke: "green",
+        };
+      }
+      // transparent markerEnd for edges in kruskal algorithm
+      markerEnd = {
+        ...markerEnd,
+        color: "transparent",
       };
     }
+    
   }
 
   return (

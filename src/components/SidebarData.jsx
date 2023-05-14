@@ -32,4 +32,9 @@ export const SidebarData = [
     path: "/graph-theory-and-algorithms/compet",
     cName: "nav-text",
   },
+  {
+    title: "Kruskal",
+    path: "/graph-theory-and-algorithms/kruskal",
+    cName: "nav-text",
+  }
 ];

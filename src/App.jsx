@@ -10,6 +10,7 @@ import TestSort from "./components/TestSorts";
 import AssignmentScreen from "./components/AssignmentScreen";
 import NorthWest from "./components/NorthWestScreen";
 import Compet from "./components/Compet";
+import Kruskal from "./components/Kruskal";
 
 /*
  * Generate the App component.
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="graph-theory-and-algorithms/northwest" element={<NorthWest />}></Route>
           <Route path="graph-theory-and-algorithms/sort" element={<TestSort />}></Route>
           <Route path="graph-theory-and-algorithms/compet" element={<Compet />}></Route>
+          <Route path="graph-theory-and-algorithms/kruskal" element={<Kruskal />}></Route>
         </Routes>
       </Router>
     </>

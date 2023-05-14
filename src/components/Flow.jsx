@@ -338,7 +338,7 @@ const Flow = () => {
           ...edge.markerEnd,
           color: slacks[sourceIndex][targetIndex] === 0 ? "green" : "#342e37",
         },
-        animated: true,
+        animated: slacks[sourceIndex][targetIndex] === 0 ? true : false,
       };
     });
     setEdges(newEdges);
