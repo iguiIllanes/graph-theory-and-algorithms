@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Sorts.css";
 import "../styles/Perceptron.css";
-
+import { perceptron } from "../algorithms/perceptron";
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState(0);
@@ -21,15 +21,9 @@ const Perceptron = () => {
     setEditableColumn([]);
   };
 
-  const handlexd = () => {
-    console.log(weights);
-    console.log(tableValues);
-  
-    // Utiliza los pesos sinápticos y los valores de la tabla para realizar el entrenamiento
-    // ...
-  };
-  
 
+  
+  // Funcion que crea la tabla
   const handleTableCreate = () => {
     const columns = parseInt(prompt("Introduzca el número de entradas"));
 
@@ -49,7 +43,8 @@ const Perceptron = () => {
     setEditableColumn(Array.from({ length: rows }, () => ""));
     setResultValues([]);
     setWeights([]);
-
+    
+    //Aqui se setean los pesos
     for (let i = 0; i < columns; i++) {
       const weight = parseFloat(prompt(`Introduzca el peso sináptico para x${i+1}`));
       if (isNaN(weight)) {
@@ -59,6 +54,7 @@ const Perceptron = () => {
       setWeights((prev) => [...prev, weight]);
     }
 
+
     const matrix = generateCombinations(rows, columns);
     const newTableValues = matrix.map(row => Array.from({ length: columns }, (_, i) => row[i] ? 1 : 0));
     setTableValues(newTableValues);
@@ -67,12 +63,12 @@ const Perceptron = () => {
     setTableColumns(columns);
     setEditableColumn(Array.from({ length: rows }, () => ""));
     setResultValues([]);
-    setWeights([]);
-
 
 
 
   };
+
+  // Funcion que genera las combinaciones de 0 y 1
 
   const generateCombinations = (rows, columns) => {
     const combinations = [];
@@ -90,6 +86,8 @@ const Perceptron = () => {
     }
   };
 
+  //Funcion que permite que la ultima columna sea editable 
+
   const handleEditableCellValueChange = (rowIndex, value) => {
     const newEditableColumn = [...editableColumn];
     newEditableColumn[rowIndex] = value;
@@ -100,11 +98,14 @@ const Perceptron = () => {
     setResultValues(newResultValues);
   };
 
+  // Entrenar perceptron
+  // Aqui se llama a la funcion de entrenamiento
   const handleTrain = () => {
+    console.log(tableValues);
     console.log(weights);
-  
-    // Utiliza los pesos sinápticos para realizar el entrenamiento
-    // ...
+
+    const resultado = perceptron(tableValues, weights, resultValues,0.3,0.4);
+    console.log(resultado);
   };
   
   
@@ -145,17 +146,10 @@ const Perceptron = () => {
           Crear Tabla
         </button>
 
-        <button className="buttonSort" onClick={() => console.log(resultValues)}>
-          Capturar Valores
-        </button>
-
         <button className="buttonSort" onClick={handleTrain}>
           Entrenar Perceptron
         </button>
 
-        <button className="buttonSort" onClick={handlexd}>
-          Entrenar Perceptronx2x2
-        </button>
 
         {/* Other buttons */}
       </div>
