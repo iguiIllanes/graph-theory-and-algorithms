@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import "../styles/Sorts.css";
 import "../styles/Perceptron.css";
-//import { perceptron } from "../algorithms/perceptron";
+import { perceptron } from "../algorithms/perceptron";
 import PerceptronSpinner from "./PerceptronSpinner";
 
 const Perceptron = () => {
@@ -17,6 +17,8 @@ const Perceptron = () => {
   const [resultValues, setResultValues] = useState([]);
   const [weights, setWeights] = useState([]);
 
+  const [umbral, setUmbral] = useState(0);
+  const [razon, setRazon] = useState(0);
 
 // Limpiar campos
   const handleClear = () => {
@@ -48,7 +50,7 @@ const Perceptron = () => {
     setResultValues([]);
     setWeights([]);
     
-    //Aqui se setean los pesos
+    //Aqui se settean los pesos
     for (let i = 0; i < columns; i++) {
       const weight = parseFloat(prompt(`Introduzca el peso sináptico para x${i+1}`));
       if (isNaN(weight)) {
@@ -109,11 +111,26 @@ const Perceptron = () => {
     console.log(weights);
   
     setShowModal(true);
-    //const resultado = perceptron(tableValues, weights, resultValues,0.3,0.4);
-    //console.log(resultado);
+    setUmbral(parseFloat(document.getElementById("input1").value));
+    setRazon(parseFloat(document.getElementById("input2").value));
+
+
+
+
+    console.log("Umbral " + umbral);
+    console.log("Razon " + razon);
+
+    const resultado = perceptron(tableValues, weights, resultValues,0.3,0.4);
+    console.log(resultado);
+  };
+
+  const handleUmbralChange = (e) => {
+    setUmbral(e.target.value);
   };
   
-  
+  const handleRazonChange = (e) => {
+    setRazon(e.target.value);
+  };
 
   return (
     <div>
@@ -125,16 +142,17 @@ const Perceptron = () => {
           <div className="input-container">
               <label htmlFor="input1">Umbral</label>
               <input
+              onChange={handleUmbralChange}
               id="input1"
               className="perceptron-fields"
               type="text"
-              
               />
           </div>
 
           <div className="input-container">
               <label htmlFor="input2">Razón</label>
               <input
+              onChange={handleRazonChange}
               id="input2"
               className="perceptron-fields"
               type="text"
