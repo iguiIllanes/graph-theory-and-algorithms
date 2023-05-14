@@ -85,6 +85,14 @@ const Kruskal = () => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
+      let showKruskal = false;
+      for (let i = 0; i < response.edges.length; i++) {
+        if (response.edges[i].data.label === " ") {
+          showKruskal = true;
+          break;
+        }
+      }
+      setKruskalRef(showKruskal);
       return response;
     });
   };
@@ -92,8 +100,6 @@ const Kruskal = () => {
   const handleFileDownload = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    console.log(fileName);
-    // fileService.download(nodes, edges, `${fileName}.json`);
     fileService.download(nodes, edges, `${fileName}.json`);
   };
 
@@ -111,8 +117,6 @@ const Kruskal = () => {
     const matrix = new Array(nodes.length)
     .fill(0)
     .map(() => new Array(nodes.length).fill(0));
-
-    // calculate the adjacency matrix as it is a non-directed graph
     edges.forEach((edge) => {
       matrix[edge.source][edge.target] = parseInt(edge.data.weight);
       matrix[edge.target][edge.source] = parseInt(edge.data.weight);
@@ -132,7 +136,6 @@ const Kruskal = () => {
         nodes.find((node) => node.id === edge.target)
       );
       
-
       const edgeInKruskal = kruskal.find(
         (kruskalEdge) =>
           (kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex || kruskalEdge[0] === targetIndex && kruskalEdge[1] === sourceIndex 
