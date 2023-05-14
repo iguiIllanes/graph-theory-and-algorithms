@@ -10,13 +10,14 @@ export const generateTreeFromList = (list, rootCoordinates) => {
     right: null,
     parent: null,
   };
+  const loop = true;
   coordinates.push(rootCoordinates);
   labels.push(root.label);
   parent.push(root.parent);
   while (queue.length > 0) {
     const node = queue.shift();
     let currentNode = root;
-    while (true) {
+    while (loop) {
       if (node < currentNode.label) {
         if (currentNode.left === null) {
           currentNode.left = {

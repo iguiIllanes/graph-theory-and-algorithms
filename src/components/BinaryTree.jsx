@@ -10,9 +10,9 @@ import ModeIcon from "/icons/mode.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
-
-import fileService from "../service/file";
-
+import Modal from "./Modal";
+import fileService from "../service/treeFile";
+import BinaryTreeOrder from "./BinaryTreeOrder";
 import useFlowStore from "../store/FlowStore";
 import { shallow } from "zustand/shallow";
 import {
@@ -83,12 +83,16 @@ const BinaryTree = () => {
   const [listText, setListText] = useState("");
   const [preOrderText, setPreOrderText] = useState("");
   const [postOrderText, setPostOrderText] = useState("");
-
+  const [preOrder, setPreOrder] = useState([]);
+  const [inOrder, setInOrder] = useState([]);
+  const [postOrder, setPostOrder] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
       setNodes(response.nodes);
       setEdges(response.edges);
+      setList(response.list);
       return response;
     });
   };
@@ -96,7 +100,7 @@ const BinaryTree = () => {
   const handleFileDownload = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    fileService.download(nodes, edges, `${fileName}.json`);
+    fileService.download(nodes, edges, list, `${fileName}.json`);
   };
 
   const handleClear = () => {
@@ -131,9 +135,13 @@ const BinaryTree = () => {
       return;
     }
     const { preOrder, inOrder, postOrder } = getOrdersFromList(list);
-    console.log(preOrder);
-    console.log(inOrder);
-    console.log(postOrder);
+    setPreOrder(preOrder);
+    setInOrder(inOrder);
+    setPostOrder(postOrder);
+    // console.log(preOrder);
+    // console.log(inOrder);
+    // console.log(postOrder);
+    setShowModal(true);
   };
 
   const showTreeFromList = () => {
@@ -329,6 +337,24 @@ const BinaryTree = () => {
         height: "100vh",
       }}
     >
+      {showModal ? (
+        <div>
+          <Modal
+            content={
+              <BinaryTreeOrder
+                preOrder={preOrder}
+                inOrder={inOrder}
+                postOrder={postOrder}
+              />
+            }
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            title="RECORRIDOS DE ARBOLES BINARIOS"
+          ></Modal>
+        </div>
+      ) : (
+        <></>
+      )}
       <div
         className="input-container"
         style={{ display: listModeActive ? "none" : "block" }}
