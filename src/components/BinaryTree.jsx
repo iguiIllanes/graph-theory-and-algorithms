@@ -18,7 +18,7 @@ import { shallow } from "zustand/shallow";
 import {
   generateTreeFromList,
   generateListFromOrders,
-  getOrdersFromTree,
+  getOrdersFromList,
 } from "../algorithms/binaryTree";
 import "../styles/BinaryTree.css";
 
@@ -126,10 +126,14 @@ const BinaryTree = () => {
   };
 
   const showOrder = () => {
-    if (nodes.length === 0) {
+    if (list.length === 0) {
       alert("Porfavor genere un arbol primero");
       return;
     }
+    const { preOrder, inOrder, postOrder } = getOrdersFromList(list);
+    console.log(preOrder);
+    console.log(inOrder);
+    console.log(postOrder);
   };
 
   const showTreeFromList = () => {
@@ -156,14 +160,13 @@ const BinaryTree = () => {
     }
     setList([...list, ...arrayFromText]);
     setListText("");
-    console.log([...list, ...arrayFromText]);
+    // console.log([...list, ...arrayFromText]);
     // console.log([...list, ...arrayFromText]);
     const rootCoordinates = [window.innerWidth / 2, 100];
     const binaryTree = generateTreeFromList(
       [...list, ...arrayFromText],
       rootCoordinates
     );
-    console.log(binaryTree);
     const newNodes = binaryTree.map((binaryTree) => ({
       type: "graph-node-start",
       id: `${binaryTree.label}`,
@@ -184,7 +187,6 @@ const BinaryTree = () => {
         color: "#342e37",
       },
     }));
-    console.log(newEdges);
     setNodes([...newNodes]);
     setEdges([...newEdges]);
   };
@@ -234,9 +236,9 @@ const BinaryTree = () => {
       preOrderArrayFromText,
       postOrderArrayFromText
     );
+    setList([...list]);
     const rootCoordinates = [window.innerWidth / 2, 100];
     const binaryTree = generateTreeFromList(list, rootCoordinates);
-    console.log(binaryTree);
     const newNodes = binaryTree.map((binaryTree) => ({
       type: "graph-node-start",
       id: `${binaryTree.label}`,
@@ -257,11 +259,10 @@ const BinaryTree = () => {
         color: "#342e37",
       },
     }));
-    console.log(newEdges);
     setNodes([...newNodes]);
     setEdges([...newEdges]);
-    console.log([...preOrderArrayFromText]);
-    console.log([...postOrderArrayFromText]);
+    // console.log([...preOrderArrayFromText]);
+    // console.log([...postOrderArrayFromText]);
   };
 
   // Verify if the pre-order and post-order arrays are valid

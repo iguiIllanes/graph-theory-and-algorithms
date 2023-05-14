@@ -78,7 +78,7 @@ export const generateTreeFromList = (list, rootCoordinates) => {
       }
     }
   }
-  console.table(binaryTree);
+  // console.table(binaryTree);
 
   return binaryTree;
 };
@@ -96,4 +96,30 @@ export const generateListFromOrders = (preOrder, inOrder) => {
   return list;
 };
 
-export const getOrdersFromTree = (tree) => {};
+export const getOrdersFromList = (list) => {
+  const preOrder = [];
+  const inOrder = [];
+  const postOrder = [];
+
+  if (list.length === 0) {
+    return { preOrder, inOrder, postOrder };
+  }
+
+  const root = list[0];
+  const rootIndex = list.indexOf(root);
+
+  const leftSubList = list.slice(1, rootIndex);
+  const rightSubList = list.slice(rootIndex + 1);
+
+  const leftOrders = getOrdersFromList(leftSubList);
+  preOrder.push(root, ...leftOrders.preOrder);
+  inOrder.push(...leftOrders.inOrder, root);
+  postOrder.push(...leftOrders.postOrder);
+
+  const rightOrders = getOrdersFromList(rightSubList);
+  preOrder.push(...rightOrders.preOrder);
+  inOrder.push(...rightOrders.inOrder);
+  postOrder.push(...rightOrders.postOrder, root);
+
+  return { preOrder, inOrder, postOrder };
+};
