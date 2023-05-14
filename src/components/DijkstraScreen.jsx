@@ -123,7 +123,6 @@ const Dijkstra = () => {
   const inputSourceNode = () => {
     const sourceNode = prompt("Ingrese el nodo de origen");
     if (sourceNode === null) return;
-    console.log(JSON.stringify(nodes));
     const sourceNodeIndex = nodes.findIndex((node) => node.data.label === sourceNode);
     if (sourceNodeIndex === -1) {
       alert("El nodo no existe");
@@ -137,14 +136,14 @@ const Dijkstra = () => {
     const sourceNode = inputSourceNode();
     console.log(sourceNode);
     if (sourceNode === undefined) return;
-    const { costVector, visitedIds } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "max");
+    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "max");
   };
 
   const handleMin = () => {
     const adjacencyMatrix = adjacencymatrix();
     const sourceNode = inputSourceNode();
     if (sourceNode === undefined) return;
-    const { costVector, visitedIds } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "min");
+    const { costs, idPaths  } = dijkstraAlgorithm(adjacencyMatrix, sourceNode, "min");
 
   };  
 
