@@ -156,6 +156,52 @@ const BinaryTree = () => {
     setList([...list, ...arrayFromText]);
     setListText("");
     console.log([...list, ...arrayFromText]);
+    // console.log([...list, ...arrayFromText]);
+    const rootCoordinates = [window.innerWidth / 2, 100];
+    const binaryTree = generateTreeFromList(
+      [...list, ...arrayFromText],
+      rootCoordinates
+    );
+    console.log(binaryTree);
+    const newNodes = binaryTree.map((binaryTree, index) => ({
+      type: "graph-node-start",
+      id: `${index}`,
+      handleId: `${index}`,
+      data: { label: ` ${binaryTree.label} ` },
+      position: { x: binaryTree.x, y: binaryTree.y },
+    }));
+    // const newEdges = [];
+    // for (let i = 0; i < newNodes.length - 1; i++) {
+    //   // Case we need to draw a line to the left and right
+    //   if (newNodes[i + 1].position.y === newNodes[i + 2].position.y) {
+    //     newEdges.push({
+    //       source: `${newNodes[i].id}`,
+    //       sourceHandle: "undefined-left",
+    //       target: `${newNodes[i + 1].id}`,
+    //       targetHandle: "undefined-top",
+    //       id: `${newNodes[i].id}-${newNodes[i + 1].id}`,
+    //       type: "graph-edge",
+    //       markerEnd: {
+    //         type: "arrowclosed",
+    //         color: "#342e37",
+    //       },
+    //     });
+    //     newEdges.push({
+    //       source: `${newNodes[i].id}`,
+    //       sourceHandle: "undefined-right",
+    //       target: `${newNodes[i + 2].id}`,
+    //       targetHandle: "undefined-top",
+    //       id: `${newNodes[i].id}-${newNodes[i + 2].id}`,
+    //       type: "graph-edge",
+    //       markerEnd: {
+    //         type: "arrowclosed",
+    //         color: "#342e37",
+    //       },
+    //     });
+    //   }
+    // }
+    setNodes([...nodes, ...newNodes]);
+    // setEdges([...edges, ...newEdges]);
   };
 
   const showTreeFromOrders = () => {
