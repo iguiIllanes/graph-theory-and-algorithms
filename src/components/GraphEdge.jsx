@@ -6,6 +6,14 @@ import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
 import useStore from "./../store/FlowStore";
 import { useLocation } from 'react-router-dom';
 
+const selector = (state) => ({
+  // Persona
+  deletePersona: state.deletePersona,
+
+  // actions
+  deleteEdge: state.deleteEdge,
+});
+
 const foreignObjectSize = 40;
 const GraphEdge = ({
   id,
@@ -26,7 +34,8 @@ const GraphEdge = ({
   markerEnd,
 }) => {
   const setWeight = useStore((state) => state.setWeight);
-
+  const { deletePersona, deleteEdge } = useStore(selector);
+  
   let edgePath, controlX, controlY, labelX, labelY;
   if (source == target) {
     // Use getBezierPath to get a curved path
@@ -117,7 +126,7 @@ const GraphEdge = ({
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
         <div>
-          <button className="edgebutton" onClick={() => setWeight(id)}>
+          <button className="edgebutton" onClick={() => ((deletePersona) ? deleteEdge(id) : setWeight(id))}>
             {data.weight}
           </button>
         </div>

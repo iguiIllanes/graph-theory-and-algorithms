@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
@@ -78,6 +78,8 @@ const Kruskal = () => {
     onConnect,
   } = useFlowStore(selector, shallow);
 
+  const [KruskalRef, setKruskalRef] = useState(false);
+
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
@@ -101,6 +103,11 @@ const Kruskal = () => {
   };
 
   const adjacencymatrix = () => {
+    if (nodes.length === 0 || edges.length === 0) {
+      alert("No hay nodos o aristas");
+      return;
+    }
+    setKruskalRef(true);
     const matrix = new Array(nodes.length)
     .fill(0)
     .map(() => new Array(nodes.length).fill(0));
@@ -110,8 +117,6 @@ const Kruskal = () => {
       matrix[edge.source][edge.target] = parseInt(edge.data.weight);
       matrix[edge.target][edge.source] = parseInt(edge.data.weight);
     });
-
-    console.table(matrix);
     return matrix;
   };
 
@@ -163,7 +168,6 @@ const Kruskal = () => {
         nodes.find((node) => node.id === edge.target)
       );
       
-
       const edgeInKruskal = kruskal.find(
         (kruskalEdge) =>
           (kruskalEdge[0] === sourceIndex && kruskalEdge[1] === targetIndex || kruskalEdge[0] === targetIndex && kruskalEdge[1] === sourceIndex 
@@ -297,7 +301,34 @@ const Kruskal = () => {
           </ControlButton>
         </Controls>
       </ReactFlow>
-
+      {KruskalRef ? (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "0",
+            left: "60px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <h5 style={{ display: "inline-block", marginRight: "10px" }}>
+            Arista en el árbol de expansión:
+          </h5>
+          <div
+  style={{
+    border: "none",
+    borderBottom: "5px dashed var(--dashed-line-color, green)",
+    width: "120px",
+    display: "inline-block",
+    marginRight: "10px",
+    boxSizing: "border-box",
+  }}
+></div>
+          
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

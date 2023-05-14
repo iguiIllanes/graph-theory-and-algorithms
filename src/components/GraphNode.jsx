@@ -26,6 +26,7 @@ const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
     }
   };
 
+
   return (
     <div className="node-container" onClick={handleNodeClick}>
       <Handle

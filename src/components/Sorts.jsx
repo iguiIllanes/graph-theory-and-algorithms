@@ -24,12 +24,12 @@ const FourButtonsWithInput = () => {
   };
 
   const handleSelectionSort = () => {
-    console.log("Selection Sort");
+    // console.log("Selection Sort");
     isSorted = selectionSort(array);
     const sortedString = arrayToString(isSorted);
     const sortedArrayFromString = sortedString.split("|");
     setIsSorted(sortedArrayFromString);
-    console.log(isSorted);
+    // console.log(isSorted);
   };
 
   return (
