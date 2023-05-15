@@ -32,11 +32,11 @@ export const SidebarData = [
     path: "/graph-theory-and-algorithms/binary-trees",
     cName: "nav-text",
   },
-  // {
-  //   title: "Arboles Binarios ALT",
-  //   path: "/graph-theory-and-algorithms/binary-tree",
-  //   cName: "nav-text",
-  // },
+  {
+    title: "Arboles Binarios Orders",
+    path: "/graph-theory-and-algorithms/binary-tree",
+    cName: "nav-text",
+  },
   {
     title: "Compet",
     path: "/graph-theory-and-algorithms/compet",
