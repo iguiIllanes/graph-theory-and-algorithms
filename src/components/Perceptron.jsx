@@ -27,7 +27,6 @@ const Perceptron = () => {
     setEditableColumn([]);
   };
 
-
   
   // Funcion que crea la tabla
   const handleTableCreate = () => {
@@ -76,6 +75,7 @@ const Perceptron = () => {
 
   // Funcion que genera las combinaciones de 0 y 1
 
+
   const generateCombinations = (rows, columns) => {
     const combinations = [];
     generateRow([], 0);
@@ -109,18 +109,32 @@ const Perceptron = () => {
   const handleTrain = () => {
     console.log(tableValues);
     console.log(weights);
+    
+    /*const initialProps = {showModal, setShowModal() => }; 
+    const component = React.createElement( Modal, initialProps);*/
+
   
-    setShowModal(true);
+
+
+    setShowModal(!showModal);
+
+    setTimeout(() => {
+      setShowModal(false);
+    }, 2000);
+    
+
     setUmbral(parseFloat(document.getElementById("input1").value));
     setRazon(parseFloat(document.getElementById("input2").value));
 
+    const valoresEditados = editableColumn.map((valor) => valor);
+    setResultValues(valoresEditados);
+    
+    
 
+    /*console.log("Umbral " + umbral);
+    console.log("Razon " + razon);*/
 
-
-    console.log("Umbral " + umbral);
-    console.log("Razon " + razon);
-
-    const resultado = perceptron(tableValues, weights, resultValues,0.3,0.4);
+    const resultado = perceptron(tableValues, weights, resultValues,razon,umbral);
     console.log(resultado);
   };
 
@@ -131,6 +145,7 @@ const Perceptron = () => {
   const handleRazonChange = (e) => {
     setRazon(e.target.value);
   };
+  
 
   return (
     <div>

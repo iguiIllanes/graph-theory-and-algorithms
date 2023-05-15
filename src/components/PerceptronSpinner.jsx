@@ -5,8 +5,10 @@ const EntrenandoSpinner = () => {
   return (
     <div className="spinner-container">
       <div className="spinner"></div>
-      <div className="text">Entrenando perceptrón</div>
+      <div className="text">Entrenando perceptrón...</div>
+      
     </div>
+
   );
 };
 
