@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 
 import "./../../styles/binary-tree/BinaryTrees.css";
 
@@ -9,7 +9,10 @@ import { shallow } from "zustand/shallow";
 // import CustomComponentNode from "./CustomComponentNode";
 import CustomTEST from "./../test/custom";
 
-import useRFStore from "./../../store/RFStore";
+import useBinaryTreeStore from "../../store/BinaryTreeStore";
+import BinaryTreeNode from "./BinaryTreeNode";
+import BinaryTreeEdge from "./BinaryTreeEdge";
+import TraversalVisualization from "./TraversalVisualization";
 
 /**
  * State selector
@@ -27,13 +30,17 @@ const selector = (state) => ({
  * */
 const nodeTypes = {
   componentNode: CustomTEST,
+  binaryTreeNode: BinaryTreeNode,
+  traversalVisualizationNode: TraversalVisualization,
+};
+
+const edgeTypes = {
+  custom: BinaryTreeEdge,
 };
 
 const BinaryTrees = () => {
-  const { onNodesChange, onEdgesChange, onConnect, nodes, edges } = useRFStore(
-    selector,
-    shallow
-  );
+  const { onNodesChange, onEdgesChange, onConnect, nodes, edges } =
+    useBinaryTreeStore(selector, shallow);
 
   return (
     <div className="container">
@@ -44,8 +51,9 @@ const BinaryTrees = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        proOptions={{ hideAttribution: true }}
       >
-        <Background variant="dots" gap={12} size={1} />
         <Controls />
       </ReactFlow>
     </div>
