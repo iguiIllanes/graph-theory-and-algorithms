@@ -4,7 +4,7 @@ import "../styles/Sorts.css";
 import "../styles/Perceptron.css";
 import { perceptron } from "../algorithms/perceptron";
 import PerceptronSpinner from "./PerceptronSpinner";
-import PerceptronCartesian from "./PerceptronCartesian";
+import PerceptronResults from "./PerceptronResults";
 
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
@@ -14,6 +14,7 @@ const Perceptron = () => {
   const [tableValues, setTableValues] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const [resultValues, setResultValues] = useState([]);
   const [weights, setWeights] = useState([]);
@@ -21,14 +22,16 @@ const Perceptron = () => {
   const [umbral, setUmbral] = useState(0);
   const [razon, setRazon] = useState(0);
 
-  const [showPerceptronCartesian, setShowPerceptronCartesian] = useState(false);
-  const [coordenates, setCoordenates] = useState([]);
+  const [lastWeights, setLastWeights] = useState([]);
+  const [iterations, setIterations] = useState(0);
 
 // Limpiar campos
   const handleClear = () => {
     setTableData([]);
     setTableColumns(0);
     setEditableColumn([]);
+    setShowModal(false);
+    setShowSpinner(false);
   };
 
   // Funcion que crea la tabla
@@ -113,32 +116,34 @@ const Perceptron = () => {
   const handleTrain = () => {
     console.log(tableValues);
     console.log(weights);
-
-    setShowModal(!showModal);
-
+  
+    setShowModal(true);
+  
     setTimeout(() => {
       setShowModal(false);
-    }, 2000);
-
+      setShowSpinner(true);
+    }, 3000);
+  
     setUmbral(parseFloat(document.getElementById("input1").value));
     setRazon(parseFloat(document.getElementById("input2").value));
-
+  
     const valoresEditados = editableColumn.map((valor) => valor);
     setResultValues(valoresEditados);
-
-    var resultado = perceptron(tableValues, weights, resultValues,razon,umbral);
-    
-    //TODO: Settear las coordenadas
-
-    const {coordenates} = {resultado}; 
-
-    setCoordenates(coordenates);
-    setShowPerceptronCartesian(true);
-
+  
+    var resultado = perceptron(tableValues, weights, resultValues, razon, umbral);
+  
+    console.log(resultado);
+  
+    setLastWeights(Array.from(resultado.weights));
+    if (resultado.iterations == 0 ) {
+      setIterations(0);
+    }
+    setIterations(resultado.iterations);
+    console.log(iterations);
   
     //console.log(resultado);
-    
   };
+  
 
   const handleUmbralChange = (e) => {
     setUmbral(e.target.value);
@@ -232,12 +237,15 @@ const Perceptron = () => {
       )}
 
       {/* Modal */}
-      <Modal show={showModal} onClose={() => setShowModal(false)} content={<PerceptronSpinner></PerceptronSpinner>}>
+      <Modal show={showModal} onClose={() => setShowModal(false)} content={<PerceptronSpinner> </PerceptronSpinner>
+}>
+       
+           
         </Modal>
 
       {/* Perceptron Cartesian */}
-      {showPerceptronCartesian && (
-        <PerceptronCartesian coordenates={coordenates}></PerceptronCartesian>
+      {showSpinner && (
+        <PerceptronResults iterations={iterations} lastWeights={lastWeights}></PerceptronResults>
       )}
                       
 
