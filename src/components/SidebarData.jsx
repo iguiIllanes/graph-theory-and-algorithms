@@ -8,29 +8,48 @@
 export const SidebarData = [
   {
     title: "Jhonson",
-    path: "/Jhonson",
+    path: "/graph-theory-and-algorithms/jhonson",
     cName: "nav-text",
   },
   {
     title: "Asignacion",
-    path: "/Asignacion",
+    path: "/graph-theory-and-algorithms/asignacion",
 
     cName: "nav-text",
   },
   {
     title: "Trasporte",
-    path: "/Northwest",
+    path: "/graph-theory-and-algorithms/northwest",
     cName: "nav-text",
   },
   {
     title: "Algoritmos de ordenamiento",
-    path: "/TestSort",
+    path: "/graph-theory-and-algorithms/sort",
     cName: "nav-text",
   },
-
   {
     title: "Arboles Binarios",
-    path: "/binary-trees",
+    path: "/graph-theory-and-algorithms/binary-trees",
+    cName: "nav-text",
+  },
+  // {
+  //   title: "Arboles Binarios ALT",
+  //   path: "/graph-theory-and-algorithms/binary-tree",
+  //   cName: "nav-text",
+  // },
+  {
+    title: "Compet",
+    path: "/graph-theory-and-algorithms/compet",
+    cName: "nav-text",
+  },
+  {
+    title: "Dijkstra",
+    path: "/graph-theory-and-algorithms/dijkstra",
+    cName: "nav-text",
+  },
+  {
+    title: "Kruskal",
+    path: "/graph-theory-and-algorithms/kruskal",
     cName: "nav-text",
   },
 ];

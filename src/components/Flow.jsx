@@ -262,7 +262,6 @@ const Flow = () => {
       setEdges(response.edges);
       let showJohnson = false;
       for (let i = 0; i < response.nodes.length; i++) {
-        console.log(response.nodes[i].data.earlyTime);
         if (response.nodes[i].data.earlyTime != null) {
           showJohnson = true;
           break;
@@ -279,7 +278,7 @@ const Flow = () => {
     if (fileName === null) return;
     console.log(fileName);
     // fileService.download(nodes, edges, `${fileName}.json`);
-    fileService.downloadApi(nodes, edges, `${fileName}.json`);
+    fileService.download(nodes, edges, `${fileName}.json`);
   };
 
   const handleJohnson = () => {
@@ -338,7 +337,7 @@ const Flow = () => {
           ...edge.markerEnd,
           color: slacks[sourceIndex][targetIndex] === 0 ? "green" : "#342e37",
         },
-        animated: true,
+        animated: slacks[sourceIndex][targetIndex] === 0 ? true : false,
       };
     });
     setEdges(newEdges);

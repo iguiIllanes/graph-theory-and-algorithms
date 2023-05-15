@@ -124,7 +124,21 @@ const useStore = create<RFState>((set, get) => ({
     const newEdges = get().edges.filter(
       (edge) => edge.source !== nodeId && edge.target !== nodeId
     );
-    set({ nodes: newNodes, edges: newEdges });
+    // Remap the ids in the new nodes
+    const idMap = newNodes.map((node, index) => {
+      return { oldId: node.id, newId: index.toString() };
+    });
+
+    newNodes.forEach((node, index) => {
+      node.id = index.toString();
+    });
+    newEdges.forEach((edge) => {
+      const sourceId = idMap.find((id) => id.oldId === edge.source);
+      const targetId = idMap.find((id) => id.oldId === edge.target);
+      edge.source = sourceId?.newId || "";
+      edge.target = targetId?.newId || "";
+    });
+    set({ nodes: newNodes, edges: newEdges});
   },
 
   /*
@@ -157,8 +171,13 @@ const useStore = create<RFState>((set, get) => ({
    */
   setWeight: (edgeId: String) => {
     const weight = prompt("Introduzca el peso de la arista:"); // prompt user for weight
-    if (weight !== null && weight.length === 0) {
+    if (weight === null || weight.length === 0) {
       alert("El peso no puede estar vacío");
+      return;
+    }
+    // Validate if weight is a number
+    if (isNaN(Number(weight))) {
+      alert("El peso debe ser un número");
       return;
     }
 
@@ -178,6 +197,16 @@ const useStore = create<RFState>((set, get) => ({
    * @returns The state of the edges with the deleted edge.
    */
   setEdges: (edges: Edge[]) => set({ edges: edges }),
+
+  /*
+    * Adds an edge to the graph.
+    * @param connection: Connection connection to add.
+    * @returns The state of the edges with the new edge added.
+  */
+  deleteEdge: (edgeId: String) => {
+    const newEdges = get().edges.filter((edge) => edge.id !== edgeId);
+    set({ edges: newEdges });
+  },
 
   /*
    * Updates the edges when changed.
