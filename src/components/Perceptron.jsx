@@ -169,7 +169,7 @@ const Perceptron = () => {
       <h1 style={{ textAlign: "center" }}>Perceptron</h1>
       <br />
 
-      <div className="row">
+      <div className="row-p">
         <div className="input-container">
           <label htmlFor="input1">Umbral</label>
           <input
