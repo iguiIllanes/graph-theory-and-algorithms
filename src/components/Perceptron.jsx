@@ -32,6 +32,7 @@ const Perceptron = () => {
     setEditableColumn([]);
     setShowModal(false);
     setShowSpinner(false);
+    setWeights([]);
   };
 
   // Funcion que crea la tabla
@@ -136,7 +137,7 @@ const Perceptron = () => {
   
     setLastWeights(Array.from(resultado.weights));
     if (resultado.iterations == 0 ) {
-      setIterations(0);
+      setIterations(1);
     }
     setIterations(resultado.iterations);
     console.log(iterations);
@@ -239,7 +240,6 @@ const Perceptron = () => {
       {/* Modal */}
       <Modal show={showModal} onClose={() => setShowModal(false)} content={<PerceptronSpinner> </PerceptronSpinner>
 }>
-       
            
         </Modal>
 

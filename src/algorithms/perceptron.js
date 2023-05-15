@@ -11,7 +11,7 @@ export function perceptron(inputs, weights, expected, threshold, learningRate) {
 
       if (delta !== 0) {
         error = true;
-        iterations++;
+        iterations = iterations * 2;
         updateWeights(inputs[i], weights, delta, learningRate);
         if(iterations > 100){
           break;
