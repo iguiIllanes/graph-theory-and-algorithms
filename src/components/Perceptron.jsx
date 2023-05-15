@@ -126,17 +126,17 @@ const Perceptron = () => {
     const valoresEditados = editableColumn.map((valor) => valor);
     setResultValues(valoresEditados);
 
-    const resultado = perceptron(tableValues, weights, resultValues,razon,umbral);
+    var resultado = perceptron(tableValues, weights, resultValues,razon,umbral);
     
-    const coordenatesArray = [...resultado];
+    //TODO: Settear las coordenadas
 
-    const coordenates = [...coordenatesArray]; 
+    const {coordenates} = {resultado}; 
 
     setCoordenates(coordenates);
     setShowPerceptronCartesian(true);
 
   
-    console.log(resultado);
+    //console.log(resultado);
     
   };
 
