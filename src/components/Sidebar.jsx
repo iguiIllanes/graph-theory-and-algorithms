@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { SidebarData } from "./SidebarData";
 import "../styles/Navbar.css";
 import { IconContext } from "react-icons";
+import GithubButton from "./GithubButton";
 /*
  *Generate the Navbar component.
  * @returns {object} - The Navbar component.
@@ -22,6 +23,8 @@ const Navbar = () => {
         <div className="navbar">
           <Link to="#" className="menu-bars">
             <FaBars onClick={showSidebar} />
+            <br />
+            <GithubButton />
           </Link>
         </div>
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
