@@ -2,7 +2,7 @@ import React from "react";
 
 import "./../../styles/binary-tree/BinaryTrees.css";
 
-import ReactFlow, { Background, Controls } from "reactflow";
+import ReactFlow, { Controls } from "reactflow";
 
 import { shallow } from "zustand/shallow";
 

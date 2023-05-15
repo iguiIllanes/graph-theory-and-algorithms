@@ -28,6 +28,11 @@ export const SidebarData = [
     cName: "nav-text",
   },
   {
+    title: "Perceptron",
+    path: "/graph-theory-and-algorithms/perceptron",
+    cName: "nav-text",
+  },
+  {
     title: "Arboles Binarios",
     path: "/graph-theory-and-algorithms/binary-trees",
     cName: "nav-text",
