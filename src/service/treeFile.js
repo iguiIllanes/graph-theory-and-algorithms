@@ -1,9 +1,10 @@
 // The React.JS code for the download method:
 
-const download = (nodes, edges, filename) => {
+const download = (nodes, edges, list, filename) => {
   const data = {
     nodes: nodes,
     edges: edges,
+    list: list,
   };
   const json = JSON.stringify(data);
   const blob = new Blob([json], { type: "application/json" });
@@ -27,6 +28,7 @@ const upload = (event) => {
       resolve({
         nodes: data.nodes,
         edges: data.edges,
+        list: data.list,
       });
     };
     reader.onerror = () => {

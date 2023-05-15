@@ -4,6 +4,15 @@ import PropTypes from "prop-types";
 import { getBezierPath, EdgeLabelRenderer, getStraightPath } from "reactflow";
 
 import useStore from "./../store/FlowStore";
+import { useLocation } from "react-router-dom";
+
+const selector = (state) => ({
+  // Persona
+  deletePersona: state.deletePersona,
+
+  // actions
+  deleteEdge: state.deleteEdge,
+});
 
 const foreignObjectSize = 40;
 const GraphEdge = ({
@@ -25,6 +34,7 @@ const GraphEdge = ({
   markerEnd,
 }) => {
   const setWeight = useStore((state) => state.setWeight);
+  const { deletePersona, deleteEdge } = useStore(selector);
 
   let edgePath, controlX, controlY, labelX, labelY;
   if (source == target) {
@@ -52,15 +62,31 @@ const GraphEdge = ({
       targetY,
       targetPosition,
     });
-    // Change color when using johnson algorithm
-    if (data.label !== "") {
-      style = {
-        ...style,
-        stroke: data.label === "h = 0" ? "green" : "#342e37",
+    // Custom color for edges in jhonson algorithm
+    const location = useLocation();
+    if (location.pathname === "/graph-theory-and-algorithms/johnson") {
+      if (data.label !== "") {
+        style = {
+          ...style,
+          stroke: data.label === "h = 0" ? "green" : "#342e37",
+        };
+      }
+    }
+    // Custom color for edges in kruskal algorithm
+    if (location.pathname === "/graph-theory-and-algorithms/kruskal") {
+      if (data.label === " ") {
+        style = {
+          ...style,
+          stroke: "green",
+        };
+      }
+      // transparent markerEnd for edges in kruskal algorithm
+      markerEnd = {
+        ...markerEnd,
+        color: "transparent",
       };
     }
   }
-
   return (
     <>
       <path
@@ -98,7 +124,16 @@ const GraphEdge = ({
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
         <div>
-          <button className="edgebutton" onClick={() => setWeight(id)}>
+          <button
+            className="edgebutton"
+            onClick={() => (deletePersona ? deleteEdge(id) : setWeight(id))}
+            style={{
+              display:
+                location.pathname === "/graph-theory-and-algorithms/binary-tree"
+                  ? "none"
+                  : "block",
+            }}
+          >
             {data.weight}
           </button>
         </div>

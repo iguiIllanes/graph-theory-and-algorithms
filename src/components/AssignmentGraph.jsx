@@ -330,15 +330,6 @@ const AssignmentScreen = () => {
           pannable
         />
         <Controls>
-          <ControlButton onClick={handleClear}>
-            <img
-              src={RemoveAllIcon}
-              alt="Remove All"
-              style={{
-                width: "20px",
-              }}
-            />
-          </ControlButton>
           <ControlButton onClick={addNode}>
             <img
               src={CreateNodeIcon}
@@ -401,7 +392,15 @@ const AssignmentScreen = () => {
               }}
             />
           </ControlButton>
-
+          <ControlButton onClick={handleClear}>
+            <img
+              src={RemoveAllIcon}
+              alt="Remove All"
+              style={{
+                width: "20px",
+              }}
+            />
+          </ControlButton>
           <ControlButton
             onClick={() =>
               window.open(
