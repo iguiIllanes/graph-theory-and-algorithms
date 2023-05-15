@@ -4,6 +4,7 @@ import "../styles/Sorts.css";
 import "../styles/Perceptron.css";
 import { perceptron } from "../algorithms/perceptron";
 import PerceptronSpinner from "./PerceptronSpinner";
+import PerceptronCartesian from "./PerceptronCartesian";
 
 const Perceptron = () => {
   const [tableData, setTableData] = useState([]);
@@ -20,6 +21,9 @@ const Perceptron = () => {
   const [umbral, setUmbral] = useState(0);
   const [razon, setRazon] = useState(0);
 
+  const [showPerceptronCartesian, setShowPerceptronCartesian] = useState(false);
+  const [coordenates, setCoordenates] = useState([]);
+
 // Limpiar campos
   const handleClear = () => {
     setTableData([]);
@@ -27,7 +31,6 @@ const Perceptron = () => {
     setEditableColumn([]);
   };
 
-  
   // Funcion que crea la tabla
   const handleTableCreate = () => {
     const columns = parseInt(prompt("Introduzca el número de entradas"));
@@ -69,6 +72,7 @@ const Perceptron = () => {
     setEditableColumn(Array.from({ length: rows }, () => ""));
     setResultValues([]);
 
+    
 
 
   };
@@ -109,33 +113,31 @@ const Perceptron = () => {
   const handleTrain = () => {
     console.log(tableValues);
     console.log(weights);
-    
-    /*const initialProps = {showModal, setShowModal() => }; 
-    const component = React.createElement( Modal, initialProps);*/
-
-  
-
 
     setShowModal(!showModal);
 
     setTimeout(() => {
       setShowModal(false);
     }, 2000);
-    
 
     setUmbral(parseFloat(document.getElementById("input1").value));
     setRazon(parseFloat(document.getElementById("input2").value));
 
     const valoresEditados = editableColumn.map((valor) => valor);
     setResultValues(valoresEditados);
-    
-    
-
-    /*console.log("Umbral " + umbral);
-    console.log("Razon " + razon);*/
 
     const resultado = perceptron(tableValues, weights, resultValues,razon,umbral);
+    
+    const coordenatesArray = [...resultado];
+
+    const coordenates = [...coordenatesArray]; 
+
+    setCoordenates(coordenates);
+    setShowPerceptronCartesian(true);
+
+  
     console.log(resultado);
+    
   };
 
   const handleUmbralChange = (e) => {
@@ -146,9 +148,9 @@ const Perceptron = () => {
     setRazon(e.target.value);
   };
   
-
+  
   return (
-    <div>
+    <div className="container">
       <h1 style={{ textAlign: "center" }}>Perceptron</h1>
       <br />
 
@@ -232,7 +234,15 @@ const Perceptron = () => {
       {/* Modal */}
       <Modal show={showModal} onClose={() => setShowModal(false)} content={<PerceptronSpinner></PerceptronSpinner>}>
         </Modal>
+
+      {/* Perceptron Cartesian */}
+      {showPerceptronCartesian && (
+        <PerceptronCartesian coordenates={coordenates}></PerceptronCartesian>
+      )}
+                      
+
         
+     
                 
     </div>
   );

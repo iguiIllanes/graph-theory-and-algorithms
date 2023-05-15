@@ -21,8 +21,10 @@ export function perceptron(inputs, weights, expected, threshold, learningRate) {
     const yCoord = -threshold / weights[1];
     
     return {
-      x: xCoord,
-      y: yCoord,
+      x1: xCoord,
+      y1: yCoord,
+      x2: 0,
+      y2: 0,     
       iterations: iterations
     }
   }
