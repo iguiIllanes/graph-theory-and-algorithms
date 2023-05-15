@@ -356,7 +356,7 @@ const BinaryTree = () => {
         <></>
       )}
       <div
-        className="input-container"
+        className="list-input-container"
         style={{ display: listModeActive ? "none" : "block" }}
       >
         <label>Ingrese uno o mas datos del arbol</label>
@@ -369,7 +369,7 @@ const BinaryTree = () => {
         <button onClick={showTreeFromList}>Agregar - Generar arbol</button>
       </div>
       <div
-        className="input-container"
+        className="list-input-container"
         style={{ display: !listModeActive ? "none" : "block" }}
       >
         <label>Ingrese el recorrido en pre-orden</label>

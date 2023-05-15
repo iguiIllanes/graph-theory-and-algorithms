@@ -2,7 +2,7 @@ import React from "react";
 
 import "./../../styles/binary-tree/BinaryTrees.css";
 
-import ReactFlow, { Background, Controls } from "reactflow";
+import ReactFlow, { Controls } from "reactflow";
 
 import { shallow } from "zustand/shallow";
 
@@ -43,7 +43,7 @@ const BinaryTrees = () => {
     useBinaryTreeStore(selector, shallow);
 
   return (
-    <div className="container">
+    <div className="tree-container">
       <ReactFlow
         nodes={nodes}
         edges={edges}

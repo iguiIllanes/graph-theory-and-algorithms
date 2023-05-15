@@ -1,4 +1,4 @@
-.input-container {
+.list-input-container {
   position: absolute;
   width: 100%;
   margin: 10 auto;
@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.input-container input {
+.list-input-container input {
   width: 200px;
   height: 50px;
   margin: 0 10px;
@@ -16,7 +16,7 @@
   background-color: #f2f2f2;
 }
 
-.input-container button {
+.list-input-container button {
   background-color: #008cba;
   color: white;
   padding: 10px 20px;
@@ -26,7 +26,7 @@
   font-size: 16px;
   margin: 5px;
 }
-.input-container label {
+.list-input-container label {
   margin: auto 0;
   font-size: 16px;
 }

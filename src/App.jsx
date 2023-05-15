@@ -14,6 +14,7 @@ import Kruskal from "./components/Kruskal";
 import Dijkstra from "./components/DijkstraScreen";
 import BinaryTree from "./components/BinaryTree";
 import BinaryTrees from "./components/binary-tree/BinaryTrees";
+import Perceptron from "./components/Perceptron";
 
 /*
  * Generate the App component.
@@ -53,6 +54,10 @@ const App = () => {
           <Route
             path="graph-theory-and-algorithms/compet"
             element={<Compet />}
+          ></Route>
+          <Route
+            path="graph-theory-and-algorithms/perceptron"
+            element={<Perceptron />}
           ></Route>
           <Route
             path="graph-theory-and-algorithms/dijkstra"
