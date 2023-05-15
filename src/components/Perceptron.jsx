@@ -118,11 +118,6 @@ const Perceptron = () => {
 
     setShowModal(true);
 
-    setTimeout(() => {
-      setShowModal(false);
-      setShowSpinner(true);
-    }, 3000);
-
     setUmbral(parseFloat(document.getElementById("input1").value));
     setRazon(parseFloat(document.getElementById("input2").value));
 
@@ -143,6 +138,18 @@ const Perceptron = () => {
     if (resultado.iterations == 0) {
       setIterations(1);
     }
+    if (resultado.iterations == 101) {
+      alert("No se pudo entrenar el perceptron");
+      setShowSpinner(false);
+      setShowModal(false);
+      return;
+    }
+
+    setTimeout(() => {
+      setShowModal(false);
+      setShowSpinner(true);
+    }, 3000);
+
     setIterations(resultado.iterations);
     console.log(iterations);
 

@@ -43,7 +43,7 @@ const BinaryTrees = () => {
     useBinaryTreeStore(selector, shallow);
 
   return (
-    <div className="container">
+    <div className="tree-container">
       <ReactFlow
         nodes={nodes}
         edges={edges}

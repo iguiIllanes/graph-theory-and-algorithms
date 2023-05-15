@@ -11,9 +11,11 @@ export function perceptron(inputs, weights, expected, threshold, learningRate) {
 
       if (delta !== 0) {
         error = true;
-        iterations = iterations * 2;
+        iterations++;
+
         updateWeights(inputs[i], weights, delta, learningRate);
-        if(iterations > 100){
+        if (iterations > 100) {
+          error = false;
           break;
         }
       }
@@ -22,17 +24,15 @@ export function perceptron(inputs, weights, expected, threshold, learningRate) {
 
   const xCoord = -threshold / weights[0];
   const yCoord = -threshold / weights[1];
- 
 
   return {
     x1: xCoord,
     y1: yCoord,
     x2: 0,
-    y2: 0,     
+    y2: 0,
     iterations: iterations,
-    weights: weights // añadir los pesos sinápticos
-  }
-  
+    weights: weights, // añadir los pesos sinápticos
+  };
 }
 
 function dotProduct(inputs, weights) {
