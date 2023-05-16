@@ -148,6 +148,7 @@ const Dijkstra = () => {
 
   const handleDijkstra = (mode) => {
     const adjacencyMatrix = adjacencymatrix();
+    if (adjacencyMatrix === undefined) return;
     const sourceNode = inputSourceNode();
     if (sourceNode === undefined) return;
     const { costs, idPaths } = dijkstraAlgorithm(

@@ -100,16 +100,26 @@ const Compet = () => {
   };
 
   const calculateCendroid = () => {
-    // check if there is a node with id "centroid"
-    const centroidNode = nodes.find((node) => node.id === "centroid");
-    // if there is a node with id "centroid" remove it
-    if (centroidNode) {
-      setNodes(nodes.filter((node) => node.id !== "centroid"));
-      return;
+    // // check if there is a node with id "centroid"
+    // const centroidNode = nodes.find((node) => node.id === "centroid");
+    // // if there is a node with id "centroid" remove it
+    // if (centroidNode) {
+    //   setNodes(nodes.filter((node) => node.id !== "centroid"));
+    //   return;
+    // }
+    // get the coordinates of the nodes as an array of arrays, except if the node is the centroid
+    const coordinates = nodes.map((node) => {
+      if (node.id === "centroid") return null;
+      return [node.position.x, node.position.y];
+    });
+    // remove the null values from the array
+    for (let i = 0; i < coordinates.length; i++) {
+      if (coordinates[i] === null) {
+        coordinates.splice(i, 1);
+        i--;
+      }
     }
-
-    // get the coordinates of the nodes as an array of arrays
-    const coordinates = nodes.map((node) => [node.position.x, node.position.y]);
+    console.log(coordinates);
     // calculate the centroid
     const centroid = competAlgorithm(coordinates);
     if (centroid === null) {
