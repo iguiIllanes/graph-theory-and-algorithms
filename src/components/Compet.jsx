@@ -119,7 +119,7 @@ const Compet = () => {
         i--;
       }
     }
-    console.log(coordinates);
+    // console.log(coordinates);
     // calculate the centroid
     const centroid = competAlgorithm(coordinates);
     if (centroid === null) {

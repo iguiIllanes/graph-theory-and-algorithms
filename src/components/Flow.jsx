@@ -111,13 +111,13 @@ const Flow = () => {
       matrix[edge.source][edge.target] =
         typeof edge.data.weight === "undefined" ? 1 : edge.data.weight;
     });
-    console.log("matrix", matrix);
+    // console.log("matrix", matrix);
     setAdjacencyMatrix(matrix);
 
     // hide/show matrix
     setShowMatrix(!showMatrix);
     setShowModal(!showModal);
-    console.log("showMatrix", showMatrix);
+    // console.log("showMatrix", showMatrix);
 
     //handleAssignation();
 
@@ -130,38 +130,38 @@ const Flow = () => {
     // matrix = [[7, 3, 12], [2, 4, 6], [2, 7, 4]];
     let matrixConverted = matrix.map((innerArr) => innerArr.map(Number));
 
-    console.log(matrixConverted);
+    // console.log(matrixConverted);
 
     //Array de valores minimos por columna
     let min = minColumns(matrixConverted);
-    console.log("minimos", min);
+    // console.log("minimos", min);
     //Array de valores maximos por columna
     let max = maxColumns(matrixConverted);
-    console.log("maximos", max);
+    // console.log("maximos", max);
     // Para sacar alpha prima
     let alphaPrime = alphaMatrix(min);
-    console.log("alphaprima", alphaPrime);
+    // console.log("alphaprima", alphaPrime);
 
     // comparacion entre la mtariz principal y alpha prima
     let comparacion = restarMatrices(matrixConverted, alphaPrime);
-    console.log("matrix - alpha", comparacion);
+    // console.log("matrix - alpha", comparacion);
 
     /* maximos elementos por fila
     let maxfilas= rowElements(comparacion);
-    console.log('Beta máximos',maxfilas); */
+    // console.log('Beta máximos',maxfilas); */
 
     //minimos elementos por fila
     let minfilas = minrowElements(comparacion);
-    console.log("Beta", minfilas);
+    // console.log("Beta", minfilas);
 
     //Beta prima
     let betaPrime = betaPrima(minfilas);
-    console.log("prime", betaPrime);
+    // console.log("prime", betaPrime);
 
     // matrix-alpha-beta
     //que es la matriz a analizar
     let AAB = restarMatrices(comparacion, betaPrime);
-    console.log("MATRIZ A ANALIZAR", AAB);
+    // console.log("MATRIZ A ANALIZAR", AAB);
   };
 
   //minimos de cada columna
@@ -276,7 +276,7 @@ const Flow = () => {
   const handleFileDownload = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    console.log(fileName);
+    // console.log(fileName);
     // fileService.download(nodes, edges, `${fileName}.json`);
     fileService.download(nodes, edges, `${fileName}.json`);
   };

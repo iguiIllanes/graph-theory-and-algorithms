@@ -251,7 +251,7 @@ const AssignmentScreen = () => {
   const handleFileDownload = () => {
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    console.log(fileName);
+    // console.log(fileName);
     fileService.download(nodes, edges, `${fileName}.json`);
   };
 

@@ -208,7 +208,7 @@ const useBinaryTreeStore = create<BinaryTreeState>((set, get) => ({
       });
     } else {
       // console.log("Ejecutando la wea del parentNode");
-      // //TODO: check this!!!
+      //TODO: check this!!!
       const parentNodeFound = nodes.find(
         (node) =>
           node.data.label === get().parentNode?.toString() &&
@@ -270,7 +270,7 @@ const useBinaryTreeStore = create<BinaryTreeState>((set, get) => ({
       return node;
     });
 
-    console.log("newNodes", newNodes);
+    // console.log("newNodes", newNodes);
 
     set({
       nodes: [...newNodes, newNode],
