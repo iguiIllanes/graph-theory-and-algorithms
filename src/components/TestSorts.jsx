@@ -36,7 +36,7 @@ const TestSort = () => {
       return;
     }
     setArray(arrayFromText);
-    console.log(array);
+    // console.log(array);
   };
   // const autoResize = (e) => {
   //   e.target.style.height = "auto";
@@ -55,7 +55,7 @@ const TestSort = () => {
   const handleRandomArray = () => {
     let n = prompt("Cuántos elementos ingresará?");
     const randomArray = generateRandomArray(n);
-    console.log("Arreglo aleatorio", randomArray);
+    // console.log("Arreglo aleatorio", randomArray);
     setIsRandom(true);
     setArray(randomArray);
     setText(arrayToString(randomArray));
@@ -71,9 +71,9 @@ const TestSort = () => {
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = insertionSort(copyArrayAux);
     setSortedArray([...sortedArrayAux.sortedArray]); // Copiar el arreglo ordenado en un nuevo arreglo
-    console.log("Arreglo ordenado - Insertion", sortedArrayAux.sortedArray);
-    console.log("Operaciones - Insertion", sortedArray.numOperations);
-    console.log("Runtime - Insertion", sortedArray.runtime);
+    // console.log("Arreglo ordenado - Insertion", sortedArrayAux.sortedArray);
+    // console.log("Operaciones - Insertion", sortedArray.numOperations);
+    // console.log("Runtime - Insertion", sortedArray.runtime);
     setOperations(sortedArrayAux.numOperations);
     setRuntime(sortedArrayAux.runtime);
     setAlgorithm("Insertion Sort");
@@ -89,9 +89,9 @@ const TestSort = () => {
 
     const sortedArrayAux = selectionSort(copyArrayAux);
     // Copiar el arreglo ordenado en un nuevo arreglo
-    console.log("Arreglo ordenado - Selection", sortedArrayAux.sortedArray);
-    console.log("Operaciones - Selection", sortedArrayAux.numOperations);
-    console.log("Runtime - Selection", sortedArrayAux.runtime);
+    // console.log("Arreglo ordenado - Selection", sortedArrayAux.sortedArray);
+    // console.log("Operaciones - Selection", sortedArrayAux.numOperations);
+    // console.log("Runtime - Selection", sortedArrayAux.runtime);
     setShowModal(!showModal);
     setSortedArray([...sortedArrayAux.sortedArray]);
     setOperations(sortedArrayAux.numOperations);
@@ -106,9 +106,9 @@ const TestSort = () => {
     }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = shellSort(copyArrayAux);
-    console.log("Arreglo ordenado - Shell", sortedArrayAux.sortedArray);
-    console.log("Operaciones - Shell", sortedArrayAux.numOperations);
-    console.log("Runtime - Shell", sortedArrayAux.runtime);
+    // console.log("Arreglo ordenado - Shell", sortedArrayAux.sortedArray);
+    // console.log("Operaciones - Shell", sortedArrayAux.numOperations);
+    // console.log("Runtime - Shell", sortedArrayAux.runtime);
     setShowModal(!showModal);
     setSortedArray([...sortedArrayAux.sortedArray]);
     setOperations(sortedArrayAux.numOperations);
@@ -123,9 +123,9 @@ const TestSort = () => {
     }
     const copyArrayAux = [...array]; // Copiar el arreglo desordenado en un nuevo arreglo
     const sortedArrayAux = mergeSort(copyArrayAux);
-    console.log("Arreglo ordenado - Merge", sortedArrayAux.sortedArray);
-    console.log("Operaciones - Merge", sortedArrayAux.numSteps);
-    console.log("Runtime - Merge", sortedArrayAux.runtime);
+    // console.log("Arreglo ordenado - Merge", sortedArrayAux.sortedArray);
+    // console.log("Operaciones - Merge", sortedArrayAux.numSteps);
+    // console.log("Runtime - Merge", sortedArrayAux.runtime);
     setShowModal(!showModal);
     setSortedArray([...sortedArrayAux.sortedArray]);
     setOperations(sortedArrayAux.numSteps);
@@ -140,13 +140,13 @@ const TestSort = () => {
     }
     const fileName = prompt("Introduzca el nombre del archivo");
     if (fileName === null) return;
-    console.log(fileName);
+    // console.log(fileName);
     fileService.downloadArray(array, `${fileName}.json`);
   };
 
   const handleFileUpload = async (event) => {
     await fileService.uploadArray(event).then((response) => {
-      console.log(response);
+      // console.log(response);
       setIsRandom(true);
       setArray(response.array);
       setText(arrayToString(response.array));

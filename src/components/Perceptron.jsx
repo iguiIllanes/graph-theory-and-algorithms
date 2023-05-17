@@ -113,8 +113,8 @@ const Perceptron = () => {
   // Entrenar perceptron
   // Aqui se llama a la funcion de entrenamiento
   const handleTrain = () => {
-    console.log(tableValues);
-    console.log(weights);
+    // console.log(tableValues);
+    // console.log(weights);
 
     setShowModal(true);
 
@@ -132,7 +132,7 @@ const Perceptron = () => {
       umbral
     );
 
-    console.log(resultado);
+    // console.log(resultado);
 
     setLastWeights(Array.from(resultado.weights));
     if (resultado.iterations == 0) {
@@ -151,9 +151,9 @@ const Perceptron = () => {
     }, 3000);
 
     setIterations(resultado.iterations);
-    console.log(iterations);
+    // console.log(iterations);
 
-    //console.log(resultado);
+    //// console.log(resultado);
   };
 
   const handleUmbralChange = (e) => {

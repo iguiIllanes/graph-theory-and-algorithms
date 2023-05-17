@@ -218,6 +218,9 @@ const BinaryTree = () => {
     }
     const preOrderArrayFromText = preOrderText.split(",").map(Number); // Convertir texto a arreglo
     const postOrderArrayFromText = postOrderText.split(",").map(Number); // Convertir texto a arreglo
+    const inOrderArrayFromText = [...preOrderArrayFromText].sort(
+      (a, b) => a - b
+    ); // Convertir texto a arreglo
 
     // Verify that all values are numbers
     if (
@@ -235,17 +238,23 @@ const BinaryTree = () => {
       alert("No se permiten valores repetidos en el mismo arreglo");
       return;
     }
-    if (!validatePreorderPostorderReversed) {
-      if (
-        !validatePreorderPostorder(
-          preOrderArrayFromText,
-          postOrderArrayFromText
-        )
-      ) {
-        alert("Los arreglos ingresados no son validos");
-        return;
-      }
+    // Validate the input for preorder and
+    console.table(preOrderArrayFromText);
+    console.table(inOrderArrayFromText);
+    const constructedPostOrder = [];
+    constructedPostOrder.push(
+      ...constructPostOrder(inOrderArrayFromText, preOrderArrayFromText)
+    );
+    console.table(constructedPostOrder);
+    // Check if constructed post order is equal to the post order from the input
+    if (constructedPostOrder.toString() !== postOrderArrayFromText.toString()) {
+      alert("Los arreglos ingresados no son validos, no se puede construir");
+      setNodes([]);
+      setEdges([]);
+      setList([]);
+      return;
     }
+
     const list = generateListFromOrders(
       preOrderArrayFromText,
       postOrderArrayFromText
@@ -284,51 +293,36 @@ const BinaryTree = () => {
     // console.log([...preOrderArrayFromText]);
     // console.log([...postOrderArrayFromText]);
   };
-
-  // Verify if the pre-order and post-order arrays are valid
-  function validatePreorderPostorder(preorder, postorder) {
-    if (preorder.length !== postorder.length || preorder.length === 0) {
-      return false;
+  //
+  const constructPostOrder = (inorder, preorder) => {
+    if (inorder.length === 0 || preorder.length === 0) {
+      return [];
     }
 
-    if (preorder[0] !== postorder[postorder.length - 1]) {
-      return false;
-    }
+    const rootValue = preorder[0];
+    const rootIndex = inorder.indexOf(rootValue);
 
-    if (
-      preorder.length === 1 &&
-      postorder.length === 1 &&
-      preorder[0] === postorder[0]
-    ) {
-      return true;
-    }
+    const leftSubtreeInorder = inorder.slice(0, rootIndex);
+    const rightSubtreeInorder = inorder.slice(rootIndex + 1);
 
-    const leftSubtreeEnd = postorder.indexOf(preorder[1]);
-    if (
-      leftSubtreeEnd === -1 ||
-      !validatePreorderPostorder(
-        preorder.slice(1, leftSubtreeEnd + 2),
-        postorder.slice(0, leftSubtreeEnd + 1)
-      ) ||
-      !validatePreorderPostorder(
-        preorder.slice(leftSubtreeEnd + 2),
-        postorder.slice(leftSubtreeEnd + 1, postorder.length - 1)
-      )
-    ) {
-      return false;
-    }
-    return true;
-  }
+    const leftSubtreePreorder = preorder.slice(1, rootIndex + 1);
+    const rightSubtreePreorder = preorder.slice(rootIndex + 1);
 
-  // Verify the case where the pre-order and post-order arrays are reversed
-  function validatePreorderPostorderReversed(preorder, postorder) {
-    for (let i = 0; i < preorder.length; i++) {
-      if (preorder[i] !== postorder[preorder.length - i - 1]) {
-        return false;
-      }
-    }
-    return true;
-  }
+    const leftSubtreePostorder = constructPostOrder(
+      leftSubtreeInorder,
+      leftSubtreePreorder
+    );
+    const rightSubtreePostorder = constructPostOrder(
+      rightSubtreeInorder,
+      rightSubtreePreorder
+    );
+
+    const postorder = leftSubtreePostorder.concat(
+      rightSubtreePostorder,
+      rootValue
+    );
+    return postorder;
+  };
 
   return (
     <div

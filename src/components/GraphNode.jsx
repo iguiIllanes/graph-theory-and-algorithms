@@ -5,6 +5,8 @@ import { Handle } from "reactflow";
 
 import useStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
+import { useLocation } from "react-router-dom";
+import useFlowStore from "./../store/FlowStore";
 
 import "./../styles/RingHandle.css";
 
@@ -14,15 +16,46 @@ const selector = (state) => ({
 
   // actions
   deleteNode: state.deleteNode,
+
+  // nodes
+  nodes: state.nodes,
+  setNodes: state.setNodes,
+  onNodesChange: state.onNodesChange,
 });
 
 // eslint-disable-next-line react/display-name
 const CustomNode = memo(({ id, handleId, data, isConnectable }) => {
-  const { deletePersona, deleteNode } = useStore(selector, shallow);
+  const { deletePersona, deleteNode, onNodesChange } = useStore(
+    selector,
+    shallow
+  );
+  const { nodes, setNodes } = useFlowStore(selector, shallow);
 
+  const location = useLocation();
   const handleNodeClick = () => {
     if (deletePersona) {
       deleteNode(id);
+      return;
+    }
+    if (location.pathname === "/graph-theory-and-algorithms/compet") {
+      const selectedNode = nodes.find((node) => node.id === id);
+      // Promt to introduce the x and y coordinates
+      const x = prompt("Introduzca la coordenada x");
+      const y = prompt("Introduzca la coordenada y");
+      // Validate if null or empty
+      if (x === null || x === "" || y === null || y === "") {
+        alert("Introduzca un número");
+        return;
+      }
+      // Validate if the user introduced a number
+      if (isNaN(x) || isNaN(y)) {
+        alert("Introduzca un número");
+        return;
+      }
+      selectedNode.position = { x: parseInt(x), y: parseInt(y) };
+      setNodes(nodes);
+      onNodesChange(nodes);
+      return;
     }
   };
 

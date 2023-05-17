@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ReactFlow, { MiniMap, Controls, ControlButton } from "reactflow";
 
@@ -11,9 +11,10 @@ import UploadIcon from "/icons/upload.png";
 import GraphNode from "./GraphNode";
 import GraphEdge from "./GraphEdge";
 import MiniMapNode from "./MiniMapNode";
+import CompetCoordinates from "./CompetCoordinates";
 
 import fileService from "./../service/file";
-
+import Modal from "./Modal";
 import useFlowStore from "./../store/FlowStore";
 import { shallow } from "zustand/shallow";
 import { competAlgorithm } from "../algorithms/compet";
@@ -78,7 +79,8 @@ const Compet = () => {
     onEdgesChange,
     onConnect,
   } = useFlowStore(selector, shallow);
-
+  const [showModal, setShowModal] = useState(false);
+  const [coordinatesArray, setCoordinatesArray] = useState([]);
   // uses /service/file.js to upload the graph and set the nodes and edges
   const handleFileUpload = async (event) => {
     await fileService.upload(event).then((response) => {
@@ -100,18 +102,33 @@ const Compet = () => {
   };
 
   const calculateCendroid = () => {
-    // check if there is a node with id "centroid"
-    const centroidNode = nodes.find((node) => node.id === "centroid");
-    // if there is a node with id "centroid" remove it
-    if (centroidNode) {
-      setNodes(nodes.filter((node) => node.id !== "centroid"));
-      return;
+    // // check if there is a node with id "centroid"
+    // const centroidNode = nodes.find((node) => node.id === "centroid");
+    // // if there is a node with id "centroid" remove it
+    // if (centroidNode) {
+    //   setNodes(nodes.filter((node) => node.id !== "centroid"));
+    //   return;
+    // }
+    // get the coordinates of the nodes as an array of arrays, except if the node is the centroid
+    const coordinates = nodes.map((node) => {
+      if (node.id === "centroid") return null;
+      return [node.position.x, node.position.y, node.data.label];
+    });
+    // remove the null values from the array
+    for (let i = 0; i < coordinates.length; i++) {
+      if (coordinates[i] === null) {
+        coordinates.splice(i, 1);
+        i--;
+      }
     }
-
-    // get the coordinates of the nodes as an array of arrays
-    const coordinates = nodes.map((node) => [node.position.x, node.position.y]);
+    // extract the coordinates from the array to a new array called newCoordinates
+    const newCoordinates = [];
+    for (let i = 0; i < coordinates.length; i++) {
+      newCoordinates.push([coordinates[i][0], coordinates[i][1]]);
+    }
+    // console.log(coordinates);
     // calculate the centroid
-    const centroid = competAlgorithm(coordinates);
+    const centroid = competAlgorithm(newCoordinates);
     if (centroid === null) {
       alert(
         "No se puede calcular el centroide, los nodos no forman un poligono convexo"
@@ -127,6 +144,9 @@ const Compet = () => {
     };
     // add the centroid node to the nodes array
     setNodes([...nodes, newCentroidNode]);
+    setShowModal(true);
+    // Add the label to each coordinate
+    setCoordinatesArray([...coordinates, [...centroid, "Centroide"]]);
     // console.log(centroid);
   };
 
@@ -137,6 +157,18 @@ const Compet = () => {
         height: "100vh",
       }}
     >
+      {showModal ? (
+        <div>
+          <Modal
+            content={<CompetCoordinates coordinates={coordinatesArray} />}
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            title="COORDENADAS DE LOS NODOS"
+          ></Modal>
+        </div>
+      ) : (
+        <></>
+      )}
       <input
         id="file-input"
         type="file"
